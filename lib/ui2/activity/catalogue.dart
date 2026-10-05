@@ -415,7 +415,10 @@ class ExerciseDef {
       : 'https://wger.de/api/v2/exerciseinfo/?uuid=$sourceId';
 
   String labelFor(String languageCode) =>
-      localizedLabels[languageCode] ?? label;
+      languageCode == 'ru'
+          ? _russianExerciseLocalizations.exerciseCatalogueName(
+              'k${key.replaceAll(RegExp('[^A-Za-z0-9_]'), '')}', label)
+          : localizedLabels[languageCode] ?? label;
 
   bool matches(String query, String languageCode) {
     final q = query.trim().toLowerCase();
@@ -432,6 +435,8 @@ class ExerciseDef {
     }.any((v) => v.toLowerCase().contains(q));
   }
 }
+
+final _russianExerciseLocalizations = lookupAppLocalizations(const Locale('ru'));
 
 const _edgeExerciseLibrary = <ExerciseDef>[
   ExerciseDef(

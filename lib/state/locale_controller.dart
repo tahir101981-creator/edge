@@ -2,6 +2,8 @@
 // Persisted on-device via SharedPreferences, mirroring ThemeController /
 // UnitsController. Null means follow the OS locale.
 
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +13,16 @@ class LocaleController extends ChangeNotifier {
   static const String _kLocale = 'locale_override'; // language code, e.g. 'es'
 
   String? _code;
-  LocaleController._(this._code);
+  static LocaleController? _active;
+  LocaleController._(this._code) { _active = this; }
+
+  /// Formatting helpers without a BuildContext follow the same active controller.
+  /// This affects presentation only; storage and calculation units stay invariant.
+  static String get displayLanguageCode {
+    final code = _active?._code ?? PlatformDispatcher.instance.locale.languageCode;
+    return AppLocalizations.supportedLocales.any((l) => l.languageCode == code)
+        ? code : 'en';
+  }
 
   factory LocaleController.seed(String? code) => LocaleController._(code);
 
