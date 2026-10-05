@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tracking_title">Edge Tracking</string>
+    <string name="tracking_description">Keeps your strap syncing in the background</string>
+    <string name="tracking_body">Keeping your strap in sync</string>
+    <string name="widget_no_recent_title">No recent data</string>
+    <string name="widget_no_recent_body">Open OpenStrap and sync your band.</string>
+</resources>
