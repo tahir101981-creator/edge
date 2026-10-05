@@ -94,6 +94,9 @@ class Activity {
 
   /// The stored `sessions.type` for this activity.
   String get typeKey => name.toLowerCase().replaceAll(' ', '_');
+
+  /// Localized display only; stored names and keys remain unchanged.
+  String displayName(BuildContext c) => _catalogueDisplayName(c, name);
 }
 
 class ActGroup {
@@ -101,7 +104,14 @@ class ActGroup {
   final IconData icon;
   final List<Activity> items;
   const ActGroup(this.name, this.icon, this.items);
+
+  String displayName(BuildContext c) => _catalogueDisplayName(c, name);
 }
+
+String _catalogueDisplayName(BuildContext c, String name) =>
+    AppLocalizations.of(c)?.activityCatalogueName(
+        'k${name.toLowerCase().replaceAll(RegExp('[^a-z0-9]'), '')}', name) ??
+    name;
 
 const activityLibrary = <ActGroup>[
   ActGroup('Cardio', LucideIcons.heartPulse, [

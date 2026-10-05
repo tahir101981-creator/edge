@@ -360,7 +360,7 @@ class _LogWorkoutState extends State<LogWorkout> {
                   if (!retime)
                     SetRow(_activity.icon, _activity.color,
                         l?.logWorkoutActivityLabel ?? 'Activity',
-                        value: _activity.name, onTap: _pickActivity),
+                        value: _activity.displayName(c), onTap: _pickActivity),
                   SetRow(LucideIcons.calendar, C.blue,
                       l?.logWorkoutDateLabel ?? 'Date',
                       value: dayLabel(_start, now: widget.now, l: l),
@@ -444,7 +444,8 @@ class _TypeSheetState extends State<_TypeSheet> {
         ? allActivities
         : [
             for (final a in allActivities)
-              if (a.name.toLowerCase().contains(q)) a,
+              if (a.displayName(c).toLowerCase().contains(q) ||
+                  a.name.toLowerCase().contains(q)) a,
           ];
     return SafeArea(
       child: Padding(
@@ -482,7 +483,7 @@ class _TypeSheetState extends State<_TypeSheet> {
                     itemCount: items.length,
                     itemBuilder: (_, i) {
                       final a = items[i];
-                      return SetRow(a.icon, a.color, a.name,
+                      return SetRow(a.icon, a.color, a.displayName(c),
                           chevron: false,
                           onTap: () => Navigator.of(c).pop(a));
                     },

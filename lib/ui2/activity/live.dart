@@ -577,7 +577,7 @@ class LiveShellState extends State<LiveShell> {
               ),
               Expanded(
                 child: Column(children: [
-                  Text(a.name.toUpperCase(),
+                  Text(a.displayName(c).toUpperCase(),
                       style: F.over.copyWith(color: p.on(a.color)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
