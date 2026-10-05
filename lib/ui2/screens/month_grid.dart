@@ -195,14 +195,21 @@ class MonthGrid extends StatelessWidget {
                   const SizedBox(height: S.x4),
                 ],
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                        l?.monthGridDaysAgo(kGridDays - 1) ??
-                            '${kGridDays - 1} days ago',
-                        style: F.over.copyWith(color: p.ink3)),
-                    const Spacer(),
-                    Text(l?.monthGridToday ?? 'Today',
-                        style: F.over.copyWith(color: p.ink3)),
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                          l?.monthGridDaysAgo(kGridDays - 1) ??
+                              '${kGridDays - 1} days ago',
+                          style: F.over.copyWith(color: p.ink3)),
+                    ),
+                    const SizedBox(width: S.x2),
+                    Flexible(
+                      child: Text(l?.monthGridToday ?? 'Today',
+                          textAlign: TextAlign.end,
+                          style: F.over.copyWith(color: p.ink3)),
+                    ),
                   ],
                 ),
                 const SizedBox(height: S.x3),
