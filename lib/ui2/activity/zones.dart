@@ -1,3 +1,4 @@
+import '../../l10n/date_text.dart';
 // HEART-RATE ZONES — the ceiling, the two anchors, and (only sometimes) the
 // 28-day distribution. TS-03 / TS-04 / TS-05.
 //
@@ -30,7 +31,7 @@ import '../../data/local_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/metric.dart' show whyFromNote;
 import '../../state/app_state.dart';
-import '../screens/home_screen.dart' show repoOf, monthName;
+import '../screens/home_screen.dart' show repoOf;
 import '../screens/journal_compose.dart' show OsTextField;
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';
@@ -39,7 +40,7 @@ import '../ui2.dart';
 /// we cannot format is still better than dropping the attribution.
 String _prettyDay(String iso, [AppLocalizations? l]) {
   final d = DateTime.tryParse(iso);
-  return d == null ? iso : '${d.day} ${monthName(d.month, l)}';
+  return d == null ? iso : localizedDate(d, l?.localeName ?? 'en');
 }
 
 /// One zone row as the repository serves it.
@@ -146,8 +147,8 @@ class ZonesData {
       distShape: d is Map ? d['shape'] as String? : null,
       note: z['note'] as String?,
       ceilingNote: z['ceiling_note'] as String?,
-      distNote: ((z['absent'] as Map?)?['distribution'] as Map?)?['note']
-          as String?,
+      distNote:
+          ((z['absent'] as Map?)?['distribution'] as Map?)?['note'] as String?,
       age: (z['age'] as num?)?.toInt(),
     );
   }
@@ -210,9 +211,8 @@ class _ZonesDetailState extends State<ZonesDetail> {
     final ctrls = [
       for (var i = 0; i < 5; i++)
         TextEditingController(
-            text: current != null && current.length == 5
-                ? '${current[i]}'
-                : ''),
+          text: current != null && current.length == 5 ? '${current[i]}' : '',
+        ),
     ];
     final l = AppLocalizations.of(c);
     final saved = await showModalBottomSheet<bool>(
@@ -225,16 +225,19 @@ class _ZonesDetailState extends State<ZonesDetail> {
       ),
       builder: (s) => Padding(
         padding: EdgeInsets.only(
-            left: S.x5,
-            right: S.x5,
-            top: S.x5,
-            bottom: MediaQuery.of(s).viewInsets.bottom + S.x5),
+          left: S.x5,
+          right: S.x5,
+          top: S.x5,
+          bottom: MediaQuery.of(s).viewInsets.bottom + S.x5,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(l?.activityZonesEditYourOwnTitle ?? 'Set your own zones',
-                style: F.head.copyWith(color: P.of(s).ink)),
+            Text(
+              l?.activityZonesEditYourOwnTitle ?? 'Set your own zones',
+              style: F.head.copyWith(color: P.of(s).ink),
+            ),
             const SizedBox(height: S.x2),
             Text(
               l?.activityZonesEditYourOwnBody ??
@@ -247,15 +250,20 @@ class _ZonesDetailState extends State<ZonesDetail> {
             for (var i = 0; i < 5; i++) ...[
               OsTextField(
                 controller: ctrls[i],
-                label: l?.supplementZoneStartsAt(i + 1, names[i]) ?? 'Z${i + 1} · ${names[i]} starts at',
+                label:
+                    l?.supplementZoneStartsAt(i + 1, names[i]) ??
+                    'Z${i + 1} · ${names[i]} starts at',
                 hint: l?.activityZonesBpmUnit ?? 'bpm',
                 keyboard: TextInputType.number,
               ),
               const SizedBox(height: S.x3),
             ],
             const SizedBox(height: S.x2),
-            BigButton(l?.actionSave ?? 'Save',
-                color: C.red, onTap: () => Navigator.of(s).pop(true)),
+            BigButton(
+              l?.actionSave ?? 'Save',
+              color: C.red,
+              onTap: () => Navigator.of(s).pop(true),
+            ),
           ],
         ),
       ),
@@ -266,7 +274,8 @@ class _ZonesDetailState extends State<ZonesDetail> {
     }
     if (saved != true || !c.mounted) return;
     final bad = [
-      for (var i = 0; i < 5; i++) if (typed[i].bad) 'Z${i + 1}',
+      for (var i = 0; i < 5; i++)
+        if (typed[i].bad) 'Z${i + 1}',
     ];
     if (bad.isNotEmpty) {
       sayUnreadable(c, bad);
@@ -280,22 +289,30 @@ class _ZonesDetailState extends State<ZonesDetail> {
     }
     if (typed.any((t) => t.blank)) {
       if (mounted) {
-        ScaffoldMessenger.of(c).showSnackBar(SnackBar(
-          content: Text(l?.activityZonesNeedAllFive ??
-              'All five thresholds are needed, lowest to highest. Nothing '
-                  'was saved.'),
-        ));
+        ScaffoldMessenger.of(c).showSnackBar(
+          SnackBar(
+            content: Text(
+              l?.activityZonesNeedAllFive ??
+                  'All five thresholds are needed, lowest to highest. Nothing '
+                      'was saved.',
+            ),
+          ),
+        );
       }
       return;
     }
     final vals = [for (final t in typed) t.value!.round()];
     if (!validManualZoneBounds(vals)) {
       if (mounted) {
-        ScaffoldMessenger.of(c).showSnackBar(SnackBar(
-          content: Text(l?.activityZonesMustAscend ??
-              'Each zone must start higher than the last, at 30 bpm or '
-                  'above. Nothing was saved.'),
-        ));
+        ScaffoldMessenger.of(c).showSnackBar(
+          SnackBar(
+            content: Text(
+              l?.activityZonesMustAscend ??
+                  'Each zone must start higher than the last, at 30 bpm or '
+                      'above. Nothing was saved.',
+            ),
+          ),
+        );
       }
       return;
     }
@@ -314,7 +331,10 @@ class _ZonesDetailState extends State<ZonesDetail> {
         const Center(child: CircularProgressIndicator()),
       ] else ...[
         _ceiling(p, l, d),
-        Section(l?.activityZonesYourZonesSection ?? 'Your zones', _zones(p, l, d)),
+        Section(
+          l?.activityZonesYourZonesSection ?? 'Your zones',
+          _zones(p, l, d),
+        ),
         const SizedBox(height: S.x2),
         Pressable(
           onTap: () => _editManualZones(context, d),
@@ -325,7 +345,9 @@ class _ZonesDetailState extends State<ZonesDetail> {
                   ? (l?.activityZonesEditYourOwnLink ?? 'Edit your own zones')
                   : (l?.activityZonesSetYourOwnLink ?? 'Set your own zones'),
               style: F.body.copyWith(
-                  color: p.on(C.red), fontWeight: FontWeight.w600),
+                color: p.on(C.red),
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -348,21 +370,21 @@ class _ZonesDetailState extends State<ZonesDetail> {
           // unconditionally it described a section that, on every database in
           // the measured run, was itself empty.
           ? (l?.activityZonesNoCeilingTanakaTail ??
-              ' Until one is measured, the zones below come off your age.')
+                ' Until one is measured, the zones below come off your age.')
           : '';
       return StatusCard(
         l?.activityZonesNoCeilingTitle ?? 'No measured ceiling yet',
         why != null
             ? '$why$tail'
             : (l?.activityZonesNoCeilingDefaultBody ??
-                    'We only count a high reading the band held for 15 seconds while '
-                        'you were moving. A one-second spike is not a heart '
-                        'rate.') +
-                tail,
+                      'We only count a high reading the band held for 15 seconds while '
+                          'you were moving. A one-second spike is not a heart '
+                          'rate.') +
+                  tail,
         // The hard-session instruction belongs to the hold gate alone.
         fix: why == null
             ? (l?.activityZonesWearBandFix ??
-                'Wear the band for your normal hard sessions')
+                  'Wear the band for your normal hard sessions')
             : '',
         icon: LucideIcons.heartPulse,
       );
@@ -372,16 +394,17 @@ class _ZonesDetailState extends State<ZonesDetail> {
         l?.activityZonesCeilingOnDate(_prettyDay(d.ceilingDate!, l)) ??
             'on ${_prettyDay(d.ceilingDate!, l)}',
       if (d.ceilingSession != null)
-        l?.activityZonesCeilingDuringSession(
-                d.ceilingSession!.toLowerCase()) ??
+        l?.activityZonesCeilingDuringSession(d.ceilingSession!.toLowerCase()) ??
             'during ${d.ceilingSession!.toLowerCase()}',
     ].join(', ');
     return Surface(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l?.activityZonesHighestSeenLabel ?? 'HIGHEST WE HAVE SEEN',
-              style: F.over.copyWith(color: p.ink3)),
+          Text(
+            l?.activityZonesHighestSeenLabel ?? 'HIGHEST WE HAVE SEEN',
+            style: F.over.copyWith(color: p.ink3),
+          ),
           const SizedBox(height: S.x2),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -389,8 +412,10 @@ class _ZonesDetailState extends State<ZonesDetail> {
             children: [
               Text('$bpm', style: F.n34.copyWith(color: p.on(C.red))),
               const SizedBox(width: S.x2),
-              Text(l?.activityZonesBpmUnit ?? 'bpm',
-                  style: F.body.copyWith(color: p.ink3)),
+              Text(
+                l?.activityZonesBpmUnit ?? 'bpm',
+                style: F.body.copyWith(color: p.ink3),
+              ),
             ],
           ),
           if (where.isNotEmpty) ...[
@@ -427,11 +452,13 @@ class _ZonesDetailState extends State<ZonesDetail> {
         why ??
             (noAge
                 ? (l?.activityZonesNoAgeBody ??
-                    'Zone edges are percentages of a maximum heart rate, and '
-                        'without your age there is nothing to take a percentage of.')
+                      'Zone edges are percentages of a maximum heart rate, and '
+                          'without your age there is nothing to take a percentage of.')
                 : (l?.activityZonesNoZonesDefaultBody ??
-                    'Nothing recorded says why there are no zone edges yet.')),
-        fix: noAge ? (l?.activityZonesAddAgeFix ?? 'Add your age in Profile') : '',
+                      'Nothing recorded says why there are no zone edges yet.')),
+        fix: noAge
+            ? (l?.activityZonesAddAgeFix ?? 'Add your age in Profile')
+            : '',
         icon: LucideIcons.activity,
       );
     }
@@ -467,8 +494,10 @@ class _ZonesDetailState extends State<ZonesDetail> {
                   style: F.n17.copyWith(color: p.ink2),
                 ),
                 const SizedBox(width: S.x2),
-                Text(l?.activityZonesBpmUnit ?? 'bpm',
-                    style: F.cap.copyWith(color: p.ink3)),
+                Text(
+                  l?.activityZonesBpmUnit ?? 'bpm',
+                  style: F.cap.copyWith(color: p.ink3),
+                ),
               ],
             ),
           ],
@@ -489,7 +518,10 @@ class _ZonesDetailState extends State<ZonesDetail> {
     switch (d.source) {
       case 'karvonen':
         return l?.activityZonesAnchorKarvonen(
-                d.restingHr ?? 0, d.restingDays, max ?? 0) ??
+              d.restingHr ?? 0,
+              d.restingDays,
+              max ?? 0,
+            ) ??
             'Built from two numbers the band measured on you: your resting '
                 'rate (${d.restingHr}, the middle of your last ${d.restingDays} '
                 'nights) and the highest we have seen ($max). A low resting rate '
@@ -497,7 +529,10 @@ class _ZonesDetailState extends State<ZonesDetail> {
                 'measured thresholds.';
       case 'observed':
         return l?.activityZonesAnchorObserved(
-                max ?? 0, d.restingMinDays, d.restingDays) ??
+              max ?? 0,
+              d.restingMinDays,
+              d.restingDays,
+            ) ??
             'Built from the highest heart rate we have seen ($max). After '
                 '${d.restingMinDays} nights of resting rate (you have '
                 '${d.restingDays}) your resting rate joins it, which fits you '
@@ -536,12 +571,12 @@ class _ZonesDetailState extends State<ZonesDetail> {
             whyFromNote(d.distNote, unit: 'days') ??
                 (d.measured
                     ? (l?.activityZonesNeedsMonthBody ??
-                        'Needs about a month of recorded sessions, each with a '
-                            'minute-by-minute heart rate.')
+                          'Needs about a month of recorded sessions, each with a '
+                              'minute-by-minute heart rate.')
                     : (l?.activityZonesAgeEstimateBody ??
-                        'The bars would be a picture of the age estimate, not of '
-                            'your training. They appear once the zone edges above '
-                            'are measured.')),
+                          'The bars would be a picture of the age estimate, not of '
+                              'your training. They appear once the zone edges above '
+                              'are measured.')),
             icon: LucideIcons.chartColumn,
           ),
         ),
@@ -554,7 +589,8 @@ class _ZonesDetailState extends State<ZonesDetail> {
         l?.activityZonesIntensitySection ?? 'Where your intensity went',
         Surface(
           child: ChartFrame(
-            title: l?.activityZonesSessionMinutesChartTitle ??
+            title:
+                l?.activityZonesSessionMinutesChartTitle ??
                 'SESSION MINUTES, LAST 28 DAYS',
             unit: 'minutes',
             height: 10,
@@ -581,19 +617,27 @@ class _ZonesDetailState extends State<ZonesDetail> {
   /// share of it correct would be a prescription we cannot support.
   String _shapeCopy(AppLocalizations? l, ZonesData d) {
     final shape = switch (d.distShape) {
-      'pyramidal' => l?.activityZonesShapePyramidal ??
-          'Most of your minutes are easy, fewer in the middle, '
-              'fewest hard — a pyramid.',
-      'polarised' => l?.activityZonesShapePolarised ??
-          'Most of your minutes are easy and the rest are hard, '
-              'with little in between.',
-      'middle-heavy' => l?.activityZonesShapeMiddleHeavy ??
-          'Most of your minutes sit in the middle rather than '
-              'easy or hard.',
+      'pyramidal' =>
+        l?.activityZonesShapePyramidal ??
+            'Most of your minutes are easy, fewer in the middle, '
+                'fewest hard — a pyramid.',
+      'polarised' =>
+        l?.activityZonesShapePolarised ??
+            'Most of your minutes are easy and the rest are hard, '
+                'with little in between.',
+      'middle-heavy' =>
+        l?.activityZonesShapeMiddleHeavy ??
+            'Most of your minutes sit in the middle rather than '
+                'easy or hard.',
       _ => '',
     };
-    final summary = l?.activityZonesShapeSummary(
-            d.distEasy, d.distModerate, d.distHard, d.distSessions) ??
+    final summary =
+        l?.activityZonesShapeSummary(
+          d.distEasy,
+          d.distModerate,
+          d.distHard,
+          d.distSessions,
+        ) ??
         '${d.distEasy} min easy, ${d.distModerate} moderate, '
             '${d.distHard} hard, over ${d.distSessions} recorded sessions. A '
             'description, not a target.';

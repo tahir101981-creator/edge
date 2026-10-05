@@ -1,3 +1,5 @@
+import '../../l10n/presentation_text.dart';
+import '../../l10n/display_text.dart';
 // DAY TIMELINE — what happened, in the order it happened.
 //
 // Every screen in this app answers "how much" for one number over many days.
@@ -88,11 +90,19 @@ class DayNote {
 Map<int, (String, IconData)> _events(AppLocalizations? l) => {
   7: (l?.dayTimelineChargerOn ?? 'On the charger', LucideIcons.batteryCharging),
   8: (l?.dayTimelineChargerOff ?? 'Off the charger', LucideIcons.batteryFull),
-  14: (l?.dayTimelineDoubleTap ?? 'You double-tapped the band', LucideIcons.hand),
+  14: (
+    l?.dayTimelineDoubleTap ?? 'You double-tapped the band',
+    LucideIcons.hand,
+  ),
   15: (l?.dayTimelineRestarted ?? 'The band restarted', LucideIcons.rotateCw),
-  21: (l?.dayTimelineBatteryPackAttached ?? 'Battery pack attached',
-      LucideIcons.batteryCharging),
-  22: (l?.dayTimelineBatteryPackRemoved ?? 'Battery pack removed', LucideIcons.battery),
+  21: (
+    l?.dayTimelineBatteryPackAttached ?? 'Battery pack attached',
+    LucideIcons.batteryCharging,
+  ),
+  22: (
+    l?.dayTimelineBatteryPackRemoved ?? 'Battery pack removed',
+    LucideIcons.battery,
+  ),
   57: (l?.dayTimelineAlarmWentOff ?? 'Alarm went off', LucideIcons.alarmClock),
 };
 
@@ -101,10 +111,10 @@ Map<int, (String, IconData)> _events(AppLocalizations? l) => {
 /// forty that mean the strap moved.
 const int kMinOffWristMin = 15;
 
-String _dur(num? minutes) {
+String _dur(num? minutes, AppLocalizations? l) {
   if (minutes == null) return '';
   final m = minutes.round();
-  return m < 60 ? '${m}m' : '${m ~/ 60}h ${m % 60}m';
+  return presentationText(l, m < 60 ? '${m}m' : '${m ~/ 60}h ${m % 60}m');
 }
 
 String _span(int from, int? to) =>
@@ -135,28 +145,32 @@ List<Moment> dayMoments({
     if (s is! Map) continue;
     final on = asInt(s['onset_ts']), off = asInt(s['wake_ts']);
     if (on == null || off == null) continue;
-    out.add(Moment(
-      at: on,
-      until: off,
-      title: l?.dayTimelineAsleep ?? 'Asleep',
-      detail: '${_span(on, off)} · ${_dur((off - on) / 60)}',
-      icon: LucideIcons.moon,
-      color: C.blue,
-    ));
+    out.add(
+      Moment(
+        at: on,
+        until: off,
+        title: l?.dayTimelineAsleep ?? 'Asleep',
+        detail: '${_span(on, off)} · ${_dur((off - on) / 60, l)}',
+        icon: LucideIcons.moon,
+        color: C.blue,
+      ),
+    );
   }
 
   for (final n in (timeline['naps'] as List?) ?? const []) {
     if (n is! Map) continue;
     final on = asInt(n['start']), off = asInt(n['end']);
     if (on == null) continue;
-    out.add(Moment(
-      at: on,
-      until: off,
-      title: l?.dayTimelineNap ?? 'Nap',
-      detail: '${_span(on, off)} · ${_dur(n['duration_min'] as num?)}',
-      icon: LucideIcons.bedDouble,
-      color: C.indigo,
-    ));
+    out.add(
+      Moment(
+        at: on,
+        until: off,
+        title: l?.dayTimelineNap ?? 'Nap',
+        detail: '${_span(on, off)} · ${_dur(n['duration_min'] as num?, l)}',
+        icon: LucideIcons.bedDouble,
+        color: C.indigo,
+      ),
+    );
   }
 
   for (final s in (timeline['sessions'] as List?) ?? const []) {
@@ -167,20 +181,23 @@ List<Moment> dayMoments({
     final act = activityByName(type);
     final bits = <String>[
       _span(on, asInt(s['end_ts'])),
-      if (s['duration_min'] != null) _dur(s['duration_min'] as num?),
-      if (s['avg_hr'] != null) '${s['avg_hr']} bpm avg',
+      if (s['duration_min'] != null) _dur(s['duration_min'] as num?, l),
+      if (s['avg_hr'] != null) presentationText(l, '${s['avg_hr']} bpm avg'),
     ];
-    out.add(Moment(
-      at: on,
-      until: asInt(s['end_ts']),
-      title: act?.name ??
-          (type == null
-              ? (l?.dayTimelineWorkout ?? 'Workout')
-              : type.replaceAll('_', ' ')),
-      detail: bits.join(' · '),
-      icon: act?.icon ?? LucideIcons.dumbbell,
-      color: act?.color ?? C.orange,
-    ));
+    out.add(
+      Moment(
+        at: on,
+        until: asInt(s['end_ts']),
+        title:
+            act?.localizedName(l) ??
+            (type == null
+                ? (l?.dayTimelineWorkout ?? 'Workout')
+                : type.replaceAll('_', ' ')),
+        detail: bits.join(' · '),
+        icon: act?.icon ?? LucideIcons.dumbbell,
+        color: act?.color ?? C.orange,
+      ),
+    );
   }
 
   // The band off the wrist. This is the single most useful line on the page on
@@ -189,15 +206,19 @@ List<Moment> dayMoments({
   for (final w in (wear['segments'] as List?) ?? const []) {
     if (w is! Map || w['on'] == true) continue;
     final on = asInt(w['start']), off = asInt(w['end']);
-    final len = (w['len_min'] as num?) ?? (on != null && off != null ? (off - on) / 60 : null);
+    final len =
+        (w['len_min'] as num?) ??
+        (on != null && off != null ? (off - on) / 60 : null);
     if (on == null || len == null || len < kMinOffWristMin) continue;
-    out.add(Moment(
-      at: on,
-      until: off,
-      title: l?.dayTimelineBandOffWrist ?? 'Band off your wrist',
-      detail: '${_span(on, off)} · ${_dur(len)}',
-      icon: LucideIcons.watch,
-    ));
+    out.add(
+      Moment(
+        at: on,
+        until: off,
+        title: l?.dayTimelineBandOffWrist ?? 'Band off your wrist',
+        detail: '${_span(on, off)} · ${_dur(len, l)}',
+        icon: LucideIcons.watch,
+      ),
+    );
   }
 
   // The day's extremes. NOT anomalies — the highest and lowest reading a day
@@ -206,21 +227,32 @@ List<Moment> dayMoments({
   final highs = timeline['highs'];
   if (highs is Map) {
     for (final e in [
-      ('peak_hr', l?.dayTimelineHighestHr ?? 'Highest heart rate', LucideIcons.trendingUp),
-      ('low_hr', l?.dayTimelineLowestHr ?? 'Lowest heart rate', LucideIcons.trendingDown),
+      (
+        'peak_hr',
+        l?.dayTimelineHighestHr ?? 'Highest heart rate',
+        LucideIcons.trendingUp,
+      ),
+      (
+        'low_hr',
+        l?.dayTimelineLowestHr ?? 'Lowest heart rate',
+        LucideIcons.trendingDown,
+      ),
     ]) {
       final h = highs[e.$1];
       final t = h is Map ? asInt(h['t']) : null;
       final v = h is Map ? h['v'] as num? : null;
       if (t == null || v == null) continue;
-      out.add(Moment(
-        at: t,
-        title: e.$2,
-        detail: l?.dayTimelineBpmAt(v.round(), clockOfTs(t)) ??
-            '${v.round()} bpm at ${clockOfTs(t)}',
-        icon: e.$3,
-        color: C.red,
-      ));
+      out.add(
+        Moment(
+          at: t,
+          title: e.$2,
+          detail:
+              l?.dayTimelineBpmAt(v.round(), clockOfTs(t)) ??
+              '${v.round()} bpm at ${clockOfTs(t)}',
+          icon: e.$3,
+          color: C.red,
+        ),
+      );
     }
   }
 
@@ -233,41 +265,42 @@ List<Moment> dayMoments({
     final id = asInt(e['event_id']), t = asInt(e['ts']);
     final def = id == null ? null : events[id];
     if (def == null || t == null || !seen.add('$id/$t')) continue;
-    out.add(Moment(
-      at: t,
-      title: def.$1,
-      detail: clockOfTs(t),
-      icon: def.$2,
-    ));
+    out.add(Moment(at: t, title: def.$1, detail: clockOfTs(t), icon: def.$2));
   }
 
   for (final m in meals) {
     final t = m.atTs;
     if (t == null) continue;
     final kcal = m.kcal;
-    out.add(Moment(
-      at: t,
-      title: m.label.isEmpty ? m.meal : m.label,
-      detail: [
-        clockOfTs(t),
-        if (m.meal.isNotEmpty) m.meal,
-        // A bare occasion is complete as a log. It just has no energy on it,
-        // and printing "0 kcal" for one is the fabrication this app refuses.
-        if (kcal != null) '${kcal.round()} kcal',
-      ].join(' · '),
-      icon: LucideIcons.utensils,
-      color: C.domFood,
-    ));
+    out.add(
+      Moment(
+        at: t,
+        title: m.label.isEmpty ? localizedText(l, m.meal) : m.label,
+        detail: [
+          clockOfTs(t),
+          if (m.meal.isNotEmpty) localizedText(l, m.meal),
+          // A bare occasion is complete as a log. It just has no energy on it,
+          // and printing "0 kcal" for one is the fabrication this app refuses.
+          if (kcal != null) '${kcal.round()} kcal',
+        ].join(' · '),
+        icon: LucideIcons.utensils,
+        color: C.domFood,
+      ),
+    );
   }
 
   for (final d in doses) {
-    out.add(Moment(
-      at: d.at,
-      title: d.label,
-      detail: l?.dayTimelineTakenAt(clockOfTs(d.at)) ?? 'Taken at ${clockOfTs(d.at)}',
-      icon: LucideIcons.pill,
-      color: C.purple,
-    ));
+    out.add(
+      Moment(
+        at: d.at,
+        title: d.label,
+        detail:
+            l?.dayTimelineTakenAt(clockOfTs(d.at)) ??
+            'Taken at ${clockOfTs(d.at)}',
+        icon: LucideIcons.pill,
+        color: C.purple,
+      ),
+    );
   }
 
   // Timed journal fields — caffeine and alcohol carry the minute they last
@@ -286,16 +319,23 @@ List<Moment> dayMoments({
     final d = DateTime.fromMillisecondsSinceEpoch(dayStart * 1000);
     final at =
         DateTime(d.year, d.month, d.day, 0, min).millisecondsSinceEpoch ~/ 1000;
-    out.add(Moment(
-      at: at,
-      title: spec?.label ?? key.replaceAll('_', ' '),
-      // "last one at" is the stored meaning, and saying just "at" would turn a
-      // total plus one timestamp into a single event that never happened.
-      detail: '$n${spec == null || spec.unit.isEmpty ? '' : ' ${spec.unit}'} · '
-          '${l?.dayTimelineLastAt(clockOfTs(at)) ?? 'last at ${clockOfTs(at)}'}',
-      icon: LucideIcons.notebookPen,
-      color: C.domMind,
-    ));
+    out.add(
+      Moment(
+        at: at,
+        title: spec == null
+            ? key.replaceAll('_', ' ')
+            : spec.custom
+            ? spec.label
+            : localizedText(l, spec.label),
+        // "last one at" is the stored meaning, and saying just "at" would turn a
+        // total plus one timestamp into a single event that never happened.
+        detail:
+            '$n${spec == null || spec.unit.isEmpty ? '' : ' ${spec.custom ? spec.unit : localizedText(l, spec.unit)}'} · '
+            '${l?.dayTimelineLastAt(clockOfTs(at)) ?? 'last at ${clockOfTs(at)}'}',
+        icon: LucideIcons.notebookPen,
+        color: C.domMind,
+      ),
+    );
   });
 
   out.sort((a, b) => a.at.compareTo(b.at));
@@ -320,13 +360,17 @@ List<DayNote> dayNotes({
     try {
       final j = jsonDecode((r['tags_json'] as String?) ?? '[]');
       if (j is List) tags.addAll([for (final t in j) t.toString()]);
-    } catch (_) {/* a malformed row loses its tags, not the note */}
+    } catch (_) {
+      /* a malformed row loses its tags, not the note */
+    }
     if (note.isEmpty && tags.isEmpty) continue;
-    out.add(DayNote(
-      note.isEmpty ? (l?.dayTimelineTaggedTitle ?? 'Tagged') : note,
-      tags.join(' · '),
-      LucideIcons.notebookPen,
-    ));
+    out.add(
+      DayNote(
+        note.isEmpty ? (l?.dayTimelineTaggedTitle ?? 'Tagged') : note,
+        tags.join(' · '),
+        LucideIcons.notebookPen,
+      ),
+    );
   }
   final specs = {for (final f in fields) f.key: f};
   journal.forEach((key, v) {
@@ -335,22 +379,30 @@ List<DayNote> dayNotes({
     final n = v.value == v.value.roundToDouble()
         ? v.value.round().toString()
         : v.value.toStringAsFixed(1);
-    out.add(DayNote(
-      spec?.label ?? key.replaceAll('_', ' '),
-      '$n${spec == null || spec.unit.isEmpty ? '' : ' ${spec.unit}'}',
-      LucideIcons.clipboardList,
-    ));
+    out.add(
+      DayNote(
+        spec == null
+            ? key.replaceAll('_', ' ')
+            : spec.custom
+            ? spec.label
+            : localizedText(l, spec.label),
+        '$n${spec == null || spec.unit.isEmpty ? '' : ' ${spec.custom ? spec.unit : localizedText(l, spec.unit)}'}',
+        LucideIcons.clipboardList,
+      ),
+    );
   });
   for (final m in meals) {
     if (m.atTs != null) continue;
-    out.add(DayNote(
-      m.label.isEmpty ? m.meal : m.label,
-      [
-        if (m.meal.isNotEmpty) m.meal,
-        if (m.kcal != null) '${m.kcal!.round()} kcal',
-      ].join(' · '),
-      LucideIcons.utensils,
-    ));
+    out.add(
+      DayNote(
+        m.label.isEmpty ? localizedText(l, m.meal) : m.label,
+        [
+          if (m.meal.isNotEmpty) localizedText(l, m.meal),
+          if (m.kcal != null) '${m.kcal!.round()} kcal',
+        ].join(' · '),
+        LucideIcons.utensils,
+      ),
+    );
   }
   return out;
 }
@@ -432,7 +484,8 @@ class DayGraph {
     final out = <(int, int)>[];
     int? from;
     for (var i = 0; i < n; i++) {
-      final has = known[i] ||
+      final has =
+          known[i] ||
           (i < hr.length && hr[i] != null) ||
           (i < movement.length && movement[i] != null);
       if (has) {
@@ -561,7 +614,10 @@ class TimelineData {
     final days = await repo.availableDays();
     final today = await repo.getToday();
     final day = pickDay(
-        days, want, (today['status'] as Map?)?['today_day']?.toString());
+      days,
+      want,
+      (today['status'] as Map?)?['today_day']?.toString(),
+    );
     if (day == null) return TimelineData(days: days);
 
     final timeline = await repo.getDayTimeline(day);
@@ -575,7 +631,9 @@ class TimelineData {
     // Doses: one row per (medication, slot), and only the ones actually taken
     // carry a clock. A skipped dose is a real fact with no time attached, so it
     // is not on the axis — see the note at the top of this file.
-    final defs = {for (final d in await MedDb.defs(db, activeOnly: false)) d.key: d};
+    final defs = {
+      for (final d in await MedDb.defs(db, activeOnly: false)) d.key: d,
+    };
     final taken = <({String label, int at})>[];
     (await MedDb.dosesForDay(db, day)).forEach((key, slots) {
       for (final row in slots.values) {
@@ -609,7 +667,10 @@ class TimelineData {
           meals: [for (final m in meals) m.sanitised],
           journal: journal,
           fields: fields,
-          journalRows: [for (final r in notes) if (r['date'] == day) r],
+          journalRows: [
+            for (final r in notes)
+              if (r['date'] == day) r,
+          ],
           l: l,
         ),
         // ONE ROW PER OBSERVATION. Attribution always shown and never
@@ -726,21 +787,26 @@ class _DayTimelineScreenState extends State<DayTimelineScreen> {
     try {
       final d = await TimelineData.load(repo, want: _day, l: l);
       final candidates = mounted
-          ? signalCandidates(context, context.read<AppState>(),
-              requires: {InputSignal.hr1Hz})
+          ? signalCandidates(
+              context,
+              context.read<AppState>(),
+              requires: {InputSignal.hr1Hz},
+            )
           : const <DeviceOption>[];
       if (mounted && token == _loadToken) {
-        setState(() => (
-          _d = d,
-          _candidates = candidates,
-          _device = null,
-          // Cleared WITH `_device`. Left behind, the bounded-history message
-          // and its oldest-day marker outlived the selection that produced
-          // them and rendered against no selected device at all.
-          _deviceBounded = false,
-          _deviceOldest = null,
-          _loading = false,
-        ));
+        setState(
+          () => (
+            _d = d,
+            _candidates = candidates,
+            _device = null,
+            // Cleared WITH `_device`. Left behind, the bounded-history message
+            // and its oldest-day marker outlived the selection that produced
+            // them and rendered against no selected device at all.
+            _deviceBounded = false,
+            _deviceOldest = null,
+            _loading = false,
+          ),
+        );
       }
     } catch (_) {
       if (mounted && token == _loadToken) setState(() => _loading = false);
@@ -813,36 +879,40 @@ class _DayTimelineScreenState extends State<DayTimelineScreen> {
   Widget build(BuildContext c) {
     final d = _d ?? const TimelineData();
     final l = AppLocalizations.of(c);
-    return detailScaffold(c, l?.dayTimelineTitle ?? 'Breakdown of your day',
-        sub: l?.dayTimelineSub ?? 'MIDNIGHT TO MIDNIGHT', [
-      ...dayNavRow(_day ?? d.day, d.days, _goDay),
-      if (_loading) ...[
-        const SizedBox(height: S.x8),
-        const Center(child: CircularProgressIndicator()),
-      ] else ...[
-        if (_candidates.length >= 2) ...[
-          const SizedBox(height: S.x2),
-          DeviceFilter(
-            options: _candidates,
-            selected: _device,
-            onSelect: _selectDevice,
-          ),
-          if (_deviceBounded)
-            Padding(
-              padding: const EdgeInsets.only(top: S.x2),
-              child: Text(
-                l?.dayTimelineDeviceBounded(_deviceOldest ?? '') ??
-                    'Per-device detail is kept for recent days only. Before '
-                        '${_deviceOldest ?? ''} we know which device recorded, '
-                        'not what it said.',
-                style: F.over.copyWith(color: P.of(c).ink3),
-              ),
+    return detailScaffold(
+      c,
+      l?.dayTimelineTitle ?? 'Breakdown of your day',
+      sub: l?.dayTimelineSub ?? 'MIDNIGHT TO MIDNIGHT',
+      [
+        ...dayNavRow(_day ?? d.day, d.days, _goDay),
+        if (_loading) ...[
+          const SizedBox(height: S.x8),
+          const Center(child: CircularProgressIndicator()),
+        ] else ...[
+          if (_candidates.length >= 2) ...[
+            const SizedBox(height: S.x2),
+            DeviceFilter(
+              options: _candidates,
+              selected: _device,
+              onSelect: _selectDevice,
             ),
-          const SizedBox(height: S.x2),
+            if (_deviceBounded)
+              Padding(
+                padding: const EdgeInsets.only(top: S.x2),
+                child: Text(
+                  l?.dayTimelineDeviceBounded(_deviceOldest ?? '') ??
+                      'Per-device detail is kept for recent days only. Before '
+                          '${_deviceOldest ?? ''} we know which device recorded, '
+                          'not what it said.',
+                  style: F.over.copyWith(color: P.of(c).ink3),
+                ),
+              ),
+            const SizedBox(height: S.x2),
+          ],
+          ...timelineBody(c, d),
         ],
-        ...timelineBody(c, d),
       ],
-    ]);
+    );
   }
 }
 
@@ -882,36 +952,35 @@ Widget? dayGraphCard(BuildContext c, DayGraph g) {
         if (g.work.isNotEmpty) (l?.dayTimelineWorkout ?? 'Workout', workout),
         if (g.movement.any((v) => v != null))
           (l?.dayTimelineMoving ?? 'Moving', p.on(C.domMove)),
-        if (gaps.isNotEmpty) (l?.dayTimelineNotRecorded ?? 'Not recorded', p.card2),
+        if (gaps.isNotEmpty)
+          (l?.dayTimelineNotRecorded ?? 'Not recorded', p.card2),
       ],
       series: g.hr,
-      child: Stack(children: [
-        Positioned.fill(
-          child: CustomPaint(
-            size: Size.infinite,
-            painter: DayLanes(
-              p: p,
-              gaps: [for (final (a, b) in gaps) (at(a), at(b))],
-              rest: [
-                for (final (a, b, _) in g.rest) (at(a), at(b), asleep),
-              ],
-              work: [
-                for (final (a, b, _) in g.work) (at(a), at(b), workout),
-              ],
-              movement: g.movement,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: CustomPaint(
+              size: Size.infinite,
+              painter: DayLanes(
+                p: p,
+                gaps: [for (final (a, b) in gaps) (at(a), at(b))],
+                rest: [for (final (a, b, _) in g.rest) (at(a), at(b), asleep)],
+                work: [for (final (a, b, _) in g.work) (at(a), at(b), workout)],
+                movement: g.movement,
+              ),
             ),
           ),
-        ),
-        Positioned.fill(
-          child: CustomPaint(
-            size: Size.infinite,
-            // No fill under the line: the area would swallow the bands behind
-            // it, and the bands are the half of this picture the curve cannot
-            // say on its own.
-            painter: LineChart(g.hr, p.on(C.red), fill: false, axis: axis),
+          Positioned.fill(
+            child: CustomPaint(
+              size: Size.infinite,
+              // No fill under the line: the area would swallow the bands behind
+              // it, and the bands are the half of this picture the curve cannot
+              // say on its own.
+              painter: LineChart(g.hr, p.on(C.red), fill: false, axis: axis),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     ),
   );
 }
@@ -926,7 +995,8 @@ List<Widget> timelineBody(BuildContext c, TimelineData d) {
     ?graph,
     if (d.moments.isEmpty && d.notes.isEmpty && graph == null)
       StatusCard(
-        l?.dayTimelineNothingRecordedTitle ?? 'Nothing was recorded on this day',
+        l?.dayTimelineNothingRecordedTitle ??
+            'Nothing was recorded on this day',
         l?.dayTimelineNothingRecordedBody ??
             'No sleep, no session, no log and no band event carrying a time. A day '
                 'with nothing on it is usually a day the band was off.',
@@ -947,11 +1017,7 @@ List<Widget> timelineBody(BuildContext c, TimelineData d) {
           l?.dayTimelineWhatHappenedSection ?? 'What happened',
           Surface(
             pad: const EdgeInsets.fromLTRB(S.x4, S.x2, S.x4, S.x2),
-            child: Column(
-              children: [
-                for (final m in d.moments) MomentRow(m),
-              ],
-            ),
+            child: Column(children: [for (final m in d.moments) MomentRow(m)]),
           ),
         ),
       if (d.notes.isNotEmpty)
@@ -973,11 +1039,15 @@ List<Widget> timelineBody(BuildContext c, TimelineData d) {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(n.title,
-                                  style: F.body.copyWith(color: p.ink)),
+                              Text(
+                                n.title,
+                                style: F.body.copyWith(color: p.ink),
+                              ),
                               if (n.detail.isNotEmpty)
-                                Text(n.detail,
-                                    style: F.cap.copyWith(color: p.ink2)),
+                                Text(
+                                  n.detail,
+                                  style: F.cap.copyWith(color: p.ink2),
+                                ),
                             ],
                           ),
                         ),
@@ -1032,12 +1102,18 @@ class MomentRow extends StatelessWidget {
             // the phones whose owners chose 3.1x.
             SizedBox(
               width: MediaQuery.textScalerOf(c).scale(58),
-              child: Text(clockOfTs(m.at), style: F.n17.copyWith(color: p.ink3)),
+              child: Text(
+                clockOfTs(m.at),
+                style: F.n17.copyWith(color: p.ink3),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 2),
-              child: Icon(m.icon,
-                  size: 17, color: m.color == null ? p.ink3 : p.on(m.color!)),
+              child: Icon(
+                m.icon,
+                size: 17,
+                color: m.color == null ? p.ink3 : p.on(m.color!),
+              ),
             ),
             const SizedBox(width: S.x3),
             Expanded(
@@ -1046,12 +1122,16 @@ class MomentRow extends StatelessWidget {
                 children: [
                   Text(
                     m.title,
-                    style: F.body
-                        .copyWith(color: p.ink, fontWeight: FontWeight.w600),
+                    style: F.body.copyWith(
+                      color: p.ink,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   if (m.detail.isNotEmpty)
-                    Text(m.detail,
-                        style: F.cap.copyWith(color: p.ink2, height: 1.4)),
+                    Text(
+                      m.detail,
+                      style: F.cap.copyWith(color: p.ink2, height: 1.4),
+                    ),
                 ],
               ),
             ),
