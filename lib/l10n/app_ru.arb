@@ -13215,6 +13215,21 @@
       }
     }
   },
+  "supplementProteinShort": "Б",
+  "@supplementProteinShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
+  "supplementCarbsShort": "У",
+  "@supplementCarbsShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
+  "supplementFatShort": "Ж",
+  "@supplementFatShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
   "supplementADeviationNotATemperaturefc109f": "Это отклонение, а не температура. Импортированные ночи используют разные единицы, поэтому общий график не строится.",
   "supplementADoseIsDue1543e3": "Пора принять дозу.",
   "supplementALocalModelCanTake62d4a8": "Перед первым ответом локальная модель может долго загружаться. По умолчанию — 5 минут (300 с). Для облачных провайдеров действует фиксированный тайм-аут 2 минуты; эта настройка на них не влияет.",
@@ -13286,6 +13301,7 @@
   "supplementMoodEnergyStressAMinute54d5f9": "Настроение, энергия, стресс — запишите за минуту.",
   "supplementMorningBriefing0da62b": "Утренний обзор",
   "supplementMorningCortisolc31c55": "Утренний кортизол",
+  "supplementMotionCoprocessord1ef3c": "Датчик движения",
   "supplementMovementMinutes4670da": "Минуты движения",
   "supplementNightToNightCoefficientOf0cae4a": "Коэффициент вариации RMSSD между ночами.",
   "supplementNightlySweepe95625": "Вечерний обзор",
@@ -13304,6 +13320,7 @@
   "supplementNothingRecordedSaysWhyThis97026a": "В записях нет объяснения отсутствия показателя.",
   "supplementNothingStoodOutTonight468e67": "Этой ночью ничего необычного не выявлено.",
   "supplementOffe3de5a": "Выключено",
+  "supplementPairedSensor0ff7bd": "Подключённый датчик",
   "supplementPlews2013LnRMSSDHopkinsSmallestdd73bd": "Plews 2013 (lnRMSSD) · порог минимального значимого изменения Hopkins",
   "supplementPosesbcddeb": "Позы",
   "supplementPossibleIllnessOnset9dccbc": "Возможное начало болезни",
@@ -13358,6 +13375,7 @@
   "supplementTrainingImpulseTimeInEachcd2945": "Тренировочный импульс: время в каждой зоне пульса с весом, соответствующим её физиологической стоимости.",
   "supplementTransferrinSaturation31bc19": "Насыщение трансферрина",
   "supplementTriglycerides95ae7f": "Триглицериды",
+  "supplementUnknownSensor98a1f7": "Неизвестный датчик",
   "supplementUnusualOvernightPhysiology69c322": "Необычные ночные показатели",
   "supplementVO2maxEst25e886": "VO2max (оценка)",
   "supplementViewData9a8de9": "Посмотреть данные",
@@ -13390,7 +13408,9 @@
   "supplementYouVeBeenInA933b2c": "Вы больше 90 минут в положении для печати без ходьбы.",
   "supplementAnImprovement00aad0": "улучшение",
   "supplementBrMin0041f9": "дых/мин",
+  "supplementCme283e1": "см",
   "supplementDown77346d": "снижение",
+  "supplementG54fd17": "г",
   "supplementIOSCanOnlyShowThe2139b2": "iOS может показать системное окно сопряжения только до использования Bluetooth приложением. Полностью закройте OpenStrap и откройте снова — окно появится автоматически.",
   "supplementKcal72037b": "ккал",
   "supplementKg138984": "кг",
@@ -13410,5 +13430,6 @@
   "supplementUp7c0a25": "рост",
   "supplementVanHees2015WindowDetectionbef776": "Определение периода van Hees 2015 + ночное снижение пульса",
   "supplementVanHees2015WebsterCole3d69f8": "van Hees 2015 · повторная классификация Webster / Cole–Kripke",
-  "supplementWorseThanUsual06f439": "хуже обычного"
+  "supplementWorseThanUsual06f439": "хуже обычного",
+  "supplementWristOptical06ad7e": "оптический датчик на запястье"
 }

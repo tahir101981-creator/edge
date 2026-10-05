@@ -789,6 +789,10 @@ const List<NotYet> kNotYet = [
 /// One thing that can produce measurements.
 class HealthSource {
   final String name, kind;
+  /// Only application-owned fallback names may be translated.
+  final bool nameIsFallback;
+  String displayName(BuildContext c) => nameIsFallback ? uiText(c, name) : name;
+  String displayKind(BuildContext c) => kind.split(' · ').map((part) => uiText(c, part)).join(' · ');
 
   /// Where this source sits on the quality ladder, or NULL when it has no
   /// place on it.
@@ -842,6 +846,7 @@ class HealthSource {
 
   const HealthSource({
     required this.name,
+    this.nameIsFallback = false,
     required this.kind,
     required this.tier,
     required this.icon,
@@ -948,6 +953,7 @@ List<HealthSource> liveSources(AppState app,
       if (app.isPaired)
         HealthSource(
           name: app.strapName ?? 'Your band',
+          nameIsFallback: app.strapName == null,
           // The registry's own word for this band, or just what it is when the
           // link has not said. Never an assertion that an unnamed band is a
           // WHOOP 4.
@@ -979,6 +985,7 @@ List<HealthSource> liveSources(AppState app,
               bandLabelFor(r['adapter_id'] as String?) ??
               'Paired sensor',
           kind: bandLabelFor(r['adapter_id'] as String?) ?? 'Unknown sensor',
+          nameIsFallback: r['label'] == null && bandLabelFor(r['adapter_id'] as String?) == null,
           // Null when the column is blank (a source with nothing to rank) or
           // names a rung this build does not have. Either way it is a refusal,
           // never the nearest rung we happen to know.
@@ -995,6 +1002,7 @@ List<HealthSource> liveSources(AppState app,
       if (app.phoneStepsEnabled)
         HealthSource(
           name: 'This phone',
+          nameIsFallback: true,
           kind: 'Motion coprocessor',
           tier: SourceTier.phone,
           icon: LucideIcons.smartphone,
@@ -1712,6 +1720,12 @@ class SourceRow extends StatelessWidget {
   Widget build(BuildContext c) {
     final p = P.of(c);
     final battery = s.batteryPct;
+    final stacked = bigText(c);
+    final tierBadge = s.tier == null ? null : Pill(
+      AppLocalizations.of(c)?.devicesTierRank(s.tier!.rank) ?? 'Tier ${s.tier!.rank}',
+      s.tier!.accent,
+      wrap: stacked,
+    );
     return Surface(
       onTap: onTap,
       child: Row(children: [
@@ -1726,10 +1740,10 @@ class SourceRow extends StatelessWidget {
         Expanded(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(s.name,
+            Text(s.displayName(c),
                 style: F.body
                     .copyWith(color: p.ink, fontWeight: FontWeight.w600)),
-            Text(s.kind, style: F.over.copyWith(color: p.ink3)),
+            Text(s.displayKind(c), style: F.over.copyWith(color: p.ink3)),
             const SizedBox(height: 5),
             // Wrap, not Row: at 2x text "Not connected · 78%" is wider than
             // the card and a Flex would simply clip the battery away.
@@ -1771,13 +1785,14 @@ class SourceRow extends StatelessWidget {
                 Text(AppLocalizations.of(c)?.devicesExperimental ?? 'Experimental',
                     style: F.over.copyWith(color: p.on(C.orange))),
             ]),
+            if (stacked && tierBadge != null) ...[
+              const SizedBox(height: S.x1), tierBadge,
+            ],
           ]),
         ),
-        const SizedBox(width: S.x2),
-        // No pill for an unranked source. A blank one reads as tier zero.
-        if (s.tier case final t?)
-          Pill(AppLocalizations.of(c)?.devicesTierRank(t.rank) ?? 'Tier ${t.rank}',
-              t.accent),
+        if (!stacked && tierBadge != null) ...[
+          const SizedBox(width: S.x2), tierBadge,
+        ],
       ]),
     );
   }
@@ -2430,7 +2445,7 @@ Future<void> _confirmForgetSensor(BuildContext c, HealthSource s) async {
   final ok = await showDialog<bool>(
     context: c,
     builder: (d) => AlertDialog(
-      title: Text(l?.devicesForgetSensor(s.name) ?? 'Forget ${s.name}?'),
+      title: Text(l?.devicesForgetSensor(s.displayName(c)) ?? 'Forget ${s.name}?'),
       content: Text(
         l?.devicesForgetSensorBody ??
             'It stops being used during workouts and has to be paired again. '
@@ -2643,7 +2658,7 @@ class DeviceDetailView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: S.x5),
-                Center(child: Text(s.name, style: F.t2.copyWith(color: p.ink))),
+                Center(child: Text(s.displayName(c), style: F.t2.copyWith(color: p.ink))),
                 const SizedBox(height: S.x2),
                 // A fault names itself in the card below; repeating its title
                 // here would say the same thing twice in two type sizes.
@@ -2745,7 +2760,7 @@ class DeviceDetailView extends StatelessWidget {
                       // editable on a live link, and the row says so rather
                       // than opening an editor whose save cannot land.
                       SetRow(LucideIcons.tag, C.blue, l?.devicesName ?? 'Name',
-                          value: s.name,
+                          value: s.displayName(c),
                           sub: onRename == null
                               ? (l?.devicesConnectToRename ??
                                   'Connect to the band to change it')

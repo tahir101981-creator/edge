@@ -1822,7 +1822,8 @@ class Pill extends StatelessWidget {
   final String text;
   final Color color;
   final IconData? icon;
-  const Pill(this.text, this.color, {super.key, this.icon});
+  final bool wrap;
+  const Pill(this.text, this.color, {super.key, this.icon, this.wrap = false});
 
   @override
   Widget build(BuildContext c) {
@@ -1842,8 +1843,8 @@ class Pill extends StatelessWidget {
             child: Text(
               text,
               style: F.cap.copyWith(color: ink, fontWeight: FontWeight.w600),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              maxLines: wrap ? null : 1,
+              overflow: wrap ? TextOverflow.visible : TextOverflow.ellipsis,
             ),
           ),
         ],

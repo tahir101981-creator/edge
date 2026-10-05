@@ -37,7 +37,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../l10n/display_text.dart';
-import 'package:intl/intl.dart';
+import '../../l10n/date_text.dart';
 import '../../state/clock_format.dart' show formatClockOf;
 import '../../state/units_controller.dart';
 import '../screens/home_screen.dart' show unitsOf;
@@ -485,7 +485,7 @@ class PosterCard extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: Text('${DateFormat.yMMMd(AppLocalizations.of(c)?.localeName ?? 'en').format(r.start)} • ${formatClockOf(r.start)}',
+            child: Text('${displayDate(c, r.start)} • ${formatClockOf(r.start)}',
                 style: F.over.copyWith(color: C.white, letterSpacing: 0),
                 maxLines: 1),
           ),

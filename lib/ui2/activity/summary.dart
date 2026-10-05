@@ -21,6 +21,7 @@
 import '../../l10n/display_text.dart';
 import '../../state/locale_controller.dart';
 import 'package:intl/intl.dart';
+import '../../l10n/date_text.dart';
 import 'dart:convert' show utf8;
 import 'dart:typed_data' show Uint8List;
 
@@ -980,7 +981,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
             padding: const EdgeInsets.symmetric(horizontal: S.x4),
             child: NavBar(
               a.displayName(c),
-              sub: '${DateFormat.yMMMd(AppLocalizations.of(c)?.localeName ?? 'en').format(r.start)} · ${formatClockOf(r.start)}'.toUpperCase(),
+              sub: '${displayDate(c, r.start)} · ${formatClockOf(r.start)}'.toUpperCase(),
               // Each icon is a Pressable with S.tap's own 44 pt minimum hit
               // box (grammar.dart's accessibility floor, not optional) —
               // S.tap * n alone is short of that plus the gaps between them,

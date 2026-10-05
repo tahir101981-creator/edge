@@ -13215,6 +13215,21 @@
       }
     }
   },
+  "supplementProteinShort": "P",
+  "@supplementProteinShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
+  "supplementCarbsShort": "C",
+  "@supplementCarbsShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
+  "supplementFatShort": "F",
+  "@supplementFatShort": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {}
+  },
   "supplementADeviationNotATemperaturefc109f": "A deviation, not a temperature. Imported nights carry different units, so they are not charted together.",
   "@supplementADeviationNotATemperaturefc109f": {
     "description": "Presentation-only text for existing interface, exports or notifications."
@@ -13499,6 +13514,10 @@
   "@supplementMorningCortisolc31c55": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   },
+  "supplementMotionCoprocessord1ef3c": "Motion coprocessor",
+  "@supplementMotionCoprocessord1ef3c": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
   "supplementMovementMinutes4670da": "Movement minutes",
   "@supplementMovementMinutes4670da": {
     "description": "Presentation-only text for existing interface, exports or notifications."
@@ -13569,6 +13588,10 @@
   },
   "supplementOffe3de5a": "Off",
   "@supplementOffe3de5a": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
+  "supplementPairedSensor0ff7bd": "Paired sensor",
+  "@supplementPairedSensor0ff7bd": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   },
   "supplementPlews2013LnRMSSDHopkinsSmallestdd73bd": "Plews 2013 (lnRMSSD) · Hopkins smallest-worthwhile-change gate",
@@ -13787,6 +13810,10 @@
   "@supplementTriglycerides95ae7f": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   },
+  "supplementUnknownSensor98a1f7": "Unknown sensor",
+  "@supplementUnknownSensor98a1f7": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
   "supplementUnusualOvernightPhysiology69c322": "Unusual overnight physiology",
   "@supplementUnusualOvernightPhysiology69c322": {
     "description": "Presentation-only text for existing interface, exports or notifications."
@@ -13915,8 +13942,16 @@
   "@supplementBrMin0041f9": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   },
+  "supplementCme283e1": "cm",
+  "@supplementCme283e1": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
   "supplementDown77346d": "down",
   "@supplementDown77346d": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
+  "supplementG54fd17": "g",
+  "@supplementG54fd17": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   },
   "supplementIOSCanOnlyShowThe2139b2": "iOS can only show the system pairing sheet before the app has used Bluetooth. Close OpenStrap completely, then reopen it — the sheet appears on its own.",
@@ -13997,6 +14032,10 @@
   },
   "supplementWorseThanUsual06f439": "worse than usual",
   "@supplementWorseThanUsual06f439": {
+    "description": "Presentation-only text for existing interface, exports or notifications."
+  },
+  "supplementWristOptical06ad7e": "wrist optical",
+  "@supplementWristOptical06ad7e": {
     "description": "Presentation-only text for existing interface, exports or notifications."
   }
 }
