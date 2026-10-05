@@ -33,6 +33,8 @@ class SleepWidgetProvider : HomeWidgetProvider() {
 
         val views = if (!fresh) {
             RemoteViews(context.packageName, R.layout.widget_openstrap_nodata).apply {
+                setTextViewText(R.id.nodata_title, uiString(context, R.string.widget_no_recent_title))
+                setTextViewText(R.id.nodata_body, uiString(context, R.string.widget_no_recent_body))
                 setTextColor(R.id.nodata_title, pal.ink)
                 setTextColor(R.id.nodata_body, pal.inkMuted)
             }
@@ -47,10 +49,11 @@ class SleepWidgetProvider : HomeWidgetProvider() {
                         R.drawable.ic_widget_sleep,
                     ),
                 )
+                setTextViewText(R.id.cap_sleep, uiString(context, R.string.widget_sleep_label))
                 setTextColor(R.id.cap_sleep, pal.inkMuted)
-                setTextViewText(R.id.val_sleep, r.value)
+                setTextViewText(R.id.val_sleep, widgetText(context, r.value))
                 setTextColor(R.id.val_sleep, if (r.measured) pal.ink else pal.ink2)
-                setTextViewText(R.id.sub_sleep, r.sub)
+                setTextViewText(R.id.sub_sleep, widgetText(context, r.sub))
                 setTextColor(R.id.sub_sleep, pal.inkMuted)
                 // Efficiency when the night has one, the reason when it does
                 // not, and nothing at all when there is neither — never a dash.
@@ -60,7 +63,7 @@ class SleepWidgetProvider : HomeWidgetProvider() {
                     else -> ""
                 }
                 setViewVisibility(R.id.foot, if (foot.isEmpty()) View.GONE else View.VISIBLE)
-                setTextViewText(R.id.foot, foot)
+                setTextViewText(R.id.foot, widgetText(context, foot))
                 setTextColor(R.id.foot, pal.inkMuted)
             }
         }

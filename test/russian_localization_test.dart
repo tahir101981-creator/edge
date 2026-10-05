@@ -7,9 +7,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:openstrap_edge/l10n/app_localizations.dart';
 import 'package:openstrap_edge/l10n/app_localizations_ru.dart';
+import 'package:openstrap_edge/l10n/background_localizations.dart';
+import 'package:openstrap_edge/l10n/presentation_text.dart';
+import 'package:openstrap_edge/l10n/decimal_text.dart';
+import 'package:openstrap_edge/l10n/display_text.dart';
+import 'package:openstrap_edge/l10n/sweep_text.dart';
+import 'package:openstrap_edge/compute/findings.dart';
+import 'package:openstrap_edge/ui2/screens/findings_log.dart';
+import 'package:openstrap_edge/notify/notification_l10n.dart';
 import 'package:openstrap_edge/state/locale_controller.dart';
 import 'package:openstrap_edge/ui2/activity/catalogue.dart';
 import 'package:openstrap_edge/ui2/ui2.dart';
+import 'package:openstrap_edge/ui2/screens/home_screen.dart' show hm, thousands, unitBeside;
 
 // Read message arguments, treating the braces around ICU options as syntax.
 Set<String> messageVariables(String text) {
@@ -114,6 +123,96 @@ void main() {
     expect(l.profileSourcesCount(21), '21 источник');
     expect(l.welcomeWorkoutsCount(22), '22 тренировки');
     expect(l.welcomeWorkoutsCount(25), '25 тренировок');
+  });
+
+  test('exercise names and search localize without changing source keys', () {
+    expect(exerciseLibrary, hasLength(214));
+    for (final exercise in exerciseLibrary) {
+      final russian = exercise.labelFor('ru');
+      expect(russian, matches(RegExp('[А-Яа-яЁё]')), reason: exercise.key);
+      expect(exercise.labelFor('en'), exercise.label);
+      expect(exercise.matches(russian, 'ru'), isTrue, reason: exercise.key);
+      expect(exercise.matches(exercise.label, 'ru'), isTrue, reason: exercise.key);
+    }
+    expect(exerciseByKey('bench_press')?.labelFor('ru'), 'Жим лёжа');
+    expect(exerciseByKey('bench_press')?.labelFor('de'), 'Bankdrücken');
+  });
+
+  test('OS messages use the saved override and preserve unknown content', () async {
+    SharedPreferences.setMockInitialValues({'locale_override': 'ru'});
+    final l = await backgroundLocalizations();
+    expect(l.localeName, 'ru');
+    expect(notificationText(l, 'Low battery'), 'Низкий заряд');
+    expect(notificationText(l, 'Your band is at 17%. Charge it soon.'),
+        'Заряд браслета — 17%. Скоро понадобится зарядка.');
+    expect(notificationText(l, 'Recovery 63, slept 7h 12m.'),
+        'Восстановление: 63; сон — 7 ч 12 мин.');
+    expect(notificationText(l, '• Possible illness onset — Elevated resting HR + suppressed HRV over recent nights.'),
+        '• Возможное начало болезни — Повышенный пульс в покое и сниженная ВСР в последние ночи.');
+    expect(notificationText(l, 'Resting heart rate 65 bpm — the highest in 28 days (usually 50 bpm–60 bpm)'),
+        'Пульс в покое 65 уд/мин — максимум за 28 дн. (обычно 50 уд/мин–60 уд/мин)');
+    expect(notificationText(l, 'An unknown device message'), 'An unknown device message');
+    SharedPreferences.setMockInitialValues({'locale_override': 'en'});
+    expect(notificationText(await backgroundLocalizations(), 'Low battery'), 'Low battery');
+  });
+
+  test('formatting changes only presentation and follows the override', () async {
+    SharedPreferences.setMockInitialValues({});
+    final controller = LocaleController.seed('ru');
+    expect(hm(443), '7 ч 23 мин');
+    expect(thousands(12345).replaceAll('\u00a0', ' ').replaceAll('\u202f', ' '), '12 345');
+    expect(displayFixed(1.5, 1), '1,5');
+    expect(unitBeside('bpm'), 'уд/мин');
+    expect(presentationText(AppLocalizationsRu(), 'Need 2 more nights'), 'Нужно ещё 2 ночи');
+    await controller.setCode('en');
+    expect(hm(443), '7h 23m');
+    expect(thousands(12345), '12,345');
+    expect(displayFixed(1.5, 1), '1.5');
+    expect(unitBeside('bpm'), 'bpm');
+    await controller.setCode(null);
+    controller.dispose();
+  });
+
+  test('all owned finding sentences retain their medical cautions', () {
+    final l = AppLocalizationsRu();
+    for (final kind in FindingKind.values) {
+      for (final risen in [true, false]) {
+        final finding = Finding(kind, '2026-10-05', risen: risen);
+        expect(localizedText(l, finding.title), isNot(finding.title));
+        expect(localizedText(l, finding.detail), isNot(finding.detail));
+      }
+    }
+    final rhythm = Finding(FindingKind.irregularRhythm, '2026-10-05');
+    expect(localizedText(l, rhythm.detail), contains('не диагноз'));
+    expect(localizedText(l, rhythm.detail), contains('врач'));
+    const pair = 'steps 12000 and strain 15.2 — both outside your usual range on the same day, which is worth noticing but is not a measured relationship between them';
+    final rendered = sweepText(l, pair);
+    expect(rendered, contains('12000'));
+    expect(rendered, contains('15.2'));
+    expect(rendered, contains('связь между ними не измерялась'));
+  });
+
+  testWidgets('Russian medical findings wrap at large accessibility text', (tester) async {
+    tester.view.physicalSize = const Size(320, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(MaterialApp(
+      locale: const Locale('ru'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      theme: buildTheme(Brightness.light),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(2)),
+        child: child!,
+      ),
+      home: Scaffold(body: SingleChildScrollView(child: FindingRow(
+        Finding(FindingKind.irregularRhythm, '2026-10-05'),
+      ))),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Irregular heart rhythm — screen'), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 
   test(

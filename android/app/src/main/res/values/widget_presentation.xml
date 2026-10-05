@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_presentation_0" formatted="false">Your age is not on file, and this is worked out from it.</string>
+    <string name="widget_presentation_1" formatted="false">Your weight is not on file, and this is worked out from it.</string>
+    <string name="widget_presentation_2" formatted="false">Your height is not on file, and this is worked out from it.</string>
+    <string name="widget_presentation_3" formatted="false">Your sex is not on file, and the formula behind this needs it.</string>
+    <string name="widget_presentation_4" formatted="false">No waking heart rate was recorded for this day.</string>
+    <string name="widget_presentation_5" formatted="false">Too few heart-rate samples were recorded to work this out.</string>
+    <string name="widget_presentation_6" formatted="false">There is no resting heart rate from a scored night to measure against.</string>
+    <string name="widget_presentation_7" formatted="false">There is no scored night to read this from.</string>
+    <string name="widget_presentation_8" formatted="false">Too few clean beat-to-beat intervals to work this out.</string>
+    <string name="widget_presentation_9" formatted="false">Too few half-hour stretches of clean breathing through the night to compare against each other.</string>
+    <string name="widget_presentation_10" formatted="false">No motion was recorded alongside the heart rate.</string>
+    <string name="widget_presentation_11" formatted="false">This day came from an imported export, which carries the night only — nothing was recorded for the waking day, and there is no raw behind it to work one out from.</string>
+    <string name="widget_presentation_12" formatted="false">Today has not produced any activity to read yet — nothing has reached the app for it.</string>
+    <string name="widget_presentation_13" formatted="false">That night has no total sleep time behind it.</string>
+    <string name="widget_presentation_14" formatted="false">That night has no wake time behind it.</string>
+    <string name="widget_presentation_15" formatted="false">That night has no sleep efficiency behind it.</string>
+    <string name="widget_presentation_16" formatted="false">The band has not yet held a high enough heart rate through a hard effort to measure a ceiling from.</string>
+    <string name="widget_presentation_17" formatted="false">The highest heart rate held so far sits well below what your age predicts, so it reads as an effort that was never maximal rather than as your ceiling — the zones stay on the age estimate until the band sees a harder one.</string>
+    <string name="widget_presentation_18" formatted="false">Not enough nights of resting heart rate behind the reserve yet.</string>
+    <string name="widget_presentation_19" formatted="false">You have set your zones manually, so there is no measured reserve anchor to plot a distribution against.</string>
+    <string name="widget_presentation_20" formatted="false">Too few recorded sessions to describe a pattern rather than noise.</string>
+    <string name="widget_presentation_21" formatted="false">These recordings are not stamped with which strap made them, and this number has to be calibrated per strap, so it is withheld rather than guessed.</string>
+    <string name="widget_presentation_22" formatted="false">Last night is still being worked out.</string>
+    <string name="widget_presentation_23" formatted="false">Nothing from last night has reached the app yet.</string>
+    <string name="widget_presentation_24" formatted="false">No night long enough to score was recorded.</string>
+    <string name="widget_presentation_25" formatted="false">Nothing recorded says why this is missing.</string>
+    <string name="widget_presentation_26" formatted="false">Not enough history yet to know what normal looks like for you.</string>
+    <string name="widget_presentation_27" formatted="false">No strain</string>
+    <string name="widget_presentation_28" formatted="false">No sleep</string>
+    <string name="widget_presentation_29" formatted="false">No readiness</string>
+    <string name="widget_presentation_30" formatted="false">No target yet</string>
+    <string name="widget_presentation_31" formatted="false">Calibrating</string>
+    <string name="widget_presentation_32" formatted="false">days</string>
+    <string name="widget_presentation_33" formatted="false">nights</string>
+    <string name="widget_presentation_34" formatted="false">doses</string>
+    <string name="widget_presentation_35" formatted="false">Reps</string>
+    <string name="widget_presentation_36" formatted="false">Rounds</string>
+    <string name="widget_presentation_37" formatted="false">Poses</string>
+    <string name="widget_presentation_38" formatted="false">Hard minutes</string>
+    <string name="widget_presentation_39" formatted="false">Avg HR</string>
+    <string name="widget_presentation_40" formatted="false">Max HR</string>
+    <string name="widget_presentation_41" formatted="false">HR recovery</string>
+    <string name="widget_presentation_42" formatted="false">VO2max (est.)</string>
+    <string name="widget_presentation_43" formatted="false">Your rating</string>
+    <string name="widget_presentation_44" formatted="false">View data</string>
+    <string name="widget_presentation_45" formatted="false">score</string>
+    <string name="widget_presentation_46" formatted="false">RECOVERY</string>
+    <string name="widget_presentation_47" formatted="false">STRAIN</string>
+    <string name="widget_presentation_48" formatted="false">SLEEP</string>
+    <string name="widget_presentation_49" formatted="false">Not measured</string>
+    <string name="widget_presentation_50" formatted="false">Not connected yet</string>
+    <string name="widget_presentation_51" formatted="false">Strap</string>
+    <string name="widget_presentation_52" formatted="false">bpm</string>
+    <string name="widget_presentation_53" formatted="false">ms</string>
+    <string name="widget_presentation_54" formatted="false">base</string>
+    <string name="widget_presentation_55" formatted="false">efficient</string>
+    <string name="widget_presentation_56" formatted="false">last known</string>
+    <string name="widget_presentation_57" formatted="false">Not scored</string>
+    <string name="widget_presentation_58" formatted="false">High</string>
+    <string name="widget_presentation_59" formatted="false">Good</string>
+    <string name="widget_presentation_60" formatted="false">Moderate</string>
+    <string name="widget_presentation_61" formatted="false">Low</string>
+</resources>
