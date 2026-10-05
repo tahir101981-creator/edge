@@ -122,8 +122,8 @@ class _ProfileSetupViewState extends State<ProfileSetupView> {
   Future<void> _continue() async {
     final bad = [
       if (Typed.of(_age.text).bad) 'Age',
-      if (Typed.of(_height.text).bad) _u.heightLabel,
-      if (Typed.of(_weight.text).bad) _u.weightLabel,
+      if (Typed.of(_height.text).bad) uiText(context, _u.heightLabel),
+      if (Typed.of(_weight.text).bad) uiText(context, _u.weightLabel),
     ];
     if (bad.isNotEmpty) {
       sayUnreadable(context, bad);

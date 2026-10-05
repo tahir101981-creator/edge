@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:openstrap_edge/ble/adapters/_registry.dart';
+import 'package:openstrap_edge/data/journal_fields.dart';
 import 'package:openstrap_edge/ecg/ecg_models.dart';
 import 'package:openstrap_edge/l10n/app_localizations.dart';
 import 'package:openstrap_edge/l10n/app_localizations_en.dart';
@@ -171,6 +172,41 @@ void main() {
       ]) {
         expect(localizedText(ru, name), name);
       }
+    },
+  );
+
+  test(
+    'built-in journal labels translate while custom names remain verbatim',
+    () {
+      const custom = JournalFieldSpec(
+        key: 'custom',
+        label: 'Mood',
+        kind: JournalFieldKind.rating,
+        unit: '',
+        max: 5,
+        step: 1,
+        custom: true,
+      );
+      final fields = [...kJournalFields, custom];
+      final notes = dayNotes(
+        fields: fields,
+        journal: {
+          for (final field in fields) field.key: const JournalMetricValue(2),
+        },
+        l: ru,
+      );
+      for (var i = 0; i < kJournalFields.length; i++) {
+        expect(notes[i].title, matches(RegExp('[А-Яа-яЁё]')));
+      }
+      expect(notes.last.title, 'Mood');
+      expect(notes.first.title, 'Настроение');
+      expect(notes[1].title, 'Качество сна');
+      expect(notes[2].title, 'Энергия');
+      expect(
+        ru.secondPassWeightRepsLogged('20', localizedText(ru, 'kg'), 5),
+        '20 кг × 5 — записано',
+      );
+      expect(ru.secondPassVolumeUnit(localizedText(ru, 'lb')), 'Объём, фунт.');
     },
   );
 

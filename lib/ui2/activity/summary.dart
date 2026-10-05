@@ -63,13 +63,29 @@ import 'share.dart';
 enum Arch { route, strength, interval, flow, laps, journey, match, basic }
 
 const _sports = {
-  'Football', 'Basketball', 'Cricket', 'Tennis', 'Badminton', 'Table tennis',
-  'Squash', 'Padel', 'Volleyball', 'Hockey', 'Baseball', 'Rugby', 'Boxing',
-  'Martial arts', 'Wrestling',
+  'Football',
+  'Basketball',
+  'Cricket',
+  'Tennis',
+  'Badminton',
+  'Table tennis',
+  'Squash',
+  'Padel',
+  'Volleyball',
+  'Hockey',
+  'Baseball',
+  'Rugby',
+  'Boxing',
+  'Martial arts',
+  'Wrestling',
 };
 const _laps = {'Swimming', 'Rowing'};
 const _journey = {
-  'Hiking', 'Trail running', 'Mountain biking', 'Skiing', 'Snowboarding',
+  'Hiking',
+  'Trail running',
+  'Mountain biking',
+  'Skiing',
+  'Snowboarding',
 };
 
 /// MT-08 — deliberate heat and cold. Not an archetype: both are
@@ -99,15 +115,15 @@ Arch archOf(Activity a) {
 }
 
 String archLabel(Arch a) => switch (a) {
-      Arch.route => 'Route',
-      Arch.strength => 'Sets and load',
-      Arch.interval => 'Intervals',
-      Arch.flow => 'Flow',
-      Arch.laps => 'Laps',
-      Arch.journey => 'Elevation',
-      Arch.match => 'Effort',
-      Arch.basic => 'Session',
-    };
+  Arch.route => 'Route',
+  Arch.strength => 'Sets and load',
+  Arch.interval => 'Intervals',
+  Arch.flow => 'Flow',
+  Arch.laps => 'Laps',
+  Arch.journey => 'Elevation',
+  Arch.match => 'Effort',
+  Arch.basic => 'Session',
+};
 
 // ── THE RECORD ─────────────────────────────────────────────────────────────
 
@@ -122,8 +138,14 @@ class LoggedSet {
   final int? restSec;
   final DateTime at;
 
-  const LoggedSet(this.exerciseKey, this.reps,
-      {this.loadKg, this.rpe, this.restSec, required this.at});
+  const LoggedSet(
+    this.exerciseKey,
+    this.reps, {
+    this.loadKg,
+    this.rpe,
+    this.restSec,
+    required this.at,
+  });
 
   /// Volume for this set, or null when the load was never recorded.
   double? get volume => loadKg == null ? null : loadKg! * reps;
@@ -189,8 +211,10 @@ class StrengthLog {
     return best;
   }
 
-  List<LoggedSet> forExercise(String key) =>
-      [for (final s in sets) if (s.exerciseKey == key) s];
+  List<LoggedSet> forExercise(String key) => [
+    for (final s in sets)
+      if (s.exerciseKey == key) s,
+  ];
 }
 
 /// Epley 1RM estimate — ALWAYS an estimate, never shown without saying so.
@@ -383,46 +407,45 @@ class ActivityResult {
     double? lossM,
     List<KmSplit>? splits,
     StrengthLog? strength,
-  }) =>
-      ActivityResult(
-        activity,
-        start: start,
-        duration: duration,
-        private: private,
-        sessionId: sessionId ?? this.sessionId,
-        rpe: rpe ?? this.rpe,
-        avgHr: avgHr ?? this.avgHr,
-        maxHr: maxHr ?? this.maxHr,
-        hrr60: hrr60 ?? this.hrr60,
-        vo2max: vo2max ?? this.vo2max,
-        calories: calories,
-        strain: strain,
-        hr: hr ?? this.hr,
-        zoneMinutes: zoneMinutes ?? this.zoneMinutes,
-        zoneSource: zoneSource ?? this.zoneSource,
-        zoneMaxHr: zoneMaxHr ?? this.zoneMaxHr,
-        // Carried, never re-derived: every enrichment pass on this object goes
-        // through here, and a field left off this list is a measurement the
-        // detail screen silently loses the moment it opens.
-        steps: steps,
-        traceCoveragePct: traceCoveragePct ?? this.traceCoveragePct,
-        route: route ?? this.route,
-        geo: geo ?? this.geo,
-        routePace: routePace ?? this.routePace,
-        distanceKm: distanceKm ?? this.distanceKm,
-        elevationM: elevationM ?? this.elevationM,
-        gainM: gainM ?? this.gainM,
-        lossM: lossM ?? this.lossM,
-        splits: splits ?? this.splits,
-        strength: strength ?? this.strength,
-        lapSecs: lapSecs,
-        poolLengthM: poolLengthM,
-        stroke: stroke,
-        rounds: rounds,
-        poses: poses,
-        breathsPerMin: breathsPerMin,
-        gameScore: gameScore,
-      );
+  }) => ActivityResult(
+    activity,
+    start: start,
+    duration: duration,
+    private: private,
+    sessionId: sessionId ?? this.sessionId,
+    rpe: rpe ?? this.rpe,
+    avgHr: avgHr ?? this.avgHr,
+    maxHr: maxHr ?? this.maxHr,
+    hrr60: hrr60 ?? this.hrr60,
+    vo2max: vo2max ?? this.vo2max,
+    calories: calories,
+    strain: strain,
+    hr: hr ?? this.hr,
+    zoneMinutes: zoneMinutes ?? this.zoneMinutes,
+    zoneSource: zoneSource ?? this.zoneSource,
+    zoneMaxHr: zoneMaxHr ?? this.zoneMaxHr,
+    // Carried, never re-derived: every enrichment pass on this object goes
+    // through here, and a field left off this list is a measurement the
+    // detail screen silently loses the moment it opens.
+    steps: steps,
+    traceCoveragePct: traceCoveragePct ?? this.traceCoveragePct,
+    route: route ?? this.route,
+    geo: geo ?? this.geo,
+    routePace: routePace ?? this.routePace,
+    distanceKm: distanceKm ?? this.distanceKm,
+    elevationM: elevationM ?? this.elevationM,
+    gainM: gainM ?? this.gainM,
+    lossM: lossM ?? this.lossM,
+    splits: splits ?? this.splits,
+    strength: strength ?? this.strength,
+    lapSecs: lapSecs,
+    poolLengthM: poolLengthM,
+    stroke: stroke,
+    rounds: rounds,
+    poses: poses,
+    breathsPerMin: breathsPerMin,
+    gameScore: gameScore,
+  );
 
   Arch get arch => archOf(activity);
 
@@ -448,9 +471,8 @@ class ActivityResult {
   /// Minutes above 80% of max heart rate — Z4 and Z5. Null when the session
   /// banked no zone split, because "0 hard minutes" and "nobody counted" are
   /// different sessions.
-  double? get hardMinutes => zoneMinutes.length == 5
-      ? zoneMinutes[3] + zoneMinutes[4]
-      : null;
+  double? get hardMinutes =>
+      zoneMinutes.length == 5 ? zoneMinutes[3] + zoneMinutes[4] : null;
 
   /// `(minutes that carry a heart rate, minutes in the session)`.
   ///
@@ -491,9 +513,9 @@ String hms(Duration d) => clock(d.inSeconds);
 
 /// 1 234 → "1,234". Thousands separators, because six-thousand-eight-hundred
 /// and forty-two kilos should not read as a phone number.
-String grouped(num v) => NumberFormat.decimalPattern(LocaleController.displayLanguageCode).format(v.round());
-
-
+String grouped(num v) => NumberFormat.decimalPattern(
+  LocaleController.displayLanguageCode,
+).format(v.round());
 
 // ── THE SUPPORTING STATS ───────────────────────────────────────────────────
 
@@ -503,19 +525,19 @@ String grouped(num v) => NumberFormat.decimalPattern(LocaleController.displayLan
 /// the ones only a session screen prints, and everything else falls through to
 /// it. One mapping, so `Pace` cannot end up with two marks.
 IconData statIcon(String name) => switch (name) {
-      'Reps' => LucideIcons.repeat2,
-      'Rounds' => LucideIcons.repeat,
-      'Poses' => LucideIcons.personStanding,
-      'Breathing' => LucideIcons.wind,
-      'Hard minutes' => LucideIcons.zap,
-      'Strain' => LucideIcons.trendingUp,
-      'Avg HR' => LucideIcons.heart,
-      'Max HR' => LucideIcons.heartPulse,
-      // A person, not an instrument — the one row on this card the band had
-      // no part in.
-      'Your rating' => LucideIcons.userRound,
-      _ => posterStatIcon(name),
-    };
+  'Reps' => LucideIcons.repeat2,
+  'Rounds' => LucideIcons.repeat,
+  'Poses' => LucideIcons.personStanding,
+  'Breathing' => LucideIcons.wind,
+  'Hard minutes' => LucideIcons.zap,
+  'Strain' => LucideIcons.trendingUp,
+  'Avg HR' => LucideIcons.heart,
+  'Max HR' => LucideIcons.heartPulse,
+  // A person, not an instrument — the one row on this card the band had
+  // no part in.
+  'Your rating' => LucideIcons.userRound,
+  _ => posterStatIcon(name),
+};
 
 /// The supporting numbers a finished session can honestly print, as
 /// `(name, formatted value)` — the shape [shareStats] hands the share card, so
@@ -560,14 +582,17 @@ List<(String, String)> sessionStats(ActivityResult r, UnitsController? u) {
     case Arch.flow:
       add('Poses', r.poses.isEmpty ? null : '${r.poses.length}');
       add(
-          'Breathing',
-          r.breathsPerMin == null
-              ? null
-              : '${r.breathsPerMin!.toStringAsFixed(1)} br/min');
+        'Breathing',
+        r.breathsPerMin == null
+            ? null
+            : '${r.breathsPerMin!.toStringAsFixed(1)} br/min',
+      );
     case Arch.match:
       add('Sets', r.gameScore.isEmpty ? null : '${r.gameScore.length}');
-      add('Hard minutes',
-          r.hardMinutes == null ? null : '${r.hardMinutes!.round()} min');
+      add(
+        'Hard minutes',
+        r.hardMinutes == null ? null : '${r.hardMinutes!.round()} min',
+      );
     case Arch.basic:
       break; // time, heart rate and calories are the whole story
   }
@@ -588,8 +613,10 @@ List<(String, String)> sessionStats(ActivityResult r, UnitsController? u) {
   add('HR recovery', r.hrr60 == null ? null : '${r.hrr60} bpm in 60 s');
   // ESTIMATE from one completed km split of THIS session's own route + HR —
   // absent on almost every session (indoor, no GPS, no full km) by design.
-  add('VO2max (est.)',
-      r.vo2max == null ? null : '${r.vo2max!.toStringAsFixed(1)} ml/kg/min');
+  add(
+    'VO2max (est.)',
+    r.vo2max == null ? null : '${r.vo2max!.toStringAsFixed(1)} ml/kg/min',
+  );
   add('Calories', r.calories == null ? null : '${grouped(r.calories!)} kcal');
   add('Strain', r.strain?.toStringAsFixed(1));
   // TS-09 — last, under the measurements, and named 'Your rating' rather than
@@ -607,12 +634,12 @@ List<(String, String)> sessionStats(ActivityResult r, UnitsController? u) {
 /// screen the poster is generated from printed '45:12' at 48 pt and then
 /// 'TIME 45:12' as the next card's first row.
 String? _heroStatName(ActivityResult r) => switch (r.arch) {
-      Arch.route || Arch.journey => r.distanceKm == null ? 'Time' : null,
-      // Without a volume the hero falls back to the set COUNT, not the clock.
-      Arch.strength => r.strength.volumeKg == null ? 'Sets' : null,
-      Arch.laps => r.swimMetres == null ? 'Time' : null,
-      Arch.interval || Arch.flow || Arch.match || Arch.basic => 'Time',
-    };
+  Arch.route || Arch.journey => r.distanceKm == null ? 'Time' : null,
+  // Without a volume the hero falls back to the set COUNT, not the clock.
+  Arch.strength => r.strength.volumeKg == null ? 'Sets' : null,
+  Arch.laps => r.swimMetres == null ? 'Time' : null,
+  Arch.interval || Arch.flow || Arch.match || Arch.basic => 'Time',
+};
 
 /// A finished session's supporting stats, one to a row.
 ///
@@ -637,13 +664,15 @@ class SessionStats extends StatelessWidget {
     for (final s in sessionStats(r, unitsOf(c))) {
       if (rows.isNotEmpty) rows.add(Divider(color: p.line, height: S.x5));
       final (value, unit) = splitStatUnit(s.$2);
-      rows.add(PosterStatRow(
-        icon: statIcon(s.$1),
-        label: uiText(c, s.$1),
-        value: value,
-        unit: unit == null ? null : uiText(c, unit),
-        accent: accent,
-      ));
+      rows.add(
+        PosterStatRow(
+          icon: statIcon(s.$1),
+          label: uiText(c, s.$1),
+          value: value,
+          unit: unit == null ? null : uiText(c, unit),
+          accent: accent,
+        ),
+      );
     }
     return Surface(child: Column(children: rows));
   }
@@ -668,11 +697,13 @@ class ActivitySummary extends StatefulWidget {
   /// escalation the spec refuses.
   final bool justFinished;
 
-  const ActivitySummary(this.result,
-      {super.key,
-      this.weightKg,
-      this.onRetrySave,
-      this.justFinished = false});
+  const ActivitySummary(
+    this.result, {
+    super.key,
+    this.weightKg,
+    this.onRetrySave,
+    this.justFinished = false,
+  });
 
   @override
   State<ActivitySummary> createState() => _ActivitySummaryState();
@@ -686,9 +717,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
   /// card that used to sit inside it explaining its own absence was the tab
   /// justifying its existence to the person who opened it.
   List<String> get _tabs => switch (arch) {
-        Arch.flow || Arch.match || Arch.basic => const ['Overview', 'Graphs'],
-        _ => const ['Overview', 'Splits', 'Graphs'],
-      };
+    Arch.flow || Arch.match || Arch.basic => const ['Overview', 'Graphs'],
+    _ => const ['Overview', 'Splits', 'Graphs'],
+  };
 
   /// Whether the session is still only on screen. Starts true whenever a
   /// retry was handed down, because that is what being handed one means.
@@ -715,6 +746,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       _rpeDismissed = false;
     }
   }
+
   Activity get a => r.activity;
   Arch get arch => r.arch;
 
@@ -731,7 +763,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     final km = r.distanceKm;
     if (km == null) return null;
     final u = _u;
-    return u == null ? (km, 'km') : (u.distanceValue(km * 1000), u.distanceUnit);
+    return u == null
+        ? (km, 'km')
+        : (u.distanceValue(km * 1000), u.distanceUnit);
   }
 
   String get _distanceUnit => _u?.distanceUnit ?? 'km';
@@ -792,60 +826,82 @@ class _ActivitySummaryState extends State<ActivitySummary> {
   Widget _rpePrompt(P p) {
     final l = AppLocalizations.of(context);
     return Surface(
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(l?.activitySummaryRpeHeadline ?? 'HOW HARD DID THAT FEEL?',
-            style: F.over.copyWith(color: p.ink3)),
-        const SizedBox(height: S.x2),
-        Text(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l?.activitySummaryRpeHeadline ?? 'HOW HARD DID THAT FEEL?',
+            style: F.over.copyWith(color: p.ink3),
+          ),
+          const SizedBox(height: S.x2),
+          Text(
             l?.activitySummaryRpeBody ??
                 'Your own rating of the effort. It is a feeling, not a '
                     'measurement — which is the point, because it can '
                     'disagree with the numbers above.',
-            style: F.cap.copyWith(color: p.ink2, height: 1.4)),
-        const SizedBox(height: S.x4),
-        for (var row = 0; row < 2; row++) ...[
-          if (row > 0) const SizedBox(height: S.x2),
-          Row(children: [
-            for (var i = 0; i < 5; i++) ...[
-              if (i > 0) const SizedBox(width: S.x2),
-              Expanded(
-                child: Pressable(
-                  semanticLabel: l?.activitySummaryRateEffort(
-                          row * 5 + i + 1) ??
-                      'Rate this effort ${row * 5 + i + 1} of 10',
-                  onTap: () => _saveRpe(row * 5 + i + 1),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: S.x3),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: p.wash(a.color), borderRadius: R.rMd),
-                    child: Text('${row * 5 + i + 1}',
-                        style: F.n17.copyWith(color: p.on(a.color))),
+            style: F.cap.copyWith(color: p.ink2, height: 1.4),
+          ),
+          const SizedBox(height: S.x4),
+          for (var row = 0; row < 2; row++) ...[
+            if (row > 0) const SizedBox(height: S.x2),
+            Row(
+              children: [
+                for (var i = 0; i < 5; i++) ...[
+                  if (i > 0) const SizedBox(width: S.x2),
+                  Expanded(
+                    child: Pressable(
+                      semanticLabel:
+                          l?.activitySummaryRateEffort(row * 5 + i + 1) ??
+                          'Rate this effort ${row * 5 + i + 1} of 10',
+                      onTap: () => _saveRpe(row * 5 + i + 1),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: S.x3),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: p.wash(a.color),
+                          borderRadius: R.rMd,
+                        ),
+                        child: Text(
+                          '${row * 5 + i + 1}',
+                          style: F.n17.copyWith(color: p.on(a.color)),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
+              ],
+            ),
+          ],
+          const SizedBox(height: S.x3),
+          Row(
+            children: [
+              Text(
+                l?.activitySummaryRpeVeryEasy ?? '1 · very easy',
+                style: F.over.copyWith(color: p.ink3),
+              ),
+              const Spacer(),
+              Text(
+                l?.activitySummaryRpeMaximal ?? '10 · maximal',
+                style: F.over.copyWith(color: p.ink3),
               ),
             ],
-          ]),
-        ],
-        const SizedBox(height: S.x3),
-        Row(children: [
-          Text(l?.activitySummaryRpeVeryEasy ?? '1 · very easy',
-              style: F.over.copyWith(color: p.ink3)),
-          const Spacer(),
-          Text(l?.activitySummaryRpeMaximal ?? '10 · maximal',
-              style: F.over.copyWith(color: p.ink3)),
-        ]),
-        const SizedBox(height: S.x2),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Pressable(
-            onTap: _skipRpe,
-            child: Text(l?.activitySummaryNotNow ?? 'Not now',
-                style: F.body.copyWith(
-                    color: p.ink2, fontWeight: FontWeight.w600)),
           ),
-        ),
-      ]),
+          const SizedBox(height: S.x2),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Pressable(
+              onTap: _skipRpe,
+              child: Text(
+                l?.activitySummaryNotNow ?? 'Not now',
+                style: F.body.copyWith(
+                  color: p.ink2,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -864,27 +920,31 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     // Only true once a pick actually landed — pressing back out of the picker
     // must return to this screen, not fall through and pop it too.
     var picked = false;
-    await Navigator.of(c).push(MaterialPageRoute(
-      builder: (_) => ActivityPicker(onPick: (pc, newActivity) async {
-        // The stored key everywhere else uses — `startWorkout(type:
-        // a.typeKey)` is the live path's own write. `a.name` here would still
-        // resolve through `activityByName`'s normalized lookup, but it would
-        // store a different string than every other producer of this column.
-        try {
-          await LocalDb.setSessionType(id, newActivity.typeKey);
-        } catch (_) {
-          // Same rule as `_saveRpe`: the row is unchanged, so leave the
-          // picker open rather than close it over a write that never
-          // happened — `onPick` is a `void Function`, so there is no caller
-          // to hand this failure back to.
-          return;
-        }
-        picked = true;
-        if (!pc.mounted) return;
-        bumpInsights(pc);
-        Navigator.of(pc).pop();
-      }),
-    ));
+    await Navigator.of(c).push(
+      MaterialPageRoute(
+        builder: (_) => ActivityPicker(
+          onPick: (pc, newActivity) async {
+            // The stored key everywhere else uses — `startWorkout(type:
+            // a.typeKey)` is the live path's own write. `a.name` here would still
+            // resolve through `activityByName`'s normalized lookup, but it would
+            // store a different string than every other producer of this column.
+            try {
+              await LocalDb.setSessionType(id, newActivity.typeKey);
+            } catch (_) {
+              // Same rule as `_saveRpe`: the row is unchanged, so leave the
+              // picker open rather than close it over a write that never
+              // happened — `onPick` is a `void Function`, so there is no caller
+              // to hand this failure back to.
+              return;
+            }
+            picked = true;
+            if (!pc.mounted) return;
+            bumpInsights(pc);
+            Navigator.of(pc).pop();
+          },
+        ),
+      ),
+    );
     if (c.mounted && picked) Navigator.of(c).pop();
   }
 
@@ -910,25 +970,34 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       final route = await c.read<AppState>().repo?.getWorkoutRoute(id);
       if (!c.mounted) return;
       if (route == null || route.points.length < 2) {
-        messenger.showSnackBar(SnackBar(
-            content: Text(l?.activitySummaryNoRouteBody ??
-                'Location was off, or this activity was not recorded with '
-                    'GPS.')));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              l?.activitySummaryNoRouteBody ??
+                  'Location was off, or this activity was not recorded with '
+                      'GPS.',
+            ),
+          ),
+        );
         return;
       }
       final gpx = buildGpx(route, name: a.name);
-      await Share.shareXFiles(
-        [
-          XFile.fromData(Uint8List.fromList(utf8.encode(gpx)),
-              mimeType: 'application/gpx+xml', name: '${a.typeKey}.gpx'),
-        ],
-        sharePositionOrigin: origin,
-      );
+      await Share.shareXFiles([
+        XFile.fromData(
+          Uint8List.fromList(utf8.encode(gpx)),
+          mimeType: 'application/gpx+xml',
+          name: '${a.typeKey}.gpx',
+        ),
+      ], sharePositionOrigin: origin);
     } catch (e) {
       if (!c.mounted) return;
-      messenger.showSnackBar(SnackBar(
+      messenger.showSnackBar(
+        SnackBar(
           content: Text(
-              l?.activityShareOpenFailed ?? 'Could not open the share sheet.')));
+            l?.activityShareOpenFailed ?? 'Could not open the share sheet.',
+          ),
+        ),
+      );
       debugPrint('gpx export failed: $e');
     } finally {
       _exportingGpx = false;
@@ -968,7 +1037,8 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     // zero-span route (every fix at the same spot — a stationary GPS lock),
     // which would hide the export for a session `getWorkoutRoute` can still
     // export.
-    final canExportGpx = r.sessionId != null &&
+    final canExportGpx =
+        r.sessionId != null &&
         (arch == Arch.route || arch == Arch.journey) &&
         r.geo.length >= 2;
     final l = AppLocalizations.of(c);
@@ -976,67 +1046,86 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     return Scaffold(
       backgroundColor: p.bg,
       body: SafeArea(
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: S.x4),
-            child: NavBar(
-              a.displayName(c),
-              sub: '${displayDate(c, r.start)} · ${formatClockOf(r.start)}'.toUpperCase(),
-              // Each icon is a Pressable with S.tap's own 44 pt minimum hit
-              // box (grammar.dart's accessibility floor, not optional) —
-              // S.tap * n alone is short of that plus the gaps between them,
-              // which is exactly the RenderFlex overflow this avoids.
-              trailingWidth: iconCount == 1
-                  ? S.tap
-                  : S.tap * iconCount + S.x3 * (iconCount - 1),
-              trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                if (canChangeType) ...[
-                  Pressable(
-                    semanticLabel:
-                        l?.activitySummaryChangeType ?? 'Change activity type',
-                    onTap: () => _changeType(c),
-                    child: Icon(LucideIcons.pencil, size: 18, color: p.ink2),
-                  ),
-                  const SizedBox(width: S.x3),
-                ],
-                Pressable(
-                  semanticLabel: l?.activitySummaryShareThis(
-                          a.displayName(context).toLowerCase()) ??
-                      'Share this ${a.name.toLowerCase()}',
-                  onTap: () => Navigator.of(c).push(MaterialPageRoute(
-                      builder: (_) => ShareSheet(r))),
-                  child: Icon(LucideIcons.share2, size: 19, color: p.ink2),
-                ),
-              ]),
-            ),
-          ),
-          // A dedicated, plainly-labeled button rather than a bare icon in the
-          // nav bar — this is the one export action worth naming outright.
-          // Text only: no Strava logo/imagery, per the no-brand-assets policy
-          // (the brand name as plain text is fine, brand marks are not).
-          if (canExportGpx)
+        child: Column(
+          children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(S.x4, S.x2, S.x4, 0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Pressable(
-                  onTap: () => _exportGpx(c),
-                  child: Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(LucideIcons.upload, size: 16, color: p.ink2),
-                    const SizedBox(width: S.x2),
-                    Text(
-                        l?.activitySummaryShareToStrava ?? 'Share to Strava',
-                        style: F.body.copyWith(
-                            color: p.ink2, fontWeight: FontWeight.w600)),
-                  ]),
+              padding: const EdgeInsets.symmetric(horizontal: S.x4),
+              child: NavBar(
+                a.displayName(c),
+                sub: '${displayDate(c, r.start)} · ${formatClockOf(r.start)}'
+                    .toUpperCase(),
+                // Each icon is a Pressable with S.tap's own 44 pt minimum hit
+                // box (grammar.dart's accessibility floor, not optional) —
+                // S.tap * n alone is short of that plus the gaps between them,
+                // which is exactly the RenderFlex overflow this avoids.
+                trailingWidth: iconCount == 1
+                    ? S.tap
+                    : S.tap * iconCount + S.x3 * (iconCount - 1),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (canChangeType) ...[
+                      Pressable(
+                        semanticLabel:
+                            l?.activitySummaryChangeType ??
+                            'Change activity type',
+                        onTap: () => _changeType(c),
+                        child: Icon(
+                          LucideIcons.pencil,
+                          size: 18,
+                          color: p.ink2,
+                        ),
+                      ),
+                      const SizedBox(width: S.x3),
+                    ],
+                    Pressable(
+                      semanticLabel:
+                          l?.activitySummaryShareThis(
+                            a.displayName(context).toLowerCase(),
+                          ) ??
+                          'Share this ${a.name.toLowerCase()}',
+                      onTap: () => Navigator.of(
+                        c,
+                      ).push(MaterialPageRoute(builder: (_) => ShareSheet(r))),
+                      child: Icon(LucideIcons.share2, size: 19, color: p.ink2),
+                    ),
+                  ],
                 ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: S.x4),
-            // Display labels are localized; `_tabs` itself stays the fixed
-            // English keys the switch below matches by NAME.
-            child: SubTabs(
+            // A dedicated, plainly-labeled button rather than a bare icon in the
+            // nav bar — this is the one export action worth naming outright.
+            // Text only: no Strava logo/imagery, per the no-brand-assets policy
+            // (the brand name as plain text is fine, brand marks are not).
+            if (canExportGpx)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(S.x4, S.x2, S.x4, 0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Pressable(
+                    onTap: () => _exportGpx(c),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(LucideIcons.upload, size: 16, color: p.ink2),
+                        const SizedBox(width: S.x2),
+                        Text(
+                          l?.activitySummaryShareToStrava ?? 'Share to Strava',
+                          style: F.body.copyWith(
+                            color: p.ink2,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: S.x4),
+              // Display labels are localized; `_tabs` itself stays the fixed
+              // English keys the switch below matches by NAME.
+              child: SubTabs(
                 [
                   for (final t in _tabs)
                     switch (t) {
@@ -1047,21 +1136,23 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                 ],
                 tab,
                 (i) => setState(() => tab = i),
-                color: a.color),
-          ),
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(S.x4, S.x4, S.x4, S.x10),
-              // By NAME: the tab list is shorter for the archetypes that have
-              // no splits, so index 1 is not always the same tab.
-              children: switch (_tabs[tab]) {
-                'Overview' => _overview(c, p),
-                'Splits' => _splits(c, p),
-                _ => _graphs(c, p),
-              },
+                color: a.color,
+              ),
             ),
-          ),
-        ]),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(S.x4, S.x4, S.x4, S.x10),
+                // By NAME: the tab list is shorter for the archetypes that have
+                // no splits, so index 1 is not always the same tab.
+                children: switch (_tabs[tab]) {
+                  'Overview' => _overview(c, p),
+                  'Splits' => _splits(c, p),
+                  _ => _graphs(c, p),
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1089,30 +1180,39 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       // natural width; the hero takes the rest and, like the share card's,
       // scales down rather than truncating — a cut-off measurement is not a
       // measurement.
-      Row(children: [
-        Expanded(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Row(
+      Row(
+        children: [
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text(hero.$1,
-                      style: F.n48.copyWith(color: p.ink), maxLines: 1),
+                  Text(
+                    hero.$1,
+                    style: F.n48.copyWith(color: p.ink),
+                    maxLines: 1,
+                  ),
                   if (hero.$2.isNotEmpty) ...[
                     const SizedBox(width: S.x2),
                     Text(hero.$2, style: F.body.copyWith(color: p.ink3)),
                   ],
-                ]),
+                ],
+              ),
+            ),
           ),
-        ),
-        if (r.private) ...[
-          const SizedBox(width: S.x3),
-          Pill(l?.activitySummaryPrivate ?? 'Private', C.n500,
-              icon: LucideIcons.lock),
+          if (r.private) ...[
+            const SizedBox(width: S.x3),
+            Pill(
+              l?.activitySummaryPrivate ?? 'Private',
+              C.n500,
+              icon: LucideIcons.lock,
+            ),
+          ],
         ],
-      ]),
+      ),
       const SizedBox(height: S.x1),
       Text(hero.$3, style: F.cap.copyWith(color: p.ink2)),
       const SizedBox(height: S.x5),
@@ -1122,10 +1222,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       // TS-09 — directly under the measurements, because that is what it is
       // being asked against, and directly where the answer lands: once rated,
       // this card is gone and 'Your rating' is the last row of the card above.
-      if (_askRpe) ...[
-        const SizedBox(height: S.x3),
-        _rpePrompt(p),
-      ],
+      if (_askRpe) ...[const SizedBox(height: S.x3), _rpePrompt(p)],
       ..._body(c, p),
       // Zones belong to any session that banked a split — a lift and a yoga
       // class have heart-rate zones too.
@@ -1144,9 +1241,10 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     return Surface(
       elevation: 0,
       color: p.card2,
-      child: Row(children: [
-        Expanded(
-          child: Text(
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
               [
                 _calorieBasis(),
                 if (r.stepsCounted != null)
@@ -1154,9 +1252,11 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                       "Steps came from the strap's own motion sensor, which "
                           'only counts them on foot.',
               ].join(' '),
-              style: F.cap.copyWith(color: p.ink3, height: 1.5)),
-        ),
-      ]),
+              style: F.cap.copyWith(color: p.ink3, height: 1.5),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1185,14 +1285,14 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     if (r.calories == null) {
       return r.strain == null
           ? l?.activitySummaryNoCalorieNoStrain ??
-              'No calorie figure for this session. An energy estimate from '
-                  'heart rate needs your maximum and resting heart rates, and '
-                  'one of them is not set.'
+                'No calorie figure for this session. An energy estimate from '
+                    'heart rate needs your maximum and resting heart rates, and '
+                    'one of them is not set.'
           : l?.activitySummaryNoCalorieWithStrain ??
-              'No calorie figure for this session — an energy estimate from '
-                  'heart rate needs your maximum and resting heart rates, and '
-                  'one of them is not set. Strain above is the effort that '
-                  'was measured, on its own 0–21 scale.';
+                'No calorie figure for this session — an energy estimate from '
+                    'heart rate needs your maximum and resting heart rates, and '
+                    'one of them is not set. Strain above is the effort that '
+                    'was measured, on its own 0–21 scale.';
     }
     // No MET (the catch-all, or a named sport the compendium does not price)
     // means the figure is entirely the heart-rate estimate — saying "from MET"
@@ -1204,58 +1304,62 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     }
     return r.avgHr == null
         ? l?.activitySummaryCalorieNoHr(met) ??
-            'Estimated from $met MET and your weight. No heart rate reached '
-                'this session, so none of it is in the figure.'
+              'Estimated from $met MET and your weight. No heart rate reached '
+                  'this session, so none of it is in the figure.'
         : l?.activitySummaryCalorieWithHr(met) ??
-            'Estimated from $met MET, your weight and heart rate.';
+              'Estimated from $met MET, your weight and heart rate.';
   }
 
   /// (value, unit, caption). The hero is the archetype's own headline — and
   /// falls back to elapsed time, which is the one number every session has.
   (String, String, String) _hero() {
     final l = AppLocalizations.of(context);
-    final fallback = (hms(r.duration), '', l?.activitySummaryElapsedTime ?? 'Elapsed time');
+    final fallback = (
+      hms(r.duration),
+      '',
+      l?.activitySummaryElapsedTime ?? 'Elapsed time',
+    );
     return switch (arch) {
-      Arch.route || Arch.journey => _distance == null
-          ? fallback
-          : (
-              _distance!.$1.toStringAsFixed(2),
-              _distance!.$2,
-              arch == Arch.journey && r.gainM != null
-                  ? (l?.activitySummaryClimbed(r.gainM!.round()) ??
-                      '+${r.gainM!.round()} m climbed')
-                  : a.displayName(context)
-            ),
-      Arch.strength => r.strength.volumeKg == null
-          ? (
-              '${r.strength.setCount}',
-              l?.activitySummarySetUnit(r.strength.setCount) ??
-                  (r.strength.setCount == 1 ? 'set' : 'sets'),
-              l?.activitySummaryNothingLoggedWithLoad ??
-                  'Nothing was logged with a load'
-            )
-          : (
-              grouped(_u?.weightValue(r.strength.volumeKg!) ??
-                  r.strength.volumeKg!),
-              _u?.weightUnit ?? 'kg',
-              r.strength.hasUnloadedSets
-                  ? (l?.activitySummaryVolumeLoadedSets ??
-                      'Volume of the loaded sets')
-                  : (l?.activitySummaryTotalVolume ?? 'Total volume')
-            ),
-      Arch.laps => r.swimMetres == null
-          ? fallback
-          : (
-              grouped(r.swimMetres!),
-              'm',
-              l?.activitySummaryLapsCaption(r.lapCount ?? 0) ??
-                  '${r.lapCount} laps'
-            ),
-      Arch.flow ||
-      Arch.match ||
-      Arch.interval ||
-      Arch.basic =>
-        fallback,
+      Arch.route || Arch.journey =>
+        _distance == null
+            ? fallback
+            : (
+                _distance!.$1.toStringAsFixed(2),
+                _distance!.$2,
+                arch == Arch.journey && r.gainM != null
+                    ? (l?.activitySummaryClimbed(r.gainM!.round()) ??
+                          '+${r.gainM!.round()} m climbed')
+                    : a.displayName(context),
+              ),
+      Arch.strength =>
+        r.strength.volumeKg == null
+            ? (
+                '${r.strength.setCount}',
+                l?.activitySummarySetUnit(r.strength.setCount) ??
+                    (r.strength.setCount == 1 ? 'set' : 'sets'),
+                l?.activitySummaryNothingLoggedWithLoad ??
+                    'Nothing was logged with a load',
+              )
+            : (
+                grouped(
+                  _u?.weightValue(r.strength.volumeKg!) ?? r.strength.volumeKg!,
+                ),
+                _u?.weightUnit ?? 'kg',
+                r.strength.hasUnloadedSets
+                    ? (l?.activitySummaryVolumeLoadedSets ??
+                          'Volume of the loaded sets')
+                    : (l?.activitySummaryTotalVolume ?? 'Total volume'),
+              ),
+      Arch.laps =>
+        r.swimMetres == null
+            ? fallback
+            : (
+                grouped(r.swimMetres!),
+                'm',
+                l?.activitySummaryLapsCaption(r.lapCount ?? 0) ??
+                    '${r.lapCount} laps',
+              ),
+      Arch.flow || Arch.match || Arch.interval || Arch.basic => fallback,
     };
   }
 
@@ -1296,24 +1400,28 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                     ],
               footnote: _distance == null
                   ? (l?.activitySummaryStartFinishPinned ??
-                      'Start and finish are pinned.')
+                        'Start and finish are pinned.')
                   : (l?.activitySummaryRouteFootnote(
-                          _distance!.$1.toStringAsFixed(2), _distance!.$2) ??
-                      '${_distance!.$1.toStringAsFixed(2)} ${_distance!.$2}, '
-                          'start and finish pinned.'),
+                          _distance!.$1.toStringAsFixed(2),
+                          _distance!.$2,
+                        ) ??
+                        '${_distance!.$1.toStringAsFixed(2)} ${_distance!.$2}, '
+                            'start and finish pinned.'),
               child: ClipRRect(
                 borderRadius: R.rLg,
                 child: Container(
                   color: p.card2,
                   child: CustomPaint(
                     size: Size.infinite,
-                    painter: RouteMap(r.route,
-                        pace: r.routePace,
-                        slow: p.on(C.red),
-                        fast: p.on(C.green),
-                        pinStart: p.on(C.green),
-                        pinEnd: p.on(C.red),
-                        pinInk: p.card),
+                    painter: RouteMap(
+                      r.route,
+                      pace: r.routePace,
+                      slow: p.on(C.red),
+                      fast: p.on(C.green),
+                      pinStart: p.on(C.green),
+                      pinEnd: p.on(C.red),
+                      pinInk: p.card,
+                    ),
                   ),
                 ),
               ),
@@ -1373,14 +1481,19 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                 l?.activitySummaryRoundLabel(r.rounds.length) ??
                     'Round ${r.rounds.length}',
               ],
-              footnote: l?.activitySummaryLongestBlock(clock(peak.round())) ??
+              footnote:
+                  l?.activitySummaryLongestBlock(clock(peak.round())) ??
                   'Longest block ${clock(peak.round())}.',
               child: CustomPaint(
                 size: Size.infinite,
-                painter: IntervalLadder([
-                  for (final x in r.rounds)
-                    (work: x.workSec / peak, rest: x.restSec / peak),
-                ], p.on(C.red), p.on(C.teal)),
+                painter: IntervalLadder(
+                  [
+                    for (final x in r.rounds)
+                      (work: x.workSec / peak, rest: x.restSec / peak),
+                  ],
+                  p.on(C.red),
+                  p.on(C.teal),
+                ),
               ),
             ),
           ),
@@ -1399,26 +1512,30 @@ class _ActivitySummaryState extends State<ActivitySummary> {
           Container(
             height: 170,
             decoration: BoxDecoration(
-                borderRadius: R.rLg,
-                color: p.wash(C.teal, strength: 1.6),
-                boxShadow: p.el(1)),
+              borderRadius: R.rLg,
+              color: p.wash(C.teal, strength: 1.6),
+              boxShadow: p.el(1),
+            ),
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(LucideIcons.personStanding, size: 44, color: p.on(C.teal)),
-                  const SizedBox(height: S.x2),
-                  Text(
-                      r.poses.isEmpty
-                          ? hms(r.duration)
-                          : (l?.activitySummaryPosesCount(r.poses.length) ??
-                              '${r.poses.length} poses'),
-                      style: F.head.copyWith(color: p.ink)),
-                  Text(
-                      r.breathsPerMin == null
-                          ? a.displayName(context)
-                          : '${r.breathsPerMin!.toStringAsFixed(1)} breaths/min',
-                      style: F.over.copyWith(color: p.on(C.teal))),
-                ]),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(LucideIcons.personStanding, size: 44, color: p.on(C.teal)),
+                const SizedBox(height: S.x2),
+                Text(
+                  r.poses.isEmpty
+                      ? hms(r.duration)
+                      : (l?.activitySummaryPosesCount(r.poses.length) ??
+                            '${r.poses.length} poses'),
+                  style: F.head.copyWith(color: p.ink),
+                ),
+                Text(
+                  r.breathsPerMin == null
+                      ? a.displayName(context)
+                      : '${r.breathsPerMin!.toStringAsFixed(1)} breaths/min',
+                  style: F.over.copyWith(color: p.on(C.teal)),
+                ),
+              ],
+            ),
           ),
         ];
 
@@ -1455,8 +1572,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                     'slowest ${clock(slowest)}',
               ].join(' · '),
               child: CustomPaint(
-                  size: Size.infinite,
-                  painter: LapBars(r.lapSpeeds, p.on(C.blue), p.track)),
+                size: Size.infinite,
+                painter: LapBars(r.lapSpeeds, p.on(C.blue), p.track),
+              ),
             ),
           ),
         ];
@@ -1476,34 +1594,50 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         final axis = AxisSpec.of(r.elevationM);
         return [
           Surface(
-            child: Column(children: [
-              ChartFrame(
-                title: l?.activitySummaryElevationTitle ?? 'ELEVATION',
-                unit: 'm',
-                height: 130,
-                yAxis: axis,
-                xLabels: [
-                  l?.activitySummaryStart ?? 'Start',
-                  l?.activitySummaryFinish ?? 'Finish',
-                ],
-                series: r.elevationM,
-                child: CustomPaint(
+            child: Column(
+              children: [
+                ChartFrame(
+                  title: l?.activitySummaryElevationTitle ?? 'ELEVATION',
+                  unit: 'm',
+                  height: 130,
+                  yAxis: axis,
+                  xLabels: [
+                    l?.activitySummaryStart ?? 'Start',
+                    l?.activitySummaryFinish ?? 'Finish',
+                  ],
+                  series: r.elevationM,
+                  child: CustomPaint(
                     size: Size.infinite,
-                    painter: Elevation(r.elevationM, p.on(C.green),
-                        markerInk: p.card, axis: axis)),
-              ),
-              const SizedBox(height: S.x4),
-              InlineMetrics([
-                if (r.gainM != null)
-                  (l?.activitySummaryGain ?? 'Gain',
-                      '+${r.gainM!.round()} m', C.green),
-                if (r.lossM != null)
-                  (l?.activitySummaryLoss ?? 'Loss',
-                      '−${r.lossM!.round()} m', C.orange),
-                (l?.activitySummaryPeak ?? 'Peak', '${grouped(peak)} m',
-                    C.n500),
-              ]),
-            ]),
+                    painter: Elevation(
+                      r.elevationM,
+                      p.on(C.green),
+                      markerInk: p.card,
+                      axis: axis,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: S.x4),
+                InlineMetrics([
+                  if (r.gainM != null)
+                    (
+                      l?.activitySummaryGain ?? 'Gain',
+                      '+${r.gainM!.round()} m',
+                      C.green,
+                    ),
+                  if (r.lossM != null)
+                    (
+                      l?.activitySummaryLoss ?? 'Loss',
+                      '−${r.lossM!.round()} m',
+                      C.orange,
+                    ),
+                  (
+                    l?.activitySummaryPeak ?? 'Peak',
+                    '${grouped(peak)} m',
+                    C.n500,
+                  ),
+                ]),
+              ],
+            ),
           ),
         ];
 
@@ -1548,12 +1682,12 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     final l = AppLocalizations.of(context);
     return a.name == 'Cold plunge'
         ? l?.activitySummaryColdPlungeWhy ??
-            'Cold closes the blood vessels the sensor reads through. Finding '
-                'nothing here is expected, not a fault.'
+              'Cold closes the blood vessels the sensor reads through. Finding '
+                  'nothing here is expected, not a fault.'
         : l?.activitySummaryHeatWhy ??
-            'Heat, sweat and a strap that loosens as you warm up all stop '
-                'the sensor seeing a pulse. Finding nothing here is '
-                'ordinary, not a fault.';
+              'Heat, sweat and a strap that loosens as you warm up all stop '
+                  'the sensor seeing a pulse. Finding nothing here is '
+                  'ordinary, not a fault.';
   }
 
   IconData get _thermalIcon =>
@@ -1569,10 +1703,12 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       return [
         StatusCard(
           have == 0
-              ? (l?.activitySummaryNoPulseTitle(a.displayName(context).toLowerCase()) ??
-                  'No pulse reading for this ${a.name.toLowerCase()}')
+              ? (l?.activitySummaryNoPulseTitle(
+                      a.displayName(context).toLowerCase(),
+                    ) ??
+                    'No pulse reading for this ${a.name.toLowerCase()}')
               : (l?.activitySummaryOneMinutePulse ??
-                  'One minute of pulse, and no more'),
+                    'One minute of pulse, and no more'),
           _thermalWhy!,
           icon: _thermalIcon,
         ),
@@ -1584,9 +1720,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
           p,
           extra: have < total
               ? (l?.activitySummaryPulseGapNote(have, total) ??
-                  'The band found a pulse in $have of $total minutes. The '
-                      'gaps are expected, so what is drawn is the part it '
-                      'could see.')
+                    'The band found a pulse in $have of $total minutes. The '
+                        'gaps are expected, so what is drawn is the part it '
+                        'could see.')
               : null,
         ),
       ),
@@ -1614,23 +1750,26 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         // see it, so there is no connection to check and no button that
         // helps.
         : thermal
-            ? StatusCard(
-                l?.activitySummaryNoPulseTitle(a.displayName(context).toLowerCase()) ??
-                    'No pulse reading for this ${a.name.toLowerCase()}',
-                _thermalWhy!,
-                icon: _thermalIcon,
-              )
-            : StatusCard(
-                l?.activitySummaryNoHrTitle ?? 'No heart rate for this session',
-                l?.activitySummaryNoHrBody ??
-                    'The band reported nothing while this was running.',
-                fix: l?.activitySummaryCheckBandConnection ??
-                    'Check band connection',
-                // The band, its battery and its link all live behind the
-                // profile's sources list. The CTA used to be paint.
-                onFix: () => openProfile(c),
-                icon: LucideIcons.heartPulse,
-              );
+        ? StatusCard(
+            l?.activitySummaryNoPulseTitle(
+                  a.displayName(context).toLowerCase(),
+                ) ??
+                'No pulse reading for this ${a.name.toLowerCase()}',
+            _thermalWhy!,
+            icon: _thermalIcon,
+          )
+        : StatusCard(
+            l?.activitySummaryNoHrTitle ?? 'No heart rate for this session',
+            l?.activitySummaryNoHrBody ??
+                'The band reported nothing while this was running.',
+            fix:
+                l?.activitySummaryCheckBandConnection ??
+                'Check band connection',
+            // The band, its battery and its link all live behind the
+            // profile's sources list. The CTA used to be paint.
+            onFix: () => openProfile(c),
+            icon: LucideIcons.heartPulse,
+          );
   }
 
   /// The heart-rate trace, framed — the one chart both `basic` and `match`
@@ -1672,27 +1811,35 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       footnote: note.isEmpty ? null : note.join(' '),
       series: r.hr,
       child: CustomPaint(
-          size: Size.infinite,
-          painter: LineChart(r.hr, p.on(C.red),
-              axis: axis, t: animate(context, 1))),
+        size: Size.infinite,
+        painter: LineChart(
+          r.hr,
+          p.on(C.red),
+          axis: axis,
+          t: animate(context, 1),
+        ),
+      ),
     );
   }
 
   /// The zone split, with the minutes in the key rather than in a second row
   /// underneath it that has to be kept in step by hand.
   Widget _zoneFrame(P p) => ChartFrame(
-        title: AppLocalizations.of(context)?.activitySummaryTimeInZonesTitle ??
-            'TIME IN ZONES',
-        unit: 'minutes',
-        height: 10,
-        legend: [
-          for (var i = 0; i < 5; i++)
-            ('Z${i + 1} · ${r.zoneMinutes[i].round()}m', ZoneBar.cols(p)[i]),
-        ],
-        footnote: zonesWhy(r.zoneSource, r.zoneMaxHr, AppLocalizations.of(context)),
-        child: CustomPaint(
-            size: Size.infinite, painter: ZoneBar(_zoneFractions(), p)),
-      );
+    title:
+        AppLocalizations.of(context)?.activitySummaryTimeInZonesTitle ??
+        'TIME IN ZONES',
+    unit: 'minutes',
+    height: 10,
+    legend: [
+      for (var i = 0; i < 5; i++)
+        ('Z${i + 1} · ${r.zoneMinutes[i].round()}m', ZoneBar.cols(p)[i]),
+    ],
+    footnote: zonesWhy(r.zoneSource, r.zoneMaxHr, AppLocalizations.of(context)),
+    child: CustomPaint(
+      size: Size.infinite,
+      painter: ZoneBar(_zoneFractions(), p),
+    ),
+  );
 
   // ─────────── ARCHETYPE BODY ───────────
   List<Widget> _body(BuildContext c, P p) {
@@ -1706,49 +1853,68 @@ class _ActivitySummaryState extends State<ActivitySummary> {
             Section(
               l?.activitySummaryTopSet ?? 'Top set',
               Surface(
-                child: Row(children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: p.wash(C.yellow), borderRadius: R.rMd),
-                    child: Icon(LucideIcons.trophy,
-                        size: 19, color: p.on(C.yellow)),
-                  ),
-                  const SizedBox(width: S.x3),
-                  Expanded(
-                    child: Column(
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: p.wash(C.yellow),
+                        borderRadius: R.rMd,
+                      ),
+                      child: Icon(
+                        LucideIcons.trophy,
+                        size: 19,
+                        color: p.on(C.yellow),
+                      ),
+                    ),
+                    const SizedBox(width: S.x3),
+                    Expanded(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              exerciseByKey(top.exerciseKey)?.labelFor(
-                                      Localizations.localeOf(c).languageCode) ??
-                                  top.exerciseKey,
-                              style: F.body.copyWith(
-                                  color: p.ink, fontWeight: FontWeight.w600)),
-                          Row(children: [
-                            Flexible(
+                            exerciseByKey(top.exerciseKey)?.labelFor(
+                                  Localizations.localeOf(c).languageCode,
+                                ) ??
+                                top.exerciseKey,
+                            style: F.body.copyWith(
+                              color: p.ink,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Flexible(
                                 child: Text(
-                                    _u?.isImperial == true
-                                        ? '1RM estimate '
+                                  _u?.isImperial == true
+                                      ? '1RM estimate '
                                             '${_u!.weightValue(rm!).round()} lb'
-                                        : (l?.activitySummaryOneRepMax(
-                                                rm!.round()) ??
+                                      : (l?.activitySummaryOneRepMax(
+                                              rm!.round(),
+                                            ) ??
                                             '1RM estimate ${rm!.round()} kg'),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: F.over.copyWith(color: p.ink3))),
-                          ]),
-                        ]),
-                  ),
-                  const SizedBox(width: S.x2),
-                  // The row rule: the name gives way, the measurement keeps
-                  // its natural width and sits flush at the card edge.
-                  Text('${_kg(top.loadKg!)} × ${top.reps}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: F.over.copyWith(color: p.ink3),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: S.x2),
+                    // The row rule: the name gives way, the measurement keeps
+                    // its natural width and sits flush at the card edge.
+                    Text(
+                      '${_kg(c, top.loadKg!)} × ${top.reps}',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: F.n17.copyWith(color: p.ink)),
-                ]),
+                      style: F.n17.copyWith(color: p.ink),
+                    ),
+                  ],
+                ),
               ),
             ),
           if (r.strength.hasUnloadedSets)
@@ -1777,36 +1943,45 @@ class _ActivitySummaryState extends State<ActivitySummary> {
               l?.activitySummaryScore ?? 'Score',
               Surface(
                 pad: const EdgeInsets.symmetric(horizontal: S.x4),
-                child: Column(children: [
-                  for (var i = 0; i < r.gameScore.length; i++) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: S.x3),
-                      child: Row(children: [
-                        Expanded(
-                            child: Text(
+                child: Column(
+                  children: [
+                    for (var i = 0; i < r.gameScore.length; i++) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: S.x3),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
                                 l?.activitySummaryGameSetLabel(i + 1) ??
                                     'Set ${i + 1}',
-                                style: F.body.copyWith(color: p.ink3))),
-                        Text('${r.gameScore[i].$1} — ${r.gameScore[i].$2}',
-                            style: F.n17.copyWith(
+                                style: F.body.copyWith(color: p.ink3),
+                              ),
+                            ),
+                            Text(
+                              '${r.gameScore[i].$1} — ${r.gameScore[i].$2}',
+                              style: F.n17.copyWith(
                                 color: r.gameScore[i].$1 > r.gameScore[i].$2
                                     ? p.on(a.color)
-                                    : p.ink3)),
-                      ]),
-                    ),
-                    if (i < r.gameScore.length - 1)
-                      Divider(color: p.line, height: 1),
+                                    : p.ink3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (i < r.gameScore.length - 1)
+                        Divider(color: p.line, height: 1),
+                    ],
                   ],
-                ]),
+                ),
               ),
             ),
         ];
 
       case Arch.route ||
-            Arch.journey ||
-            Arch.laps ||
-            Arch.interval ||
-            Arch.basic:
+          Arch.journey ||
+          Arch.laps ||
+          Arch.interval ||
+          Arch.basic:
         return const [];
     }
   }
@@ -1815,9 +1990,10 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       ? const []
       : [
           Section(
-              AppLocalizations.of(context)?.activitySummaryHeartRateZones ??
-                  'Heart-rate zones',
-              Surface(child: _zoneFrame(p))),
+            AppLocalizations.of(context)?.activitySummaryHeartRateZones ??
+                'Heart-rate zones',
+            Surface(child: _zoneFrame(p)),
+          ),
         ];
 
   List<double> _zoneFractions() {
@@ -1828,12 +2004,14 @@ class _ActivitySummaryState extends State<ActivitySummary> {
 
   /// [v] is always in kg (storage unit); [_u] converts + rounds for display
   /// the same way its edit-field does.
-  String _kg(double v) {
+  String _kg(BuildContext c, double v) {
     final u = _u;
     if (u == null) {
-      return v == v.roundToDouble() ? '${v.round()} kg' : '${v.toStringAsFixed(1)} kg';
+      return v == v.roundToDouble()
+          ? '${v.round()} ${uiText(c, 'kg')}'
+          : '${v.toStringAsFixed(1)} ${uiText(c, 'kg')}';
     }
-    return '${u.weightField(v)} ${u.weightUnit}';
+    return '${u.weightField(v)} ${uiText(c, u.weightUnit)}';
   }
 
   // ─────────────────── SPLITS ───────────────────
@@ -1874,57 +2052,82 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         return [
           Surface(
             pad: const EdgeInsets.symmetric(horizontal: S.x4, vertical: S.x3),
-            child: Column(children: [
-              Row(children: [
-                SizedBox(
-                    width: 26,
-                    child: Text(l?.activitySummaryKm ?? 'KM',
-                        style: F.over.copyWith(color: p.ink3))),
-                SizedBox(
-                    width: 46,
-                    child: Text(l?.activitySummaryPace ?? 'PACE',
-                        style: F.over.copyWith(color: p.ink3))),
-                const Expanded(child: SizedBox()),
-                SizedBox(
-                    width: 34,
-                    child: Text(l?.activitySummaryHr ?? 'HR',
-                        textAlign: TextAlign.right,
-                        style: F.over.copyWith(color: p.ink3))),
-              ]),
-              const SizedBox(height: S.x2),
-              for (var i = 0; i < r.splits.length; i++)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: S.x1),
-                  child: Row(children: [
+            child: Column(
+              children: [
+                Row(
+                  children: [
                     SizedBox(
-                        width: 26,
-                        // A partial split is not kilometre N — it is the
-                        // 0.4 km that was left, and it says so.
-                        child: Text(
+                      width: 26,
+                      child: Text(
+                        l?.activitySummaryKm ?? 'KM',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 46,
+                      child: Text(
+                        l?.activitySummaryPace ?? 'PACE',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                    const Expanded(child: SizedBox()),
+                    SizedBox(
+                      width: 34,
+                      child: Text(
+                        l?.activitySummaryHr ?? 'HR',
+                        textAlign: TextAlign.right,
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: S.x2),
+                for (var i = 0; i < r.splits.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: S.x1),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 26,
+                          // A partial split is not kilometre N — it is the
+                          // 0.4 km that was left, and it says so.
+                          child: Text(
                             r.splits[i].km >= .95
                                 ? '${i + 1}'
                                 : r.splits[i].km.toStringAsFixed(1),
-                            style: F.cap.copyWith(color: p.ink3))),
-                    SizedBox(
-                        width: 46,
-                        child: Text(
+                            style: F.cap.copyWith(color: p.ink3),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 46,
+                          child: Text(
                             paces[i] == null
                                 ? ''
                                 : UnitsController.formatPace(paces[i]!) ?? '',
                             style: F.cap.copyWith(
-                                color: p.ink, fontWeight: FontWeight.w600))),
-                    Expanded(
-                        child: fastest == null || paces[i] == null
-                            ? const SizedBox()
-                            : PaceBar(fastest / paces[i]!, C.green)),
-                    SizedBox(
-                        width: 34,
-                        child: Text(r.splits[i].avgHr?.toString() ?? '',
+                              color: p.ink,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: fastest == null || paces[i] == null
+                              ? const SizedBox()
+                              : PaceBar(fastest / paces[i]!, C.green),
+                        ),
+                        SizedBox(
+                          width: 34,
+                          child: Text(
+                            r.splits[i].avgHr?.toString() ?? '',
                             textAlign: TextAlign.right,
-                            style: F.cap.copyWith(color: p.ink2))),
-                  ]),
-                ),
-            ]),
+                            style: F.cap.copyWith(color: p.ink2),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ];
 
@@ -1941,20 +2144,25 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         return [
           for (final key in r.strength.exercises) ...[
             Section(
-              exerciseByKey(key)
-                      ?.labelFor(Localizations.localeOf(c).languageCode) ??
+              exerciseByKey(
+                    key,
+                  )?.labelFor(Localizations.localeOf(c).languageCode) ??
                   key,
               Surface(
                 pad: const EdgeInsets.symmetric(horizontal: S.x4),
-                child: Column(children: [
-                  for (var i = 0;
+                child: Column(
+                  children: [
+                    for (
+                      var i = 0;
                       i < r.strength.forExercise(key).length;
-                      i++) ...[
-                    _setRow(p, i + 1, r.strength.forExercise(key)[i]),
-                    if (i < r.strength.forExercise(key).length - 1)
-                      Divider(color: p.line, height: 1),
+                      i++
+                    ) ...[
+                      _setRow(p, i + 1, r.strength.forExercise(key)[i]),
+                      if (i < r.strength.forExercise(key).length - 1)
+                        Divider(color: p.line, height: 1),
+                    ],
                   ],
-                ]),
+                ),
               ),
             ),
           ],
@@ -1963,9 +2171,11 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       case Arch.interval:
         if (r.rounds.isEmpty) {
           return [
-            StatusCard(l?.activitySummaryNoRoundsTitle ?? 'No rounds recorded',
-                l?.activitySummaryNoRoundsBody ?? '0 rounds logged.',
-                icon: LucideIcons.timer),
+            StatusCard(
+              l?.activitySummaryNoRoundsTitle ?? 'No rounds recorded',
+              l?.activitySummaryNoRoundsBody ?? '0 rounds logged.',
+              icon: LucideIcons.timer,
+            ),
           ];
         }
         // The heart-rate column exists only when the rounds carry one. A
@@ -1974,115 +2184,173 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         return [
           Surface(
             pad: const EdgeInsets.symmetric(horizontal: S.x4, vertical: S.x3),
-            child: Column(children: [
-              Row(children: [
-                SizedBox(
-                    width: 34,
-                    child: Text(l?.activitySummaryRoundHeader ?? 'R',
-                        style: F.over.copyWith(color: p.ink3))),
-                Expanded(
-                    child: Text(l?.activitySummaryWorkHeader ?? 'WORK',
-                        style: F.over.copyWith(color: p.ink3))),
-                Expanded(
-                    child: Text(l?.activitySummaryRestHeader ?? 'REST',
-                        style: F.over.copyWith(color: p.ink3))),
-                if (anyHr)
-                  SizedBox(
-                      width: 52,
-                      child: Text(l?.activitySummaryAvgBpm ?? 'AVG BPM',
-                          textAlign: TextAlign.right,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: F.over.copyWith(color: p.ink3))),
-              ]),
-              const SizedBox(height: S.x2),
-              for (var i = 0; i < r.rounds.length; i++)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: S.x1),
-                  child: Row(children: [
+            child: Column(
+              children: [
+                Row(
+                  children: [
                     SizedBox(
                       width: 34,
-                      child: Container(
-                        width: 22,
-                        height: 22,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: p.wash(C.red), borderRadius: R.rSm),
-                        child: Text('${i + 1}',
-                            style: F.over.copyWith(color: p.on(C.red))),
+                      child: Text(
+                        l?.activitySummaryRoundHeader ?? 'R',
+                        style: F.over.copyWith(color: p.ink3),
                       ),
                     ),
                     Expanded(
-                        child: Text(clock(r.rounds[i].workSec),
-                            style: F.cap.copyWith(color: p.ink))),
+                      child: Text(
+                        l?.activitySummaryWorkHeader ?? 'WORK',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
                     Expanded(
-                        child: Text(clock(r.rounds[i].restSec),
-                            style: F.cap.copyWith(color: p.ink3))),
+                      child: Text(
+                        l?.activitySummaryRestHeader ?? 'REST',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
                     if (anyHr)
                       SizedBox(
                         width: 52,
-                        child: Text(r.rounds[i].avgHr?.toString() ?? '',
-                            textAlign: TextAlign.right,
-                            style: F.cap.copyWith(
-                                color: p.ink, fontWeight: FontWeight.w600)),
+                        child: Text(
+                          l?.activitySummaryAvgBpm ?? 'AVG BPM',
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: F.over.copyWith(color: p.ink3),
+                        ),
                       ),
-                  ]),
+                  ],
                 ),
-            ]),
+                const SizedBox(height: S.x2),
+                for (var i = 0; i < r.rounds.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: S.x1),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 34,
+                          child: Container(
+                            width: 22,
+                            height: 22,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: p.wash(C.red),
+                              borderRadius: R.rSm,
+                            ),
+                            child: Text(
+                              '${i + 1}',
+                              style: F.over.copyWith(color: p.on(C.red)),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            clock(r.rounds[i].workSec),
+                            style: F.cap.copyWith(color: p.ink),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            clock(r.rounds[i].restSec),
+                            style: F.cap.copyWith(color: p.ink3),
+                          ),
+                        ),
+                        if (anyHr)
+                          SizedBox(
+                            width: 52,
+                            child: Text(
+                              r.rounds[i].avgHr?.toString() ?? '',
+                              textAlign: TextAlign.right,
+                              style: F.cap.copyWith(
+                                color: p.ink,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ];
 
       case Arch.laps:
         if (r.lapSecs.isEmpty) {
           return [
-            StatusCard(l?.activitySummaryNoLapsTitle ?? 'No laps counted',
-                l?.activitySummaryNoLapsBody ?? '0 laps tapped.',
-                icon: LucideIcons.waves),
+            StatusCard(
+              l?.activitySummaryNoLapsTitle ?? 'No laps counted',
+              l?.activitySummaryNoLapsBody ?? '0 laps tapped.',
+              icon: LucideIcons.waves,
+            ),
           ];
         }
         final fastest = r.lapSecs.reduce((x, y) => x < y ? x : y);
         return [
           Surface(
             pad: const EdgeInsets.symmetric(horizontal: S.x4, vertical: S.x3),
-            child: Column(children: [
-              Row(children: [
-                SizedBox(
-                    width: 34,
-                    child: Text(l?.activitySummaryLapHeader ?? 'LAP',
-                        style: F.over.copyWith(color: p.ink3))),
-                SizedBox(
-                    width: 52,
-                    child: Text(l?.activitySummaryTimeHeader ?? 'TIME',
-                        style: F.over.copyWith(color: p.ink3))),
-                Expanded(
-                    child: Text(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 34,
+                      child: Text(
+                        l?.activitySummaryLapHeader ?? 'LAP',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 52,
+                      child: Text(
+                        l?.activitySummaryTimeHeader ?? 'TIME',
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
                         l?.activitySummarySpeedVsFastest ?? 'SPEED vs FASTEST',
                         textAlign: TextAlign.right,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: F.over.copyWith(color: p.ink3))),
-              ]),
-              const SizedBox(height: S.x2),
-              for (var i = 0; i < r.lapSecs.length; i++)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: S.x1),
-                  child: Row(children: [
-                    SizedBox(
-                        width: 34,
-                        child: Text('${i + 1}',
-                            style: F.cap.copyWith(color: p.ink3))),
-                    SizedBox(
-                        width: 52,
-                        child: Text(clock(r.lapSecs[i]),
-                            style: F.cap.copyWith(
-                                color: p.ink, fontWeight: FontWeight.w600))),
-                    Expanded(
-                        child: PaceBar(
-                            r.lapSecs[i] <= 0 ? 1 : fastest / r.lapSecs[i],
-                            C.blue)),
-                  ]),
+                        style: F.over.copyWith(color: p.ink3),
+                      ),
+                    ),
+                  ],
                 ),
-            ]),
+                const SizedBox(height: S.x2),
+                for (var i = 0; i < r.lapSecs.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: S.x1),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 34,
+                          child: Text(
+                            '${i + 1}',
+                            style: F.cap.copyWith(color: p.ink3),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 52,
+                          child: Text(
+                            clock(r.lapSecs[i]),
+                            style: F.cap.copyWith(
+                              color: p.ink,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: PaceBar(
+                            r.lapSecs[i] <= 0 ? 1 : fastest / r.lapSecs[i],
+                            C.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ];
 
@@ -2096,35 +2364,43 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     final l = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: S.x3),
-      child: Row(children: [
-        Container(
-          width: 24,
-          height: 24,
-          alignment: Alignment.center,
-          decoration:
-              BoxDecoration(color: p.wash(C.purple), borderRadius: R.rSm),
-          child: Text('$n', style: F.over.copyWith(color: p.on(C.purple))),
-        ),
-        const SizedBox(width: S.x3),
-        Expanded(
-          child: Text(
+      child: Row(
+        children: [
+          Container(
+            width: 24,
+            height: 24,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: p.wash(C.purple),
+              borderRadius: R.rSm,
+            ),
+            child: Text('$n', style: F.over.copyWith(color: p.on(C.purple))),
+          ),
+          const SizedBox(width: S.x3),
+          Expanded(
+            child: Text(
               s.loadKg == null
                   ? (l?.activitySummaryBodyweightReps(s.reps) ??
-                      '${s.reps} reps · bodyweight')
-                  : '${_kg(s.loadKg!)} × ${s.reps}',
-              style: F.body.copyWith(color: p.ink)),
-        ),
-        if (s.rpe != null)
-          Text(l?.activitySummaryRpeValue(s.rpe!) ?? 'RPE ${s.rpe}',
-              style: F.cap.copyWith(color: p.ink3)),
-        if (s.volume != null) ...[
-          const SizedBox(width: S.x3),
-          Text('${grouped(_u?.weightValue(s.volume!) ?? s.volume!)} '
-                  '${_u?.weightUnit ?? 'kg'}',
-              style: F.cap
-                  .copyWith(color: p.ink2, fontWeight: FontWeight.w600)),
+                        '${s.reps} reps · bodyweight')
+                  : '${_kg(context, s.loadKg!)} × ${s.reps}',
+              style: F.body.copyWith(color: p.ink),
+            ),
+          ),
+          if (s.rpe != null)
+            Text(
+              l?.activitySummaryRpeValue(s.rpe!) ?? 'RPE ${s.rpe}',
+              style: F.cap.copyWith(color: p.ink3),
+            ),
+          if (s.volume != null) ...[
+            const SizedBox(width: S.x3),
+            Text(
+              '${grouped(_u?.weightValue(s.volume!) ?? s.volume!)} '
+              '${uiText(context, _u?.weightUnit ?? 'kg')}',
+              style: F.cap.copyWith(color: p.ink2, fontWeight: FontWeight.w600),
+            ),
+          ],
         ],
-      ]),
+      ),
     );
   }
 
@@ -2133,8 +2409,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
     final l = AppLocalizations.of(c);
     final series = <(String, String, Color, List<double?>)>[
       if (r.hr.length > 1) ('Heart rate', 'bpm', C.red, r.hr),
-      if (r.elevationM.length > 1)
-        ('Elevation', 'm', C.teal, r.elevationM),
+      if (r.elevationM.length > 1) ('Elevation', 'm', C.teal, r.elevationM),
     ];
     if (series.isEmpty) {
       // Same distinction the overview draws: a session with one minute in it
@@ -2152,7 +2427,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         // reason, and "check band connection" is not it.
         else if (thermal)
           StatusCard(
-            l?.activitySummaryNothingToPlot(a.displayName(context).toLowerCase()) ??
+            l?.activitySummaryNothingToPlot(
+                  a.displayName(context).toLowerCase(),
+                ) ??
                 'Nothing to plot for this ${a.name.toLowerCase()}',
             _thermalWhy!,
             icon: _thermalIcon,
@@ -2162,7 +2439,8 @@ class _ActivitySummaryState extends State<ActivitySummary> {
             l?.activitySummaryNoSeriesTitle ?? 'No series to plot',
             l?.activitySummaryNoSeriesBody ??
                 'This session recorded no per-minute streams.',
-            fix: l?.activitySummaryCheckBandConnection ??
+            fix:
+                l?.activitySummaryCheckBandConnection ??
                 'Check band connection',
             onFix: () => openProfile(c),
             icon: LucideIcons.chartLine,
@@ -2174,24 +2452,31 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         Padding(
           padding: const EdgeInsets.only(bottom: S.x3),
           child: Surface(
-            child: Builder(builder: (_) {
-              final axis = AxisSpec.of(g.$4.whereType<double>());
-              return ChartFrame(
-                title: g.$1.toUpperCase(),
-                unit: g.$2,
-                height: 110,
-                yAxis: axis,
-                xLabels: ['Start', hms(r.duration)],
-                // The gap belongs to the heart-rate trace, not to the altitude
-                // the phone recorded alongside it.
-                footnote: g.$1 == 'Heart rate' ? _traceNote : null,
-                series: g.$4,
-                child: CustomPaint(
+            child: Builder(
+              builder: (_) {
+                final axis = AxisSpec.of(g.$4.whereType<double>());
+                return ChartFrame(
+                  title: g.$1.toUpperCase(),
+                  unit: g.$2,
+                  height: 110,
+                  yAxis: axis,
+                  xLabels: ['Start', hms(r.duration)],
+                  // The gap belongs to the heart-rate trace, not to the altitude
+                  // the phone recorded alongside it.
+                  footnote: g.$1 == 'Heart rate' ? _traceNote : null,
+                  series: g.$4,
+                  child: CustomPaint(
                     size: Size.infinite,
-                    painter: LineChart(g.$4, p.on(g.$3),
-                        axis: axis, t: animate(context, 1))),
-              );
-            }),
+                    painter: LineChart(
+                      g.$4,
+                      p.on(g.$3),
+                      axis: axis,
+                      t: animate(context, 1),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
     ];

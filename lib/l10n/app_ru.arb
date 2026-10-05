@@ -13725,9 +13725,31 @@
   },
   "secondPass9c7a0f56b8": "Болезненность мышц",
   "secondPass165b867753": "Экранное время перед сном",
-  "secondPassaf10ef20dd": "дюймы",
-  "secondPasscba4181417": "фунты",
+  "secondPassaf10ef20dd": "дюйм.",
+  "secondPasscba4181417": "фунт.",
   "secondPassb331fc67af": "мл",
   "secondPass191be3715b": "мг",
-  "secondPass9176253183": "порции"
+  "secondPass9176253183": "порц.",
+  "secondPassWeightRepsLogged": "{weight} {unit} × {reps} — записано",
+  "@secondPassWeightRepsLogged": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  },
+  "secondPassVolumeUnit": "Объём, {unit}",
+  "@secondPassVolumeUnit": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  }
 }

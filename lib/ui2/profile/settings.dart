@@ -1803,8 +1803,8 @@ class _EditProfileViewState extends State<EditProfileView> {
     final weight = Typed.of(_weight.text);
     final bad = [
       if (age.bad) (l?.settingsAgeFieldLabel ?? 'Age'),
-      if (height.bad) _u.heightLabel,
-      if (weight.bad) _u.weightLabel,
+      if (height.bad) uiText(context, _u.heightLabel),
+      if (weight.bad) uiText(context, _u.weightLabel),
     ];
     if (bad.isNotEmpty) {
       sayUnreadable(context, bad);
@@ -1911,14 +1911,18 @@ class _EditProfileViewState extends State<EditProfileView> {
                   _text(
                     c,
                     _height,
-                    uiText(c, _u.heightLabel).toUpperCase(),
+                    l?.localeName.startsWith('ru') == true
+                        ? uiText(c, _u.heightLabel)
+                        : uiText(c, _u.heightLabel).toUpperCase(),
                     TextInputType.number,
                   ),
                   const SizedBox(height: S.x4),
                   _text(
                     c,
                     _weight,
-                    uiText(c, _u.weightLabel).toUpperCase(),
+                    l?.localeName.startsWith('ru') == true
+                        ? uiText(c, _u.weightLabel)
+                        : uiText(c, _u.weightLabel).toUpperCase(),
                     TextInputType.number,
                   ),
                   ..._importBlock(p, c),

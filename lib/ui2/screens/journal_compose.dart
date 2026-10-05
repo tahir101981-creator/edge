@@ -825,9 +825,9 @@ class _WeightRow extends StatelessWidget {
           children: [
             OsTextField(
               controller: ctrl,
-              label:
-                  u?.weightLabel ??
-                  (l?.journalComposeWeightKgLabel ?? 'Weight (kg)'),
+              label: u == null
+                  ? (l?.journalComposeWeightKgLabel ?? 'Weight (kg)')
+                  : uiText(dc, u.weightLabel),
               hint: imperial ? '154' : '70.0',
               keyboard: const TextInputType.numberWithOptions(decimal: true),
             ),
@@ -861,7 +861,9 @@ class _WeightRow extends StatelessWidget {
               // field, and the form says which one rather than storing a hole.
               if (Typed.of(ctrl.text).bad) {
                 sayUnreadable(dc, [
-                  u?.weightLabel ?? (l?.journalComposeWeightLabel ?? 'Weight'),
+                  u == null
+                      ? (l?.journalComposeWeightLabel ?? 'Weight')
+                      : uiText(dc, u.weightLabel),
                 ]);
                 return;
               }

@@ -14491,5 +14491,27 @@
   "secondPasscba4181417": "lb",
   "secondPassb331fc67af": "ml",
   "secondPass191be3715b": "mg",
-  "secondPass9176253183": "units"
+  "secondPass9176253183": "units",
+  "secondPassWeightRepsLogged": "{weight} {unit} × {reps} logged",
+  "@secondPassWeightRepsLogged": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  },
+  "secondPassVolumeUnit": "{unit} volume",
+  "@secondPassVolumeUnit": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  }
 }
