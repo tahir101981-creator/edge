@@ -13230,6 +13230,186 @@
     "description": "Presentation-only text; interpolated values remain unchanged.",
     "placeholders": {}
   },
+  "supplementCoachJournal": "Добавить запись в дневник за {date}: отметки {tags}, заметка «{note}».",
+  "@supplementCoachJournal": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "tags": {
+        "type": "String"
+      },
+      "note": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachPeriod": "Записать начало менструации: {date}.",
+  "@supplementCoachPeriod": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachStart": "Начать тренировку сейчас: {type}.",
+  "@supplementCoachStart": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachFood": "Добавить «{name}»: {meal}, {date}.",
+  "@supplementCoachFood": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "meal": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachFoodEnergy": "Добавить «{name}»: {meal}, {date} ({kcal} ккал).",
+  "@supplementCoachFoodEnergy": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "meal": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "kcal": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachFields": "Записать за {date}: {fields}.",
+  "@supplementCoachFields": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "fields": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachCompleted": "Сохранить тренировку: {type}, {minutes} мин, начало в {time}, дата — {date}.",
+  "@supplementCoachCompleted": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachMedication": "Добавить напоминание о приёме {name}: {time}, {days}. Приложение не проверяет взаимодействие лекарств.",
+  "@supplementCoachMedication": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachDose": "Отметить приём {name} за {date}: {state}.",
+  "@supplementCoachDose": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachStepGoal": "Установить ежедневную цель: {goal} шагов.",
+  "@supplementCoachStepGoal": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachProviderError": "Ошибка провайдера ({code}): {detail}",
+  "@supplementCoachProviderError": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachModelsError": "Не удалось загрузить список моделей ({code}): {detail}",
+  "@supplementCoachModelsError": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachOversize": "Размер запроса достиг {size} КБ и превысил предел {limit} КБ для данных, передаваемых с этого устройства. Начните новый чат или задайте более узкий вопрос: используйте AVG/MIN/MAX/COUNT вместо выборки всех строк.",
+  "@supplementCoachOversize": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "supplementCoachRendering": "Подготовка отображения: {kind}…",
+  "@supplementCoachRendering": {
+    "description": "Presentation-only text; interpolated values remain unchanged.",
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
   "supplementADeviationNotATemperaturefc109f": "Это отклонение, а не температура. Импортированные ночи используют разные единицы, поэтому общий график не строится.",
   "supplementADoseIsDue1543e3": "Пора принять дозу.",
   "supplementALocalModelCanTake62d4a8": "Перед первым ответом локальная модель может долго загружаться. По умолчанию — 5 минут (300 с). Для облачных провайдеров действует фиксированный тайм-аут 2 минуты; эта настройка на них не влияет.",
@@ -13242,10 +13422,13 @@
   "supplementAASMSleepAccountingDefinitions79c9d9": "Определения учёта сна AASM",
   "supplementAN2554PedometerPhonePedometer79c0a4": "Шагомер AN-2554 · шагомер телефона (HealthKit / Health Connect)",
   "supplementAboutYourBedtimeLogYourb7f0e2": "Приближается время сна — запишите свой день",
+  "supplementAddAMedicationef7260": "Добавить препарат",
   "supplementAlreadySyncing7ed158": "Синхронизация уже выполняется.",
+  "supplementAwakeMin81d9ac": "Бодрствование, мин",
   "supplementBaevskyStressIndexOverA037465": "Индекс напряжения Баевского по отрезку покоя: гистограммная оценка плотности распределения межударных интервалов. Если отрезка покоя нет, замещающее значение намеренно не рассчитывается.",
   "supplementBandBatteryAndCharging0d7f7d": "Батарея и зарядка браслета",
   "supplementBanisterTRIMPFamilyLogCompressed553d36": "Семейство TRIMP Банистера · логарифмическое сжатие",
+  "supplementBedtimee3cb8b": "Время отхода ко сну",
   "supplementBloodOxygen8cd845": "Кислород в крови",
   "supplementBreathingRateRecoveredFromRespiratory66461f": "Частота дыхания определяется по дыхательной синусовой аритмии — периодическому влиянию дыхания на межударные интервалы — перебором возможных частот.",
   "supplementBreathingVariability99a552": "Вариабельность дыхания",
@@ -13257,12 +13440,16 @@
   "supplementCountedNeverModelledAStepc66896": "Шаги подсчитываются, а не моделируются. Источник — шагомер браслета с частотой 100 Гц при потоковой записи либо шагомер телефона. Каждый отрезок дня учитывается по реально записывавшему его устройству; перекрытия учитываются один раз. Тренировка не заменяет источник для остальной части дня. Оценки по данным 1 Гц нет: частота шагов слишком высока для одного отсчёта в секунду. Без записей шагомера значение отсутствует, а не угадывается.",
   "supplementCreatinined3029a": "Креатинин",
   "supplementDailyRecoveryReadinessFromYourf995c0": "Ежедневная готовность к нагрузке по вашим данным",
+  "supplementDeepMin28f1fc": "Глубокий сон, мин",
   "supplementDeviceAlerts608f4f": "Уведомления устройств",
   "supplementDidYouNapccbced": "Был дневной сон?",
   "supplementDidYouWorkOut9601b8": "Была тренировка?",
   "supplementENMOOverAPersonalDynamice858c1": "ENMO выше индивидуального порога динамического диапазона",
   "supplementEditDailyStepGoal3f9637": "Изменить дневную цель по шагам",
   "supplementElevatedRestingHRSuppressedHRVfaf9cb": "Повышенный пульс в покое и сниженная ВСР в последние ночи.",
+  "supplementEmptyResponseFromProvider2db057": "Провайдер вернул пустой ответ.",
+  "supplementEndTheActiveWorkout37ce3f": "Завершить текущую тренировку.",
+  "supplementEndWorkout3e8d62": "Завершить тренировку",
   "supplementFastingGlucose5433f3": "Глюкоза натощак",
   "supplementFastingInsulincf8459": "Инсулин натощак",
   "supplementFerritin3c7c47": "Ферритин",
@@ -13283,16 +13470,22 @@
   "supplementHighb1a595": "Высокая",
   "supplementHowFarSleepingHeartRatee471ae": "Насколько пульс во сне ниже среднего во время бодрствования.",
   "supplementHowWasToday812df3": "Как прошёл день?",
+  "supplementHrvRmssdf7982b": "ВСР (RMSSD)",
   "supplementIllnessUnusualPhysiologyAndTemperatureda080b": "Сигналы возможной болезни, необычных показателей и температуры",
   "supplementImportedFromWHOOPbb12b5": "Импортировано из WHOOP",
   "supplementIrregularHeartRhythmScreene259c5": "Нерегулярный ритм — предварительная проверка",
   "supplementKeytel2005HarrisBenedictMifflind13096": "Keytel 2005 · нижняя граница основного обмена Harris–Benedict / Mifflin",
   "supplementLDLCholesterol097ebc": "Холестерин ЛПНП",
   "supplementLastNightIsStillBeinga75a55": "Прошлая ночь ещё рассчитывается.",
+  "supplementLogAWorkout6929de": "Записать тренировку",
+  "supplementLogHowTheDayWent0af477": "Записать самочувствие",
+  "supplementLogJournal7b63e0": "Добавить запись в дневник",
+  "supplementLogPeriod9fe2f6": "Отметить менструацию",
   "supplementLowa12494": "Низкая",
   "supplementLowBatteryc5b099": "Низкий заряд",
   "supplementLowReadinessTodayfcb16c": "Низкая готовность сегодня",
   "supplementMagnesiume6a692": "Магний",
+  "supplementMarkADoseebc759": "Отметить приём",
   "supplementMedication36da83": "Лекарство",
   "supplementMinutesOfSleepDetectedOUTSIDE0e1868": "Минуты сна, обнаруженные ВНЕ основного ночного периода: тот же детектор по углу запястья по оси Z с подтверждением снижением пульса. Дневной сон учитывается отдельно и не включается в длительность ночного сна.",
   "supplementMinutesWhoseAccelerationSitsAbovee173ee": "Минуты с ускорением выше порога движения. При достаточной истории порог берётся из ваших недавних дней, а до этого — из популяционных данных. Это ОБЪЁМ активности, а не перемещения: шаги считает шагомер, они не выводятся из этого показателя.",
@@ -13322,23 +13515,37 @@
   "supplementOffe3de5a": "Выключено",
   "supplementPairedSensor0ff7bd": "Подключённый датчик",
   "supplementPlews2013LnRMSSDHopkinsSmallestdd73bd": "Plews 2013 (lnRMSSD) · порог минимального значимого изменения Hopkins",
+  "supplementPlotting351c45": "Построение графика…",
   "supplementPosesbcddeb": "Позы",
   "supplementPossibleIllnessOnset9dccbc": "Возможное начало болезни",
+  "supplementProviderReturnedANonJSON31ec8d": "Провайдер вернул ответ не в формате JSON. Проверьте базовый адрес API: он должен указывать на совместимую с OpenAI конечную точку /chat/completions.",
+  "supplementProviderReturnedAnUnsupportedResponse711ef9": "Провайдер вернул ответ в неподдерживаемом формате: нет message/delta. Конечные точки только с потоковыми ответами не поддерживаются. Используйте стандартную совместимую с OpenAI конечную точку /chat/completions.",
+  "supplementQueryingYourData547061": "Запрос данных…",
   "supplementREMSleepd0c12b": "Быстрый сон (REM)",
   "supplementRMSSDOverTheLongestArtefact4d9ff2": "RMSSD по самому длинному отрезку сна без артефактов. Межударные интервалы извлекаются из записей браслета с частотой 1 Гц и до расчёта статистики корректируются методом Липпонена — Тарвайнена. Показатель получен по пульсу, поэтому это PRV: реальные данные для отслеживания динамики, но не ВСР по ЭКГ.",
+  "supplementReadingYourFoodLog4efdaa": "Чтение журнала питания…",
+  "supplementReadingYourMedications855987": "Чтение списка препаратов…",
+  "supplementRecommendedBedtime4cba4c": "Рекомендуемое время отхода ко сну",
   "supplementRecordPresenceNotHeartRate83be2e": "Наличие записи, а не пригодность пульса",
   "supplementRelativeOnlyUncalibratedADC306a93": "Только относительное значение — некалиброванный АЦП",
+  "supplementRemMin0d0cd5": "REM-сон, мин",
   "supplementReps702045": "Повторы",
   "supplementRequestTimeoutSeconds1c1975": "Тайм-аут запроса (секунды)",
+  "supplementRestingHrdfb52f": "Пульс в покое",
   "supplementSaveStepGoalf99049": "Сохранить цель по шагам",
+  "supplementSetStepGoalb12cf1": "Установить цель по шагам",
   "supplementShownTonightOnVitalsa1d4ef": "Показано за эту ночь в жизненных показателях",
   "supplementSkinTemperatureElevated8165c1": "Повышена температура кожи",
+  "supplementSleepDebtMin0cdfc7": "Дефицит сна, мин",
   "supplementSleepEfficiency9c3cbc": "Эффективность сна",
+  "supplementSleepEfficiencyPctc39ed5": "Эффективность сна, %",
+  "supplementSleepMin16cd5b": "Сон, мин",
   "supplementSmartWakeOff20d2dc": "Умное пробуждение выключено",
   "supplementSmartWakeOnTheBand381ebf": "Умное пробуждение включено; в заданное время браслет в любом случае подаст сигнал",
   "supplementSmartWakeWindowb1483d": "Окно умного пробуждения",
   "supplementSomethingStoodOutToday463b39": "Сегодня кое-что выделилось",
   "supplementStagedFromBeatTimingVariabilityb83d0c": "Определяется по вариабельности межударных интервалов и движению. Датчик на запястье различает быстрый и лёгкий сон лишь приблизительно.",
+  "supplementStartWorkoutd0f3f2": "Начать тренировку",
   "supplementStepGoalReached03be1a": "Цель по шагам достигнута",
   "supplementStillWorkingOut5f72c7": "Ещё тренируетесь?",
   "supplementSustainedRiseVsYourBaseline67c853": "Устойчивый рост относительно базового уровня — возможный сигнал болезни.",
@@ -13375,8 +13582,11 @@
   "supplementTrainingImpulseTimeInEachcd2945": "Тренировочный импульс: время в каждой зоне пульса с весом, соответствующим её физиологической стоимости.",
   "supplementTransferrinSaturation31bc19": "Насыщение трансферрина",
   "supplementTriglycerides95ae7f": "Триглицериды",
+  "supplementUnexpectedResponseFromProvider8b5e12": "Провайдер вернул неожиданный ответ.",
   "supplementUnknownSensor98a1f7": "Неизвестный датчик",
+  "supplementUnusualForYou770b0d": "Отклонения от вашей нормы",
   "supplementUnusualOvernightPhysiology69c322": "Необычные ночные показатели",
+  "supplementUnusualTogether4ca5cd": "Совместные отклонения",
   "supplementVO2maxEst25e886": "VO2max (оценка)",
   "supplementViewData9a8de9": "Посмотреть данные",
   "supplementVitaminB12be7c1e": "Витамин B12",
@@ -13385,7 +13595,9 @@
   "supplementWebsterColeKripkeRescoringHRV378025": "Повторная классификация Webster / Cole–Kripke + стадии по ВСР",
   "supplementWindDown1d651a": "Подготовка ко сну",
   "supplementWindDownMovementNudgesGoalsc032fa": "Подготовка ко сну, движение, цели и итоги недели",
+  "supplementWithheld96ac7e": "Не передано",
   "supplementWithinUserDispersion6ba4c5": "Разброс индивидуальных значений",
+  "supplementWorking13b7bf": "Выполнение…",
   "supplementYouHaveNoWakeAlarmaf3d5a": "На эту ночь не установлен будильник пробуждения.",
   "supplementYouHaveSetYourZones535d10": "Зоны заданы вручную: нет измеренной опорной точки резерва для графика распределения.",
   "supplementYouVeBeenStillForbb79a9": "Вы почти не двигались около двух часов.",
@@ -13406,30 +13618,50 @@
   "supplementYourWeekInReviewabd176": "Итоги вашей недели",
   "supplementYourWeightIsNotOn4ae5a6": "Вес не указан, а он нужен для расчёта.",
   "supplementYouVeBeenInA933b2c": "Вы больше 90 минут в положении для печати без ходьбы.",
+  "supplementAlcoholUnitsea84fd": "порции алкоголя",
   "supplementAnImprovement00aad0": "улучшение",
   "supplementBrMin0041f9": "дых/мин",
+  "supplementBreakfast9e3a82": "завтрак",
+  "supplementCaffeineMgf15138": "кофеин, мг",
   "supplementCme283e1": "см",
+  "supplementDinner78cbc7": "ужин",
   "supplementDown77346d": "снижение",
+  "supplementEnergy173d91": "энергия",
+  "supplementEveryDaya3fd74": "каждый день",
+  "supplementFiguref85bdc": "график",
   "supplementG54fd17": "г",
   "supplementIOSCanOnlyShowThe2139b2": "iOS может показать системное окно сопряжения только до использования Bluetooth приложением. Полностью закройте OpenStrap и откройте снова — окно появится автоматически.",
   "supplementKcal72037b": "ккал",
   "supplementKg138984": "кг",
   "supplementKm08ec69": "км",
+  "supplementLunch094530": "обед",
   "supplementM6b0d31": "м",
   "supplementMinb6c935": "мин",
+  "supplementMissed09f750": "пропущено",
+  "supplementMood89b9fb": "настроение",
   "supplementNoTrendYetNotEnoughc23fe5": "динамики пока нет: недостаточно записанных дней",
+  "supplementNotTaken3d2bc8": "не принято",
+  "supplementNothing0feca7": "ничего",
   "supplementReadinesseb830b": "Готовность",
   "supplementRestingHeartRatec5adc7": "Пульс в покое",
   "supplementScore75ebcb": "оценка",
+  "supplementScreensMinab5656": "экранное время, мин",
   "supplementSleepEfficiency548fe0": "Эффективность сна",
+  "supplementSleepQualitya146dc": "качество сна",
+  "supplementSnack1ba61a": "перекус",
+  "supplementSoreness91da9e": "болезненность мышц",
   "supplementSteady0c69e7": "без изменений",
   "supplementStrain26d10f": "Нагрузка",
+  "supplementStress165bd3": "стресс",
   "supplementTimeAsleep78b642": "Время сна",
   "supplementTrendingDownfc2716": "динамика вниз",
   "supplementTrendingUp34094b": "динамика вверх",
   "supplementUp7c0a25": "рост",
   "supplementVanHees2015WindowDetectionbef776": "Определение периода van Hees 2015 + ночное снижение пульса",
   "supplementVanHees2015WebsterCole3d69f8": "van Hees 2015 · повторная классификация Webster / Cole–Kripke",
+  "supplementWaterMl7902c6": "вода, мл",
+  "supplementWeightKge50726": "вес, кг",
+  "supplementWorkoutc87292": "тренировка",
   "supplementWorseThanUsual06f439": "хуже обычного",
   "supplementWristOptical06ad7e": "оптический датчик на запястье"
 }

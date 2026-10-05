@@ -1,3 +1,4 @@
+import 'coach_text.dart';
 // THE DATA BOUNDARY — the daily briefing, and exactly what left the device to
 // produce it.
 //
@@ -62,7 +63,7 @@ class _AiBriefingScreenState extends State<AiBriefingScreen> {
         final l = AppLocalizations.of(context);
         setState(
           () => _error = e is CoachException
-              ? e.message
+              ? coachPresentationText(l, e.message)
               : (l?.aiBriefingFailedGeneric('$e') ?? 'It failed: $e'),
         );
       }
@@ -296,7 +297,7 @@ class SentPayload extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              _label(k),
+                              uiText(c, _label(k)),
                               style: F.cap.copyWith(color: p.ink3),
                             ),
                           ),
