@@ -192,7 +192,7 @@
   "@profileSetupSexPreferNotToSay": {
     "description": "Sex option: prefer not to say."
   },
-  "profileSetupOtherSexNote": "Для расчёта калорий используется среднее значение двух опубликованных наборов коэффициентов. Для тренировочной нагрузки и Strain опубликованы только два набора коэффициентов, поэтому используется мужской.",
+  "profileSetupOtherSexNote": "Для расчёта калорий используется среднее значение двух опубликованных наборов коэффициентов. Для тренировочной нагрузки и показателя «Нагрузка» опубликованы только два набора коэффициентов, поэтому используется мужской.",
   "@profileSetupOtherSexNote": {
     "description": "Note shown when 'prefer not to say' is picked."
   },
