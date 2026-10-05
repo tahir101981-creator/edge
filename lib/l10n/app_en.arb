@@ -3629,7 +3629,9 @@
   "@dayTimelineDeviceBounded": {
     "description": "Copy shown instead of a per-device curve when the day is outside decoded_onehz retention.",
     "placeholders": {
-      "oldest": {"type": "String"}
+      "oldest": {
+        "type": "String"
+      }
     }
   },
   "dayTimelineTitle": "Breakdown of your day",
@@ -5624,15 +5626,21 @@
   "@metricDetailUsingForX": {
     "description": "Which device currently feeds one metric, under the device filter row.",
     "placeholders": {
-      "device": {"type": "String"},
-      "metric": {"type": "String"}
+      "device": {
+        "type": "String"
+      },
+      "metric": {
+        "type": "String"
+      }
     }
   },
   "metricDetailPreferX": "Prefer {device}",
   "@metricDetailPreferX": {
     "description": "Button: make the selected device win this metric's signal(s).",
     "placeholders": {
-      "device": {"type": "String"}
+      "device": {
+        "type": "String"
+      }
     }
   },
   "metricDetailHistoryKeepsSource": "Days already finished keep the source they were calculated with.",
@@ -12213,7 +12221,7 @@
   "@signalSkinTempRaw": {
     "description": "Human name for the skinTempRaw input signal."
   },
-  "signalVendorScalars": "The device\u2019s own numbers",
+  "signalVendorScalars": "The device’s own numbers",
   "@signalVendorScalars": {
     "description": "Human name for the vendorScalars input signal."
   },
@@ -12261,7 +12269,9 @@
   "@devicesSensorLimit": {
     "description": "Refusal shown when the paired-sensor cap is already reached.",
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "devicesOrderNotSaved": "That order could not be saved. Nothing changed.",
@@ -12662,7 +12672,7 @@
   "devicesWornOtherSub": "A pocket or bag. The band cannot see gait well there.",
   "@devicesWornOtherSub": {
     "description": "Step calibration wearing-location setting"
-    },
+  },
   "tabHome": "Home",
   "tabHealth": "Health",
   "tabNutrition": "Nutrition",
@@ -12670,5 +12680,17 @@
   "tabWellness": "Wellness",
   "@tabHome": {
     "description": "Bottom tab bar labels (tabHome..tabWellness). Keep short; the five must read as different words."
+  },
+  "activityCatalogueName": "{key, select, other{{name}}}",
+  "@activityCatalogueName": {
+    "description": "Display name only. Never persist translated activity or group names.",
+    "placeholders": {
+      "key": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }
