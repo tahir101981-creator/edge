@@ -45,10 +45,16 @@ import 'sleep_detail.dart';
 /// [name] as it reads in a caption. German keeps it as written: its labels
 /// can open with an adjective, so the DE strings put [name] first in the
 /// sentence instead. Everywhere else the title case comes off.
-String nounInSentence(AppLocalizations? l, String name) =>
-    l?.localeName.startsWith('de') == true || name == name.toUpperCase()
-    ? name
-    : name.toLowerCase();
+String nounInSentence(AppLocalizations? l, String name) {
+  if (name.isEmpty ||
+      l?.localeName.startsWith('de') == true ||
+      RegExp(r'^[A-ZА-ЯЁ]{2}').hasMatch(name) ||
+      name.startsWith('SpO₂')) {
+    return name;
+  }
+  // Lowercase the sentence opening, preserving acronyms within the label.
+  return '${name[0].toLowerCase()}${name.substring(1)}';
+}
 
 /// What a metric key means on screen, and whether we are willing to draw it.
 class MetricSpec {

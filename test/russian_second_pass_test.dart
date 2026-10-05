@@ -76,6 +76,9 @@ void main() {
         contains('5 окт. 2026'),
       );
       expect(nounInSentence(ru, 'ВСР'), 'ВСР');
+      expect(nounInSentence(ru, 'Стабильность ВСР'), 'стабильность ВСР');
+      expect(nounInSentence(ru, 'REM-сон'), 'REM-сон');
+      expect(nounInSentence(ru, 'SpO₂'), 'SpO₂');
       expect(nounInSentence(ru, 'Сон'), 'сон');
     },
   );
