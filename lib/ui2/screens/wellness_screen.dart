@@ -1,3 +1,4 @@
+import '../../l10n/display_text.dart';
 // Wellness — softer than Health, same system.
 //
 // Health tells you what your body did. Wellness is where you tell it back, and
@@ -233,8 +234,7 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
     // `select`, not `watch`: this screen lives in the shell's IndexedStack and
     // stays mounted, so a plain watch would rebuild it on every unrelated
     // AppState notification for the life of the app.
-    final showCycle =
-        c.select<AppState, bool>((a) => a.cycleTrackingEnabled);
+    final showCycle = c.select<AppState, bool>((a) => a.cycleTrackingEnabled);
     final labels = [
       l?.wellnessTabMind ?? 'Mind',
       l?.wellnessTabRecovery ?? 'Recovery',
@@ -256,8 +256,7 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
       children: [
         for (final w in <Widget>[
           ScreenTitle(l?.wellnessTitle ?? 'Wellness'),
-          SubTabs(tabs, tab, (i) => setState(() => _tab = i),
-              color: C.domMind),
+          SubTabs(tabs, tab, (i) => setState(() => _tab = i), color: C.domMind),
           const SizedBox(height: S.x5),
           if (_loading)
             const Center(child: CircularProgressIndicator())
@@ -275,8 +274,9 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
                 sub: last == null
                     ? (l?.wellnessPickOneAndGo ?? 'Pick one and go')
                     : (l?.wellnessLastMinutes(
-                            (_reading(last['seconds']) ?? 0) ~/ 60) ??
-                        'Last: ${(_reading(last['seconds']) ?? 0) ~/ 60} min'),
+                            (_reading(last['seconds']) ?? 0) ~/ 60,
+                          ) ??
+                          'Last: ${(_reading(last['seconds']) ?? 0) ~/ 60} min'),
                 asset: 'mascot_wellness.png',
                 accent: C.domMind,
                 deep: C.teal,
@@ -300,7 +300,8 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
                 onTap: () async {
                   await Navigator.of(c).push(
                     MaterialPageRoute<void>(
-                        builder: (_) => const CalmBreathing()),
+                      builder: (_) => const CalmBreathing(),
+                    ),
                   );
                   await _load();
                 },
@@ -314,8 +315,9 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
             w
           else
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: S.x4),
-                child: w),
+              padding: const EdgeInsets.symmetric(horizontal: S.x4),
+              child: w,
+            ),
       ],
     );
   }
@@ -390,7 +392,9 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
     // Not `.toLowerCase()`: these are user-entered/localized field labels
     // (acronyms like HRV, or nouns a language capitalizes) — lowercasing
     // them here would corrupt content the join has no business rewriting.
-    final names = [for (final f in _fields) f.label];
+    final names = [
+      for (final f in _fields) f.custom ? f.label : localizedText(l, f.label),
+    ];
     if (names.isEmpty) {
       return l?.wellnessJournalDefaultSubtitle ??
           'Anything you want to remember about today';
@@ -592,7 +596,7 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
                       Pressable(
                         semanticLabel:
                             l?.wellnessRemoveHabitSemantic(h.label) ??
-                                'Remove ${h.label}',
+                            'Remove ${h.label}',
                         onTap: () => _confirmRemoveHabit(h),
                         child: Padding(
                           padding: const EdgeInsets.only(right: S.x3),
@@ -676,9 +680,10 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
     final l = AppLocalizations.of(context);
     final ok = await confirmRemove(
       context,
-      title: l?.wellnessRemoveHabitConfirmTitle(h.label) ??
-          'Remove ${h.label}?',
-      body: l?.wellnessRemoveHabitConfirmBody ??
+      title:
+          l?.wellnessRemoveHabitConfirmTitle(h.label) ?? 'Remove ${h.label}?',
+      body:
+          l?.wellnessRemoveHabitConfirmBody ??
           'It stops being asked. The days you already recorded stay.',
     );
     if (!ok || !mounted) return;
@@ -924,7 +929,7 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
               sub: skipped
                   ? (l?.wellnessBackToNotTaken ?? 'Back to not taken.')
                   : (l?.wellnessRecordedAsDecision ??
-                      'Recorded as a decision, not a miss.'),
+                        'Recorded as a decision, not a miss.'),
               onTap: () {
                 Navigator.of(sheet).pop();
                 _skipDose(s);
@@ -941,9 +946,9 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
             ),
             _SheetAction(
               LucideIcons.trash2,
-              l?.wellnessRemoveMedTitle(s.def.label) ??
-                  'Remove ${s.def.label}',
-              sub: l?.wellnessRemoveMedBody ??
+              l?.wellnessRemoveMedTitle(s.def.label) ?? 'Remove ${s.def.label}',
+              sub:
+                  l?.wellnessRemoveMedBody ??
                   'It stops being scheduled. Marked doses stay.',
               onTap: () {
                 Navigator.of(sheet).pop();
@@ -1008,9 +1013,9 @@ class _WellnessScreenState extends State<WellnessScreen> with RevisionReload {
     final l = AppLocalizations.of(context);
     final ok = await confirmRemove(
       context,
-      title: l?.wellnessRemoveMedConfirmTitle(d.label) ??
-          'Remove ${d.label}?',
-      body: l?.wellnessRemoveMedConfirmBody ??
+      title: l?.wellnessRemoveMedConfirmTitle(d.label) ?? 'Remove ${d.label}?',
+      body:
+          l?.wellnessRemoveMedConfirmBody ??
           'It stops being scheduled and stops counting towards adherence. '
               'The doses you already marked stay.',
     );
@@ -1260,7 +1265,10 @@ Future<MedSchedule?> pickMedSchedule(
                 },
                 child: Container(
                   padding: const EdgeInsets.all(S.x4),
-                  decoration: BoxDecoration(color: p.card2, borderRadius: R.rMd),
+                  decoration: BoxDecoration(
+                    color: p.card2,
+                    borderRadius: R.rMd,
+                  ),
                   child: Row(
                     children: [
                       Icon(LucideIcons.clock, size: 17, color: p.ink3),
@@ -1328,7 +1336,7 @@ Future<MedSchedule?> pickMedSchedule(
                 picked.isEmpty
                     ? (l?.wellnessPickAtLeastOneDay ?? 'Pick at least one day.')
                     : (l?.wellnessDueDays(_daysLabel(c, picked.toList())) ??
-                        'Due ${_daysLabel(c, picked.toList()).toLowerCase()}.'),
+                          'Due ${_daysLabel(c, picked.toList()).toLowerCase()}.'),
                 style: F.cap.copyWith(color: p.ink3),
               ),
               const SizedBox(height: S.x4),
@@ -1337,9 +1345,9 @@ Future<MedSchedule?> pickMedSchedule(
                 color: C.domMind,
                 onTap: picked.isEmpty
                     ? null
-                    : () => Navigator.of(sheet).pop(
-                        MedSchedule(minute, picked.toList()..sort()),
-                      ),
+                    : () => Navigator.of(
+                        sheet,
+                      ).pop(MedSchedule(minute, picked.toList()..sort())),
               ),
             ],
           ),
@@ -1404,7 +1412,8 @@ class MedRow extends StatelessWidget {
     final taken = slot.state == DoseState.taken;
     return Pressable(
       onTap: onTap,
-      semanticLabel: l?.wellnessMedAtTime(slot.def.label, slot.timeLabel) ??
+      semanticLabel:
+          l?.wellnessMedAtTime(slot.def.label, slot.timeLabel) ??
           '${slot.def.label} at ${slot.timeLabel}',
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: S.x3),
@@ -1440,7 +1449,7 @@ class MedRow extends StatelessWidget {
               Pressable(
                 semanticLabel:
                     l?.wellnessMoreForMed(slot.def.label) ??
-                        'More for ${slot.def.label}',
+                    'More for ${slot.def.label}',
                 onTap: onMore,
                 child: Padding(
                   padding: const EdgeInsets.only(right: S.x3),
@@ -1669,7 +1678,14 @@ class _JournalFindingsState extends State<JournalFindings> {
         ? (l?.wellnessHigher ?? 'higher')
         : (l?.wellnessLower ?? 'lower');
     final amount = _amount((slope * per).abs(), unit);
-    return l?.wellnessHeadlineSlope(n, field, outcome, amount, direction, step) ??
+    return l?.wellnessHeadlineSlope(
+          n,
+          field,
+          outcome,
+          amount,
+          direction,
+          step,
+        ) ??
         'On the $n days you logged $field, $outcome ran '
             '$amount $direction per $step';
   }
@@ -1697,13 +1713,14 @@ class _JournalFindingsState extends State<JournalFindings> {
         journalFieldLagDays[field] ??
         (field.startsWith('caffeine') ? journalFieldLagDays['caffeine'] : null);
     if (lag == null) {
-      return l?.wellnessMatchedSameDay ?? 'Matched against the same day\'s numbers.';
+      return l?.wellnessMatchedSameDay ??
+          'Matched against the same day\'s numbers.';
     }
     return lag > 0
         ? (l?.wellnessMatchedNightFollowed ??
-            'Matched against the night that followed.')
+              'Matched against the night that followed.')
         : (l?.wellnessMatchedNightEnded ??
-            'Matched against the night that ended that morning.');
+              'Matched against the night that ended that morning.');
   }
 
   String _detail(AppLocalizations? l, Map<String, dynamic> r) {
@@ -1711,7 +1728,8 @@ class _JournalFindingsState extends State<JournalFindings> {
     if (r['binary'] == true) {
       final d = (r['cohens_d'] as num?)?.toDouble();
       final n = '${r['n_without']}';
-      final against = l?.wellnessAgainstDaysYouDidNot(n) ??
+      final against =
+          l?.wellnessAgainstDaysYouDidNot(n) ??
           'Against the $n days you did not';
       return '$against'
           '${d == null ? '' : ' · d ${d.abs().toStringAsFixed(1)}'}. $when';
@@ -1725,15 +1743,15 @@ class _JournalFindingsState extends State<JournalFindings> {
     final base = rho == null
         ? ''
         : (l?.wellnessRankCorrelation(rho.toStringAsFixed(2), ci) ??
-            'Rank correlation ${rho.toStringAsFixed(2)}$ci. ');
+              'Rank correlation ${rho.toStringAsFixed(2)}$ci. ');
     // MT-06's own ceiling, said where the finding is: `at_min` is the LAST
     // occurrence, so timing cannot tell two coffees from five, and a late
     // stressful day produces both the late coffee and the bad night.
     if (r['field'] == 'caffeine_last_min') {
       return '$base$when ${l?.wellnessCaffeineCaveat ?? 'This is your last '
-          'caffeine of the day only — two cups and five look identical '
-          'here, so "later" can quietly mean "more". A long, stressful day '
-          'produces both the late coffee and the poor night.'}';
+              'caffeine of the day only — two cups and five look identical '
+              'here, so "later" can quietly mean "more". A long, stressful day '
+              'produces both the late coffee and the poor night.'}';
     }
     return '$base$when'.trim();
   }
@@ -1795,14 +1813,16 @@ class _JournalFindingsState extends State<JournalFindings> {
     return Surface(
       pad: const EdgeInsets.symmetric(horizontal: S.x4),
       child: DriverRow(
-        label: l?.wellnessWeekdayHeadline(
+        label:
+            l?.wellnessWeekdayHeadline(
               weekdayPlural,
               '${delta.abs().round()}',
               direction,
             ) ??
             '${_weekdayName(day)}s: readiness runs '
                 '${delta.abs().round()} $direction than your overall median',
-        detail: l?.wellnessWeekdayDetail('$n') ??
+        detail:
+            l?.wellnessWeekdayDetail('$n') ??
             'From $n of them. A weekday is not a cause — it is a container '
                 'for what you do on it. Nothing here is advice.',
       ),

@@ -5,6 +5,9 @@ import android.content.Context
 /** Display adapter only. Snapshot keys, values, freshness and ring math are unchanged. */
 internal fun widgetText(context: Context, text: String): String {
     val resource = when (text) {
+        "no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours." -> R.string.widget_second_reason_0
+        "Baevsky Stress Index → 0–100; resting autonomic tension (PRV)." -> R.string.widget_second_reason_1
+        "no readiness inputs present — \"—\" (never imputed)." -> R.string.widget_second_reason_2
         "Your age is not on file, and this is worked out from it." -> R.string.widget_presentation_0
         "Your weight is not on file, and this is worked out from it." -> R.string.widget_presentation_1
         "Your height is not on file, and this is worked out from it." -> R.string.widget_presentation_2
@@ -72,6 +75,12 @@ internal fun widgetText(context: Context, text: String): String {
     if (resource != null) return uiString(context, resource)
     // Duration and unit formatting uses the same saved language override.
     if (widgetText(context, "bpm") == "bpm") return text
+    val gap = Regex("^(.*?)(?: )?Your band was off your wrist (.+?) – (.+?)\\.$").matchEntire(text)
+    if (gap != null) {
+        val prefix = gap.groupValues[1].trimEnd()
+        return (if (prefix.isEmpty()) "" else widgetText(context, prefix) + " ") +
+            uiString(context, R.string.widget_off_wrist_span, gap.groupValues[2], gap.groupValues[3])
+    }
     val count = Regex("^(.*?) There were (\\d+), and it needs (\\d+)\\.$").matchEntire(text)
     if (count != null) return uiString(context, R.string.widget_reason_count,
         widgetText(context, count.groupValues[1]), count.groupValues[2], count.groupValues[3])

@@ -14425,5 +14425,71 @@
   "supplementWristOptical06ad7e": "wrist optical",
   "@supplementWristOptical06ad7e": {
     "description": "Presentation-only text for existing interface, exports or notifications."
-  }
+  },
+  "secondPassa42398c8e2": "Bluetooth heart rate sensor",
+  "secondPassa866104aec": "Garmin watch",
+  "secondPass07a35b6b26": "Polar sensor",
+  "secondPass0959853051": "Coros watch",
+  "secondPassd17a029edf": "COROS watch",
+  "secondPasscd6b641bdc": "Smart ring (R11M/R10M)",
+  "secondPass9f86e25601": "DaFit / MOYOUNG watch",
+  "secondPassb0f7c52e5a": "WearFit band",
+  "secondPass7c2f3caf1a": "Smart ring/band (Lefun protocol)",
+  "secondPass64ea7ec4b4": "HPlus HR band",
+  "secondPassc28d418c25": "Fossil/Skagen Hybrid Smartwatch",
+  "secondPass9424b286ed": "Colmi ring",
+  "secondPass0fb03591f9": "no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours.",
+  "secondPassfa9488e1ab": "Baevsky Stress Index → 0–100; resting autonomic tension (PRV).",
+  "secondPassa26b1cda08": "no readiness inputs present — \"—\" (never imputed).",
+  "secondPass298da785e2": "MET value × your weight, refined by heart rate — or heart rate alone, for an activity that carries no MET.",
+  "secondPassc16981e681": "Mood",
+  "secondPass9fb6ae0420": "Sleep quality",
+  "secondPass5eb6194eec": "Height (cm)",
+  "secondPass4fa48a42d2": "Height (in)",
+  "secondPass5b596595ab": "Weight (lb)",
+  "secondPassa0f1490a20": "s",
+  "secondPass62bd09b6d2": "µV",
+  "secondPassaad5f75d12": "Reads the ring directly — no account, no key exchange.",
+  "secondPass0a93a1d1fb": "Pebble 2 or Pebble 2 SE only. Pairs only for now — nothing is read or stored yet.",
+  "secondPass96cae735a3": "The original Fossil/Skagen hybrid smartwatch, not the newer Hybrid HR. Pairs and connects; nothing derives from it yet.",
+  "secondPass03c4fa8933": "A budget activity band. Pairs and banks its raw data, but nothing is derived from it yet.",
+  "secondPassfeea57ea3f": "Pairs and banks its raw data — nothing is decoded yet.",
+  "secondPasse7301b35bd": "A generic ring or band sold under many storefront names. Pairs and connects; reports nothing yet.",
+  "secondPassb632bb4f97": "A generic HPlus-family HR band. Pairs and banks its history; nothing is decoded into a number yet.",
+  "secondPassa6430a538c": "Pairs and banks its raw data in the background, but does not derive anything from it yet.",
+  "secondPass2da418b545": "An unbranded DaFit/MOYOUNG-style watch. Pairs and banks its own data; nothing derives from it yet.",
+  "secondPassf14edf0916": "An unbranded Makibes HR3 board. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPass7ed5b0396e": "An unbranded ID115 board. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPass361ca2be5c": "An unbranded XWatch board. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPass91e760b798": "An unbranded Watch9 board. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPass646356f2c7": "An SMA-Q2-OSS smartwatch. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPassc0920a4961": "A TLW64 or NO1 F1 fitness band. Pairs and banks its raw data; nothing is derived from it yet.",
+  "secondPass22859fa3d4": "Caffeine",
+  "secondPass35fa6a7b51": "Alcohol",
+  "secondPassMeasurementsOf": "{have} of {total} measures",
+  "@secondPassMeasurementsOf": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "secondPassAveragePulse": "{value} bpm avg",
+  "@secondPassAveragePulse": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "secondPass9c7a0f56b8": "Soreness",
+  "secondPass165b867753": "Screens before bed",
+  "secondPassaf10ef20dd": "in",
+  "secondPasscba4181417": "lb",
+  "secondPassb331fc67af": "ml",
+  "secondPass191be3715b": "mg",
+  "secondPass9176253183": "units"
 }

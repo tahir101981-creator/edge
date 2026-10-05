@@ -84,7 +84,7 @@
   "@pairingNotFoundTitle": {
     "description": "Pairing state title: not found."
   },
-  "pairingNotFoundBody": "На поиск никто не ответил. Браслет доступен для обнаружения, только когда он активен и не подключён к другому телефону.",
+  "pairingNotFoundBody": "Во время поиска браслет не ответил. Браслет доступен для обнаружения, только когда он активен и не подключён к другому телефону.",
   "@pairingNotFoundBody": {
     "description": "Pairing state body: not found."
   },
@@ -144,7 +144,7 @@
   "@pairingNotFoundAdviceBody": {
     "description": "Advice card body: not found."
   },
-  "pairingNotFoundAdviceFix": "Полностью закройте другое приложение и повторите поиск",
+  "pairingNotFoundAdviceFix": "Закройте другое приложение и повторите поиск",
   "@pairingNotFoundAdviceFix": {
     "description": "Advice card fix: not found."
   },
@@ -1410,7 +1410,7 @@
       }
     }
   },
-  "welcomeHeadline": "Ваш браслет — данные на вашем телефоне",
+  "welcomeHeadline": "Данные с браслета — на вашем телефоне",
   "@welcomeHeadline": {
     "description": "Welcome screen headline."
   },
@@ -7721,7 +7721,7 @@
   "@wellnessTitle": {
     "description": "Wellness screen title"
   },
-  "wellnessTabMind": "Внимание",
+  "wellnessTabMind": "Осознанность",
   "@wellnessTabMind": {
     "description": "Wellness sub-tab label: Mind"
   },
@@ -13663,5 +13663,71 @@
   "supplementWeightKge50726": "вес, кг",
   "supplementWorkoutc87292": "тренировка",
   "supplementWorseThanUsual06f439": "хуже обычного",
-  "supplementWristOptical06ad7e": "оптический датчик на запястье"
+  "supplementWristOptical06ad7e": "оптический датчик на запястье",
+  "secondPassa42398c8e2": "Bluetooth-датчик пульса",
+  "secondPassa866104aec": "Часы Garmin",
+  "secondPass07a35b6b26": "Датчик Polar",
+  "secondPass0959853051": "Часы COROS",
+  "secondPassd17a029edf": "Часы COROS",
+  "secondPasscd6b641bdc": "Умное кольцо (R11M/R10M)",
+  "secondPass9f86e25601": "Часы DaFit / MOYOUNG",
+  "secondPassb0f7c52e5a": "Браслет WearFit",
+  "secondPass7c2f3caf1a": "Умное кольцо/браслет (протокол Lefun)",
+  "secondPass64ea7ec4b4": "Браслет HPlus с датчиком пульса",
+  "secondPassc28d418c25": "Гибридные часы Fossil/Skagen",
+  "secondPass9424b286ed": "Кольцо Colmi",
+  "secondPass0fb03591f9": "За этот день сон не рассчитан: пульс в покое измеряется только во время сна, а не в часы бодрствования.",
+  "secondPassfa9488e1ab": "Индекс стресса Баевского → 0–100; напряжение вегетативной нервной системы в покое (PRV).",
+  "secondPassa26b1cda08": "Нет входных данных для расчёта готовности — «—» (значения не подставляются искусственно).",
+  "secondPass298da785e2": "MET × ваш вес, с уточнением по пульсу; для занятий без значения MET — только по пульсу.",
+  "secondPassc16981e681": "Настроение",
+  "secondPass9fb6ae0420": "Качество сна",
+  "secondPass5eb6194eec": "Рост (см)",
+  "secondPass4fa48a42d2": "Рост (дюймы)",
+  "secondPass5b596595ab": "Вес (фунты)",
+  "secondPassa0f1490a20": "с",
+  "secondPass62bd09b6d2": "мкВ",
+  "secondPassaad5f75d12": "Данные считываются прямо с кольца — без аккаунта и обмена ключами.",
+  "secondPass0a93a1d1fb": "Только Pebble 2 или Pebble 2 SE. Пока доступно только подключение — данные ещё не считываются и не сохраняются.",
+  "secondPass96cae735a3": "Первые гибридные часы Fossil/Skagen, не более новые Hybrid HR. Сопряжение и подключение работают; показатели пока не рассчитываются.",
+  "secondPass03c4fa8933": "Недорогой фитнес-браслет. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPassfeea57ea3f": "Подключается и сохраняет исходные данные — они пока не декодируются.",
+  "secondPasse7301b35bd": "Кольцо или браслет, продаваемый под разными названиями. Сопряжение и подключение работают; данные пока не передаются.",
+  "secondPassb632bb4f97": "Браслет семейства HPlus с датчиком пульса. Подключается и сохраняет историю; показатели пока не декодируются.",
+  "secondPassa6430a538c": "Подключается и сохраняет исходные данные в фоне; показатели пока не рассчитываются.",
+  "secondPass2da418b545": "Часы без бренда на платформе DaFit/MOYOUNG. Подключаются и сохраняют исходные данные; показатели пока не рассчитываются.",
+  "secondPassf14edf0916": "Устройство Makibes HR3 без бренда. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPass7ed5b0396e": "Устройство ID115 без бренда. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPass361ca2be5c": "Устройство XWatch без бренда. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPass91e760b798": "Устройство Watch9 без бренда. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPass646356f2c7": "Часы SMA-Q2-OSS. Подключаются и сохраняют исходные данные; показатели пока не рассчитываются.",
+  "secondPassc0920a4961": "Фитнес-браслет TLW64 или NO1 F1. Подключается и сохраняет исходные данные; показатели пока не рассчитываются.",
+  "secondPass22859fa3d4": "Кофеин",
+  "secondPass35fa6a7b51": "Алкоголь",
+  "secondPassMeasurementsOf": "{have} из {total} измерений",
+  "@secondPassMeasurementsOf": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "secondPassAveragePulse": "ср. пульс {value} уд/мин",
+  "@secondPassAveragePulse": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "secondPass9c7a0f56b8": "Болезненность мышц",
+  "secondPass165b867753": "Экранное время перед сном",
+  "secondPassaf10ef20dd": "дюймы",
+  "secondPasscba4181417": "фунты",
+  "secondPassb331fc67af": "мл",
+  "secondPass191be3715b": "мг",
+  "secondPass9176253183": "порции"
 }

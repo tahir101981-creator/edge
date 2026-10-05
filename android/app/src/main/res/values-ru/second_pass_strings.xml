@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_second_reason_0">За этот день сон не рассчитан: пульс в покое измеряется только во время сна, а не в часы бодрствования.</string>
+    <string name="widget_second_reason_1">Индекс стресса Баевского → 0–100; напряжение вегетативной нервной системы в покое (PRV).</string>
+    <string name="widget_second_reason_2">Нет входных данных для расчёта готовности — «—» (значения не подставляются искусственно).</string>
+    <string name="widget_off_wrist_span">Браслет был снят с запястья с %1$s до %2$s.</string>
+</resources>
