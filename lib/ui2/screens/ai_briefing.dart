@@ -11,6 +11,7 @@
 // not a nicety. It is the thing that makes choosing a cloud key a decision
 // rather than a leap, and it is why the local presets come first in setup.
 
+import '../../l10n/display_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +85,7 @@ class _AiBriefingScreenState extends State<AiBriefingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: S.x4),
               child: NavBar(
-                widget.period.title,
+                uiText(c, widget.period.title),
                 sub: b == null
                     ? ''
                     : (l?.aiBriefingForDay(b.day) ?? 'FOR ${b.day}'),
@@ -124,7 +125,7 @@ class _AiBriefingScreenState extends State<AiBriefingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            b.oneLiner,
+                            b.oneLiner == 'Nothing stood out tonight.' ? uiText(c, b.oneLiner) : b.oneLiner,
                             style: F.body.copyWith(color: p.ink, height: 1.5),
                           ),
                           if (b.breakdownMd.isNotEmpty) ...[

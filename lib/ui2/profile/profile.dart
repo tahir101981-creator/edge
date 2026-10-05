@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../health/health_import_state.dart' show storeName;
 import '../../l10n/app_localizations.dart';
+import '../../widget/widget_service.dart';
 import '../../state/app_state.dart';
 import '../../state/locale_controller.dart';
 import '../ui2.dart';
@@ -175,6 +176,7 @@ Future<void> _pickLanguage(BuildContext c) async {
               onTap: () async {
                 await ctrl.setCode(code);
                 if (sheet.mounted) Navigator.of(sheet).pop();
+                await WidgetService.refreshPresentation();
               },
             ),
         ],

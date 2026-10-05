@@ -51,6 +51,17 @@ class WidgetService {
     }
   }
 
+  /// Re-render the existing snapshot after a display-language change.
+  /// Does not read, derive or write health data.
+  static Future<void> refreshPresentation() async {
+    try {
+      await init();
+      await _reloadSnapshotWidgets();
+      await HomeWidget.updateWidget(
+        iOSName: _batteryIOSName, androidName: _batteryAndroidName);
+    } catch (_) { /* widgets are optional */ }
+  }
+
   static bool _inited = false;
   static Future<void> init() async {
     if (_inited) return;

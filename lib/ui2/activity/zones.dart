@@ -247,7 +247,7 @@ class _ZonesDetailState extends State<ZonesDetail> {
             for (var i = 0; i < 5; i++) ...[
               OsTextField(
                 controller: ctrls[i],
-                label: 'Z${i + 1} · ${names[i]} starts at',
+                label: l?.supplementZoneStartsAt(i + 1, names[i]) ?? 'Z${i + 1} · ${names[i]} starts at',
                 hint: l?.activityZonesBpmUnit ?? 'bpm',
                 keyboard: TextInputType.number,
               ),

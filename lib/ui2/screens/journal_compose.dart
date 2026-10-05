@@ -9,6 +9,7 @@
 // the ceiling exists so one mis-tap cannot enter forty coffees and dominate
 // every correlation that field appears in for months.
 
+import '../../l10n/display_text.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -1084,7 +1085,7 @@ class _JournalAiSheetState extends State<_JournalAiSheet> {
                 decoration: BoxDecoration(color: p.line, borderRadius: R.rSm),
               ),
               const SizedBox(height: S.x3),
-              Text('Talk it through',
+              Text(uiText(c, 'Talk it through'),
                   style: F.head.copyWith(color: p.ink)),
               const SizedBox(height: S.x2),
               Expanded(
@@ -1093,8 +1094,7 @@ class _JournalAiSheetState extends State<_JournalAiSheet> {
                         child: Padding(
                           padding: const EdgeInsets.all(S.x4),
                           child: Text(
-                            'Tell it about your day — it proposes tags and a '
-                            'note, you decide what to keep.',
+                            uiText(c, 'Tell it about your day — it proposes tags and a note, you decide what to keep.'),
                             textAlign: TextAlign.center,
                             style: F.body.copyWith(color: p.ink3),
                           ),
@@ -1157,7 +1157,7 @@ class _JournalAiSheetState extends State<_JournalAiSheet> {
                         onSubmitted: (_) => unawaited(_send()),
                         decoration: InputDecoration(
                           isDense: true,
-                          hintText: 'Tell it about your day…',
+                          hintText: uiText(c, 'Tell it about your day…'),
                           border: OutlineInputBorder(borderRadius: R.rMd),
                         ),
                       ),

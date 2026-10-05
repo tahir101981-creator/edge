@@ -18,6 +18,9 @@
 // come from elsewhere (`workout_route`, `strength_set`) or not at all, and the
 // screen has to be honest about it without falling apart.
 
+import '../../l10n/display_text.dart';
+import '../../state/locale_controller.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert' show utf8;
 import 'dart:typed_data' show Uint8List;
 
@@ -487,23 +490,9 @@ String hms(Duration d) => clock(d.inSeconds);
 
 /// 1 234 → "1,234". Thousands separators, because six-thousand-eight-hundred
 /// and forty-two kilos should not read as a phone number.
-String grouped(num v) {
-  final s = v.round().abs().toString();
-  final b = StringBuffer(v < 0 ? '-' : '');
-  for (var i = 0; i < s.length; i++) {
-    if (i > 0 && (s.length - i) % 3 == 0) b.write(',');
-    b.write(s[i]);
-  }
-  return b.toString();
-}
+String grouped(num v) => NumberFormat.decimalPattern(LocaleController.displayLanguageCode).format(v.round());
 
-String _shortDate(DateTime t) {
-  const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-  ];
-  return '${months[t.month - 1]} ${t.day}, ${t.year} at ${formatClockOf(t)}';
-}
+
 
 // ── THE SUPPORTING STATS ───────────────────────────────────────────────────
 
@@ -649,9 +638,9 @@ class SessionStats extends StatelessWidget {
       final (value, unit) = splitStatUnit(s.$2);
       rows.add(PosterStatRow(
         icon: statIcon(s.$1),
-        label: s.$1,
+        label: uiText(c, s.$1),
         value: value,
-        unit: unit,
+        unit: unit == null ? null : uiText(c, unit),
         accent: accent,
       ));
     }
@@ -990,8 +979,8 @@ class _ActivitySummaryState extends State<ActivitySummary> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: S.x4),
             child: NavBar(
-              a.name,
-              sub: _shortDate(r.start).toUpperCase(),
+              a.displayName(c),
+              sub: '${DateFormat.yMMMd(AppLocalizations.of(c)?.localeName ?? 'en').format(r.start)} · ${formatClockOf(r.start)}'.toUpperCase(),
               // Each icon is a Pressable with S.tap's own 44 pt minimum hit
               // box (grammar.dart's accessibility floor, not optional) —
               // S.tap * n alone is short of that plus the gaps between them,
@@ -1011,7 +1000,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                 ],
                 Pressable(
                   semanticLabel: l?.activitySummaryShareThis(
-                          a.name.toLowerCase()) ??
+                          a.displayName(context).toLowerCase()) ??
                       'Share this ${a.name.toLowerCase()}',
                   onTap: () => Navigator.of(c).push(MaterialPageRoute(
                       builder: (_) => ShareSheet(r))),
@@ -1234,7 +1223,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
               arch == Arch.journey && r.gainM != null
                   ? (l?.activitySummaryClimbed(r.gainM!.round()) ??
                       '+${r.gainM!.round()} m climbed')
-                  : a.name
+                  : a.displayName(context)
             ),
       Arch.strength => r.strength.volumeKg == null
           ? (
@@ -1425,7 +1414,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                       style: F.head.copyWith(color: p.ink)),
                   Text(
                       r.breathsPerMin == null
-                          ? a.name
+                          ? a.displayName(context)
                           : '${r.breathsPerMin!.toStringAsFixed(1)} breaths/min',
                       style: F.over.copyWith(color: p.on(C.teal))),
                 ]),
@@ -1579,7 +1568,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
       return [
         StatusCard(
           have == 0
-              ? (l?.activitySummaryNoPulseTitle(a.name.toLowerCase()) ??
+              ? (l?.activitySummaryNoPulseTitle(a.displayName(context).toLowerCase()) ??
                   'No pulse reading for this ${a.name.toLowerCase()}')
               : (l?.activitySummaryOneMinutePulse ??
                   'One minute of pulse, and no more'),
@@ -1625,7 +1614,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         // helps.
         : thermal
             ? StatusCard(
-                l?.activitySummaryNoPulseTitle(a.name.toLowerCase()) ??
+                l?.activitySummaryNoPulseTitle(a.displayName(context).toLowerCase()) ??
                     'No pulse reading for this ${a.name.toLowerCase()}',
                 _thermalWhy!,
                 icon: _thermalIcon,
@@ -2162,7 +2151,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         // reason, and "check band connection" is not it.
         else if (thermal)
           StatusCard(
-            l?.activitySummaryNothingToPlot(a.name.toLowerCase()) ??
+            l?.activitySummaryNothingToPlot(a.displayName(context).toLowerCase()) ??
                 'Nothing to plot for this ${a.name.toLowerCase()}',
             _thermalWhy!,
             icon: _thermalIcon,

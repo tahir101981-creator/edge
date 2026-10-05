@@ -9,6 +9,7 @@
 // Every metric goes through THIS screen. Forty bespoke detail screens is how
 // the old UI ended up with forty different opinions about what a chart is.
 
+import '../../l10n/display_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -850,7 +851,7 @@ class _MetricDetailState extends State<MetricDetail> {
     final series = denseDays(all, win);
     final vals = [for (final v in series) ?v];
 
-    return detailScaffold(c, spec.title, [
+    return detailScaffold(c, uiText(context, spec.title), [
       // Resting heart rate is the NIGHT's number; this is what the chest is
       // doing this second. Two different quantities, so the live one gets its
       // own card above the trend rather than a second figure on the same card,
@@ -867,8 +868,8 @@ class _MetricDetailState extends State<MetricDetail> {
         const SizedBox(height: S.x2),
         StatusCard(
           l?.metricDetailNotShownTitle ?? 'Not shown as a trend',
-          spec.suppress!,
-          fix: spec.suppressFix ?? '',
+          uiText(context, spec.suppress!),
+          fix: uiText(context, spec.suppressFix ?? ''),
           icon: spec.icon,
         ),
         const SizedBox(height: S.x5),
@@ -883,8 +884,8 @@ class _MetricDetailState extends State<MetricDetail> {
             win == 1
                 ? (l?.metricDetailNothingRecordedToday ??
                     'Nothing recorded today')
-                : (l?.metricDetailNoHistoryYet(spec.title.toLowerCase()) ??
-                    'No history for ${spec.title.toLowerCase()} yet'),
+                : (l?.metricDetailNoHistoryYet(uiText(context, spec.title).toLowerCase()) ??
+                    'No history for ${uiText(context, spec.title).toLowerCase()} yet'),
             win == 1
                 ? (all.isEmpty
                     ? (l?.metricDetailNoValueYet ??
@@ -1027,7 +1028,7 @@ class _MetricDetailState extends State<MetricDetail> {
         l?.metricDetailUsingForX(device, subject) ??
         'Using $device for $subject.';
     if (!_split) {
-      return [line(_labelOf(d, _preferredId), nounInSentence(l, spec.title))];
+      return [line(_labelOf(d, _preferredId), nounInSentence(l, uiText(context, spec.title)))];
     }
     return [
       for (final e in _winners.entries)
@@ -1167,7 +1168,7 @@ class _MetricDetailState extends State<MetricDetail> {
               // NOT `spec.unit`. `metricValue('min', 443)` is already "7h 23m",
               // so every min-unit metric — Time asleep, Deep, REM, Wear time —
               // rendered its headline as "7h 23m min".
-              Text(unitBeside(spec.unit),
+              Text(uiText(context, unitBeside(spec.unit)),
                   style: F.body.copyWith(color: p.ink3)),
             ]),
         const SizedBox(height: S.x1),
@@ -1271,7 +1272,7 @@ class _MetricDetailState extends State<MetricDetail> {
           ];
           final dim = _dimMask(d, series.length);
           return ChartFrame(
-            title: spec.title,
+            title: uiText(context, spec.title),
             unit: spec.unit.isEmpty ? 'score' : spec.unit,
             height: 150,
             yAxis: axis,
@@ -1318,7 +1319,7 @@ class _MetricDetailState extends State<MetricDetail> {
               // bucket the finger is in.
               value: _pick == null ? null : _slotAt01(_pick!, series.length),
               step: 1 / (series.length - 1),
-              label: spec.title,
+              label: uiText(context, spec.title),
               describe: (v) =>
                   _slotSays(c, spec, series, _slotAt(v, series.length), d),
               onChanged: (v) =>
@@ -1792,9 +1793,9 @@ class _StepGoalGaugeState extends State<_StepGoalGauge> {
       return;
     }
     if (typed < 500 || typed > 100000) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content:
-            Text('A step goal of 500–100,000 is a real one. Nothing was saved.'),
+            Text(uiText(context, 'A step goal of 500–100,000 is a real one. Nothing was saved.')),
       ));
       return;
     }
@@ -1837,24 +1838,24 @@ class _StepGoalGaugeState extends State<_StepGoalGauge> {
                   Expanded(
                     child: OsTextField(
                         controller: _ctrl,
-                        label: 'Goal',
+                        label: uiText(context, 'Goal'),
                         keyboard: TextInputType.number),
                   ),
                   const SizedBox(width: S.x2),
                   Pressable(
-                    semanticLabel: 'Save step goal',
+                    semanticLabel: uiText(context, 'Save step goal'),
                     onTap: _save,
                     child: Icon(LucideIcons.check, size: 20, color: p.ink),
                   ),
                 ])
               : Pressable(
-                  semanticLabel: 'Edit daily step goal',
+                  semanticLabel: uiText(context, 'Edit daily step goal'),
                   onTap: () => setState(() => _editing = true),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(children: [
-                        Text('Goal', style: F.over.copyWith(color: p.ink3)),
+                        Text(uiText(context, 'Goal'), style: F.over.copyWith(color: p.ink3)),
                         const SizedBox(width: S.x1),
                         Icon(LucideIcons.pencil, size: 12, color: p.ink3),
                       ]),

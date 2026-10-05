@@ -31,6 +31,10 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../l10n/app_localizations.dart';
+import '../l10n/background_localizations.dart';
+import '../l10n/display_text.dart';
+import 'notification_l10n.dart';
 import 'notification_event.dart';
 import 'notification_ids.dart';
 
@@ -269,10 +273,11 @@ class NotificationService {
     );
     final androidImpl = _plugin.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
-    await androidImpl?.createNotificationChannel(_deviceChannel);
-    await androidImpl?.createNotificationChannel(_healthChannel);
-    await androidImpl?.createNotificationChannel(_recoveryChannel);
-    await androidImpl?.createNotificationChannel(_remindersChannel);
+    final l = await backgroundLocalizations();
+    await androidImpl?.createNotificationChannel(_localizedChannel(_deviceChannel, l));
+    await androidImpl?.createNotificationChannel(_localizedChannel(_healthChannel, l));
+    await androidImpl?.createNotificationChannel(_localizedChannel(_recoveryChannel, l));
+    await androidImpl?.createNotificationChannel(_localizedChannel(_remindersChannel, l));
     _inited = true;
   }
 
@@ -393,13 +398,22 @@ class NotificationService {
     }
   }
 
-  NotificationDetails _details(NotifCategory c) {
+  AndroidNotificationChannel _localizedChannel(
+      AndroidNotificationChannel channel, AppLocalizations l) =>
+      AndroidNotificationChannel(
+        channel.id,
+        localizedText(l, channel.name),
+        description: localizedText(l, channel.description ?? ''),
+        importance: channel.importance,
+      );
+
+  NotificationDetails _details(NotifCategory c, AppLocalizations l) {
     final ch = _channelFor(c);
     return NotificationDetails(
       android: AndroidNotificationDetails(
         ch.id,
-        ch.name,
-        channelDescription: ch.description,
+        localizedText(l, ch.name),
+        channelDescription: localizedText(l, ch.description ?? ''),
         importance: _importanceFor(c),
         priority: _priorityFor(c),
         icon: '@mipmap/launcher_icon',
@@ -439,11 +453,12 @@ class NotificationService {
       // share an id, and `show` REPLACES: one of them vanished silently.
       // e.osId overrides only for a caller that also cancels by id (see
       // NotificationEvent.osId).
+      final l = await backgroundLocalizations();
       await _plugin.show(
         e.osId ?? await NotificationIds.instance.idFor(e),
-        e.title,
-        e.body.isEmpty ? null : e.body,
-        _details(e.category),
+        notificationText(l, e.title),
+        e.body.isEmpty ? null : notificationText(l, e.body),
+        _details(e.category, l),
         payload: e.route,
       );
       return true;
@@ -505,12 +520,13 @@ class NotificationService {
           when = nextCalendarDay(when);
         }
       }
+      final l = await backgroundLocalizations();
       await _plugin.zonedSchedule(
         id,
-        title,
-        body,
+        notificationText(l, title),
+        notificationText(l, body),
         when,
-        _details(category),
+        _details(category, l),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -534,12 +550,13 @@ class NotificationService {
       if (!_maySchedule(id)) return;
       if (!await ensurePermission(allowPrompt: false)) return;
       await ensureTimezone();
+      final l = await backgroundLocalizations();
       await _plugin.zonedSchedule(
         id,
-        title,
-        body,
+        notificationText(l, title),
+        notificationText(l, body),
         _nextInstanceOf(hour, minute, weekday: weekday),
-        _details(category),
+        _details(category, l),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -569,12 +586,13 @@ class NotificationService {
       if (!_maySchedule(id)) return;
       if (!await ensurePermission(allowPrompt: false)) return;
       final when = tz.TZDateTime.from(at, tz.local);
+      final l = await backgroundLocalizations();
       await _plugin.zonedSchedule(
         id,
-        title,
-        body,
+        notificationText(l, title),
+        notificationText(l, body),
         when,
-        _details(category),
+        _details(category, l),
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,

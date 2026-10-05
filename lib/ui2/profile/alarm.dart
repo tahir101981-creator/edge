@@ -21,6 +21,7 @@
 // independent "set one alarm" affordance would just be a second source of
 // truth that the schedule engine silently overwrites on the next sync.
 
+import '../../l10n/display_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
@@ -297,11 +298,11 @@ class AlarmScreenView extends StatelessWidget {
     final picked = await showDialog<int>(
       context: c,
       builder: (ctx) => SimpleDialog(
-        title: const Text('Smart wake window'),
+        title: Text(uiText(ctx, 'Smart wake window')),
         children: [0, 15, 30, 45]
             .map((m) => SimpleDialogOption(
                   onPressed: () => Navigator.pop(ctx, m),
-                  child: Text(m == 0 ? 'Off' : '$m min before wake time'),
+                  child: Text(m == 0 ? uiText(ctx, 'Off') : AppLocalizations.of(ctx)?.supplementSmartWindowMinutes(m) ?? '$m min before wake time'),
                 ))
             .toList(),
       ),
@@ -311,9 +312,8 @@ class AlarmScreenView extends StatelessWidget {
         c,
         () => onSetSmartWindow!(day.weekday, picked),
         picked == 0
-            ? 'Smart wake off'
-            : 'Smart wake on — the band still buzzes at the wake time '
-                'either way');
+            ? uiText(c, 'Smart wake off')
+            : uiText(c, 'Smart wake on — the band still buzzes at the wake time either way'));
   }
 
   /// Run a band/schedule write and report what happened. Every one of these

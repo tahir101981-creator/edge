@@ -36,11 +36,13 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../../l10n/display_text.dart';
+import 'package:intl/intl.dart';
 import '../../state/clock_format.dart' show formatClockOf;
 import '../../state/units_controller.dart';
 import '../screens/home_screen.dart' show unitsOf;
 import '../theme.dart';
-import 'share.dart' show shareHero, shareStats;
+import 'share.dart' show shareHero, shareStats, localizedExportCaption;
 import 'summary.dart';
 import 'tiles.dart';
 
@@ -272,7 +274,7 @@ class PosterCard extends StatelessWidget {
                 top: 0,
                 bottom: 0,
                 width: kPosterColW,
-                child: _column(accent, stats, posterHero(r, u)),
+                child: _column(c, accent, stats, posterHero(r, u)),
               ),
               // The credit. On the card because the map is on the card, and
               // absent when no tiles are DRAWN — crediting OpenStreetMap for
@@ -304,6 +306,7 @@ class PosterCard extends StatelessWidget {
   bool get _tilesDrawn => mosaic != null && photo == null;
 
   Widget _column(
+    BuildContext c,
     Color accent,
     List<(String, String)> stats,
     (String, String, String) hero,
@@ -316,17 +319,17 @@ class PosterCard extends StatelessWidget {
           children: [
             _wordmark(accent),
             SizedBox(height: _compact ? S.x2 : S.x4),
-            _activity(accent),
+            _activity(c, accent),
             const SizedBox(height: S.x2),
-            _hero(hero),
+            _hero((hero.$1, uiText(c, hero.$2), localizedExportCaption(c, r, hero.$3))),
             // The slack lives here, so the stats and the stamp stay pinned to
             // the bottom whether the session printed six or none. The map is
             // not in this column at all — it is behind everything, or in the
             // opposite corner.
             const Spacer(),
-            _statGrid(accent, stats),
+            _statGrid(c, accent, stats),
             if (stats.isNotEmpty) SizedBox(height: _compact ? S.x2 : S.x3),
-            _stamp(accent),
+            _stamp(c, accent),
           ],
         ),
       );
@@ -353,12 +356,12 @@ class PosterCard extends StatelessWidget {
 
   /// The activity, set large. It is the card's subject — what this picture is
   /// OF — and it spent a long time as an 11pt caption next to a 48pt number.
-  Widget _activity(Color accent) => Row(children: [
+  Widget _activity(BuildContext c, Color accent) => Row(children: [
         Flexible(
           child: FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: Text(r.activity.name.toUpperCase(),
+            child: Text(r.activity.displayName(c).toUpperCase(),
                 style: F.n17.copyWith(color: accent, letterSpacing: .6),
                 maxLines: 1),
           ),
@@ -403,7 +406,7 @@ class PosterCard extends StatelessWidget {
   /// part that does not survive the width, so the cell drops it and keeps what
   /// carries the meaning: the name above the number, same caps, same muted
   /// label, same tabular value. Nothing else on the card changes shape.
-  Widget _statGrid(Color accent, List<(String, String)> stats) => Column(
+  Widget _statGrid(BuildContext c, Color accent, List<(String, String)> stats) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for (var i = 0; i < stats.length; i += _statCols) ...[
@@ -417,7 +420,7 @@ class PosterCard extends StatelessWidget {
                   if (j > 0) const SizedBox(width: S.x3),
                   Expanded(
                     child: i + j < stats.length
-                        ? _statCell(stats[i + j], accent)
+                        ? _statCell(c, stats[i + j], accent)
                         : const SizedBox.shrink(),
                   ),
                 ],
@@ -427,7 +430,7 @@ class PosterCard extends StatelessWidget {
         ],
       );
 
-  Widget _statCell((String, String) s, Color accent) {
+  Widget _statCell(BuildContext c, (String, String) s, Color accent) {
     final (value, unit) = splitStatUnit(s.$2);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,7 +444,7 @@ class PosterCard extends StatelessWidget {
         FittedBox(
           fit: BoxFit.scaleDown,
           alignment: Alignment.centerLeft,
-          child: Text(s.$1.toUpperCase(),
+          child: Text(uiText(c, s.$1).toUpperCase(),
               style: F.over
                   .copyWith(color: accent, letterSpacing: 1.1, height: 1.2),
               maxLines: 1),
@@ -461,7 +464,7 @@ class PosterCard extends StatelessWidget {
                   maxLines: 1),
               if (unit != null && unit.isNotEmpty) ...[
                 const SizedBox(width: 2),
-                Text(unit,
+                Text(uiText(c, unit),
                     style: F.cap.copyWith(
                         color: C.white.withValues(alpha: .60),
                         letterSpacing: 0)),
@@ -473,7 +476,7 @@ class PosterCard extends StatelessWidget {
     );
   }
 
-  Widget _stamp(Color accent) => Row(children: [
+  Widget _stamp(BuildContext c, Color accent) => Row(children: [
         Icon(LucideIcons.calendar, size: 11, color: accent),
         const SizedBox(width: S.x2),
         // The longest string on the card relative to its slot — it shrinks to
@@ -482,7 +485,7 @@ class PosterCard extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerLeft,
-            child: Text(posterDate(r.start),
+            child: Text('${DateFormat.yMMMd(AppLocalizations.of(c)?.localeName ?? 'en').format(r.start)} • ${formatClockOf(r.start)}',
                 style: F.over.copyWith(color: C.white, letterSpacing: 0),
                 maxLines: 1),
           ),
@@ -553,7 +556,7 @@ class PosterStatRow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(label.toUpperCase(),
+            Text(uiText(c, label).toUpperCase(),
                 style: F.over.copyWith(color: muted, letterSpacing: 1),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis),
@@ -570,7 +573,7 @@ class PosterStatRow extends StatelessWidget {
                   Text(value, style: F.n17.copyWith(color: on), maxLines: 1),
                   if (unit != null) ...[
                     const SizedBox(width: S.x1),
-                    Text(unit!, style: F.cap.copyWith(color: muted)),
+                    Text(uiText(c, unit!), style: F.cap.copyWith(color: muted)),
                   ],
                 ],
               ),

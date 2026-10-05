@@ -1,3 +1,4 @@
+import '../../l10n/display_text.dart';
 // HEALTH — observation-oriented. "What is happening, what is changing, is
 // anything unusual?"
 //
@@ -1476,6 +1477,9 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
     ]);
   }
 
+  String _markerName(LabMarker? m, String fallback) =>
+      m == null ? fallback : m.custom ? m.label : uiText(context, m.label);
+
   Widget _lab(P p, LabMarker? m, Map<String, dynamic> r, String? sex,
       VoidCallback onRemove) {
     final l = AppLocalizations.of(context);
@@ -1490,7 +1494,7 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
     return Pressable(
       onTap: onRemove,
       semanticLabel: l?.healthRemoveMarkerFrom(
-              (m?.label ?? r['marker']).toString(), r['taken_on'].toString()) ??
+              _markerName(m, r['marker'].toString()), r['taken_on'].toString()) ??
           'Remove ${m?.label ?? r['marker']} from ${r['taken_on']}',
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: S.x3),
@@ -1509,7 +1513,7 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
           const SizedBox(width: S.x3),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(m?.label ?? r['marker'].toString(),
+              Text(_markerName(m, r['marker'].toString()),
                   style: F.body.copyWith(color: p.ink)),
               Text(
                   range == null
@@ -1550,7 +1554,7 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
     final loc = AppLocalizations.of(context);
     final marker = r['marker'].toString();
     final takenOn = r['taken_on'].toString();
-    final label = m?.label ?? marker;
+    final label = _markerName(m, marker);
     final v = (r['value'] as num).toDouble();
     final unit = (r['unit'] ?? m?.unit ?? '').toString();
     // The row on screen is the NEWEST draw of its marker, so an earlier one
@@ -1699,7 +1703,7 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
                   value: marker,
                   items: [
                     for (final m in l.markers)
-                      DropdownMenuItem(value: m, child: Text(m.label)),
+                      DropdownMenuItem(value: m, child: Text(_markerName(m, m.label))),
                   ],
                   onChanged: (m) => setLocal(() => marker = m ?? marker),
                 ),

@@ -36,6 +36,7 @@
 // derives from it yet, because no one on this project has held one
 // (ASSUMPTIONS R6).
 
+import '../../l10n/display_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart'
     show BluetoothDevice;
@@ -1439,9 +1440,7 @@ Future<void> showRestartRequiredSheet(BuildContext c) async {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(S.x4, S.x2, S.x4, S.x4),
         child: Text(
-          'iOS can only show the system pairing sheet before the app has used '
-          'Bluetooth. Close OpenStrap completely, then reopen it — the sheet '
-          'appears on its own.',
+          uiText(c, 'iOS can only show the system pairing sheet before the app has used Bluetooth. Close OpenStrap completely, then reopen it — the sheet appears on its own.'),
           style: F.body.copyWith(color: p.ink),
         ),
       ),
@@ -2012,7 +2011,7 @@ Future<void> _syncRing(BuildContext c, String? family) async {
 Future<void> _syncCorosWatch(BuildContext c) async {
   final l = AppLocalizations.of(c);
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await CorosLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2033,7 +2032,7 @@ Future<void> _syncCorosWatch(BuildContext c) async {
 Future<void> _syncGarminWatch(BuildContext c) async {
   final l = AppLocalizations.of(c);
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await GarminLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2090,7 +2089,7 @@ Future<void> _syncMiband(BuildContext c) async {
 Future<void> _syncPebble(BuildContext c) async {
   final l = AppLocalizations.of(c);
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing the watch…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing the watch…'))));
   final ok = await PebbleLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2105,7 +2104,7 @@ Future<void> _syncPebble(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncMakibesHr3(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await MakibesHr3Link.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2120,7 +2119,7 @@ Future<void> _syncMakibesHr3(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncId115(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await Id115Link.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2135,7 +2134,7 @@ Future<void> _syncId115(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncSmaq2oss(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await Smaq2ossLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2150,7 +2149,7 @@ Future<void> _syncSmaq2oss(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncXWatch(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await XWatchLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2165,7 +2164,7 @@ Future<void> _syncXWatch(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncWatch9(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await Watch9Link.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2180,7 +2179,7 @@ Future<void> _syncWatch9(BuildContext c) async {
 /// now, because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncNo1Band(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await Tlw64Link.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2201,7 +2200,7 @@ Future<void> _syncDafitWatch(BuildContext c) async {
   // blurb, and for the same reason. Deliberately NOT `devicesCouldNotReachRing`
   // below either: that key is ring-specific text in every translated locale,
   // and this device is a watch, not a ring.
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await DafitLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(
@@ -2282,7 +2281,7 @@ Future<void> _syncDt78(BuildContext c) async {
   // syncing" and "could not reach the watch" alike — a real distinction the
   // snack bar should not blur into one failure sentence.
   if (Dt78Link.instance.busy) {
-    messenger?.showSnackBar(const SnackBar(content: Text('Already syncing.')));
+    messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Already syncing.'))));
     return;
   }
   // `devicesSyncing`/`devicesSynced` are genuinely generic ("Syncing"/
@@ -2324,7 +2323,7 @@ Future<void> _syncHPlus(BuildContext c) async {
 /// because the user asked. Same shape as [_syncRing] one function up.
 Future<void> _syncJyou(BuildContext c) async {
   final messenger = ScaffoldMessenger.maybeOf(c);
-  messenger?.showSnackBar(const SnackBar(content: Text('Syncing…')));
+  messenger?.showSnackBar(SnackBar(content: Text(uiText(c, 'Syncing…'))));
   final ok = await JyouLink.instance.sync();
   if (!c.mounted) return;
   messenger?.showSnackBar(SnackBar(

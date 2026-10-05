@@ -17,6 +17,7 @@
 //      painters); everything else is grammar.dart. The one thing that is not is
 //      the markdown body, because there is no house widget for prose.
 
+import '../../l10n/display_text.dart';
 import 'package:flutter/material.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -1147,15 +1148,13 @@ class _CoachSetupState extends State<CoachSetup> {
                     const SizedBox(height: S.x4),
                     OsTextField(
                       controller: _timeout,
-                      label: 'Request timeout (seconds)',
+                      label: uiText(c, 'Request timeout (seconds)'),
                       hint: '300',
                       keyboard: TextInputType.number,
                     ),
                     const SizedBox(height: S.x3),
                     Text(
-                      'A local model can take a while to load before its first '
-                      'reply. Default is 5 minutes (300s). Cloud providers use '
-                      'a fixed 2-minute timeout and are not affected by this.',
+                      uiText(c, 'A local model can take a while to load before its first reply. Default is 5 minutes (300s). Cloud providers use a fixed 2-minute timeout and are not affected by this.'),
                       style: F.cap.copyWith(color: p.ink3, height: 1.5),
                     ),
                   ],

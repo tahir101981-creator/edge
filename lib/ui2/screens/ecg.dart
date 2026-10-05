@@ -6,6 +6,7 @@
 // the MG connected and READY. Everything shown as a result is the band's own
 // category — labelled so — never a phone-side classification.
 
+import '../../l10n/display_text.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -247,7 +248,7 @@ class EcgReadingRow extends StatelessWidget {
             ),
             if (hr != null) Text('$hr', style: F.n24.copyWith(color: p.ink)),
             if (hr != null) const SizedBox(width: S.x1),
-            if (hr != null) Text('bpm', style: F.cap.copyWith(color: p.ink3)),
+            if (hr != null) Text(uiText(c, 'bpm'), style: F.cap.copyWith(color: p.ink3)),
             const SizedBox(width: S.x2),
             Icon(LucideIcons.chevronRight, size: 16, color: p.ink3),
           ],
@@ -585,7 +586,7 @@ class EcgCaptureBody extends StatelessWidget {
                 if (s.liveHr != null) ...[
                   Text('${s.liveHr}', style: F.n24.copyWith(color: p.ink)),
                   const SizedBox(width: S.x1),
-                  Text('bpm', style: F.cap.copyWith(color: p.ink3)),
+                  Text(uiText(c, 'bpm'), style: F.cap.copyWith(color: p.ink3)),
                 ],
               ],
             ),

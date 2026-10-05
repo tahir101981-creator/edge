@@ -20,6 +20,7 @@
 // "locked" — Beats, Vitals, Sleep, Readiness and every metric drill-down each
 // carry a plain row down to it.
 
+import '../../l10n/display_text.dart';
 import 'dart:convert' show jsonDecode;
 import 'dart:math' show sqrt;
 
@@ -276,7 +277,7 @@ class _InvestigateState extends State<Investigate> {
     final d = _d ?? const InvestigateData();
     final hrvish = widget.metricKey == 'hrv';
 
-    return detailScaffold(c, spec.title,
+    return detailScaffold(c, uiText(context, spec.title),
         sub: l?.investigateNerdStatsLabel ?? 'NERD STATS', [
       ...dayNavRow(_day ?? d.day, d.days, _goDay),
       if (_loading) ...[
@@ -1086,7 +1087,7 @@ class _InvestigateState extends State<Investigate> {
       return [
         StatusCard(
             l?.investigateNothingComputedForKey ?? 'Nothing computed for this key',
-            spec.suppress!,
+            uiText(c, spec.suppress!),
             icon: spec.icon),
       ];
     }
@@ -1095,8 +1096,8 @@ class _InvestigateState extends State<Investigate> {
       return [
         StatusCard(
           l?.investigateNoStoredSeries ?? 'No stored series',
-          l?.investigateNothingStoredYet(spec.title.toLowerCase()) ??
-              'Nothing stored for ${spec.title.toLowerCase()} yet.',
+          l?.investigateNothingStoredYet(uiText(context, spec.title).toLowerCase()) ??
+              'Nothing stored for ${uiText(context, spec.title).toLowerCase()} yet.',
           icon: spec.icon,
         ),
       ];
@@ -1124,7 +1125,7 @@ class _InvestigateState extends State<Investigate> {
         (l?.investigateMin ?? 'Min', n(sorted.first)),
         (l?.investigateMax ?? 'Max', n(sorted.last)),
         (l?.investigateUnit ?? 'Unit',
-            spec.unit.isEmpty ? (l?.investigateUnitless ?? 'unitless') : spec.unit),
+            spec.unit.isEmpty ? (l?.investigateUnitless ?? 'unitless') : uiText(c, spec.unit)),
         (l?.investigateStorage ?? 'Storage',
             l?.investigateOneValuePerDerivedDay ?? 'one value per derived day'),
       ]),
@@ -1143,11 +1144,11 @@ class _InvestigateState extends State<Investigate> {
         Text(
             spec.method.isEmpty
                 ? (l?.investigateNotDocumented ?? 'Not documented.')
-                : spec.method,
+                : uiText(c, spec.method),
             style: F.cap.copyWith(color: p.ink2, height: 1.6)),
         if (spec.citation.isNotEmpty) ...[
           const SizedBox(height: S.x3),
-          Text(spec.citation,
+          Text(uiText(c, spec.citation),
               style: F.over.copyWith(color: p.ink3, fontFamily: 'Menlo')),
         ],
       ]),
