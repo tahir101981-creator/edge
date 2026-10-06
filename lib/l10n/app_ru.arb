@@ -13751,5 +13751,19 @@
         "type": "String"
       }
     }
-  }
+  },
+  "journalTagCaffeine": "Кофеин",
+  "journalTagAlcohol": "Алкоголь",
+  "journalTagLateMeal": "Поздний приём пищи",
+  "journalTagStress": "Стресс",
+  "journalTagPoorSleep": "Плохой сон",
+  "journalTagTravel": "Поездка",
+  "journalTagScreensLate": "Экран перед сном",
+  "journalTagMeds": "Лекарства",
+  "journalTagSick": "Болезнь",
+  "journalTagSauna": "Сауна",
+  "journalTagColdPlunge": "Холодное погружение",
+  "journalTagSocial": "Общение",
+  "journalTagWorkout": "Тренировка",
+  "journalTagRestDay": "День отдыха"
 }

@@ -367,7 +367,7 @@ List<DayNote> dayNotes({
     out.add(
       DayNote(
         note.isEmpty ? (l?.dayTimelineTaggedTitle ?? 'Tagged') : note,
-        tags.join(' · '),
+        tags.map((t) => localizedJournalTag(l, t)).join(' · '),
         LucideIcons.notebookPen,
       ),
     );

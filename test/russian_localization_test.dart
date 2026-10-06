@@ -173,6 +173,40 @@ void main() {
     controller.dispose();
   });
 
+  test('preset journal tags and compound absence reasons localize', () {
+    final l = AppLocalizationsRu();
+    const expected = <String, String>{
+      'caffeine': 'Кофеин',
+      'alcohol': 'Алкоголь',
+      'late meal': 'Поздний приём пищи',
+      'stress': 'Стресс',
+      'poor sleep': 'Плохой сон',
+      'travel': 'Поездка',
+      'screens late': 'Экран перед сном',
+      'meds': 'Лекарства',
+      'sick': 'Болезнь',
+      'sauna': 'Сауна',
+      'cold plunge': 'Холодное погружение',
+      'social': 'Общение',
+      'workout': 'Тренировка',
+      'rest day': 'День отдыха',
+    };
+    for (final entry in expected.entries) {
+      expect(localizedJournalTag(l, entry.key), entry.value, reason: entry.key);
+    }
+
+    const noSleep =
+        'no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours';
+    expect(
+      presentationText(
+        l,
+        '$noSleep Your band was off your wrist 00:00 – 14:32.',
+      ),
+      'За этот день сон не рассчитан: пульс в покое измеряется только во время сна, а не в часы бодрствования. '
+      'Браслет был снят с запястья с 00:00 до 14:32.',
+    );
+  });
+
   test('all owned finding sentences retain their medical cautions', () {
     final l = AppLocalizationsRu();
     for (final kind in FindingKind.values) {

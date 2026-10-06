@@ -14513,5 +14513,19 @@
         "type": "String"
       }
     }
-  }
+  },
+  "journalTagCaffeine": "caffeine",
+  "journalTagAlcohol": "alcohol",
+  "journalTagLateMeal": "late meal",
+  "journalTagStress": "stress",
+  "journalTagPoorSleep": "poor sleep",
+  "journalTagTravel": "travel",
+  "journalTagScreensLate": "screens late",
+  "journalTagMeds": "meds",
+  "journalTagSick": "sick",
+  "journalTagSauna": "sauna",
+  "journalTagColdPlunge": "cold plunge",
+  "journalTagSocial": "social",
+  "journalTagWorkout": "workout",
+  "journalTagRestDay": "rest day"
 }

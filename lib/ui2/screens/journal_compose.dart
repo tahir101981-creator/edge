@@ -348,7 +348,7 @@ class _JournalComposeState extends State<JournalCompose> {
                                         : _tags.add(t),
                                   ),
                                   child: Pill(
-                                    t,
+                                    journalTagText(c, t),
                                     _tags.contains(t) ? C.domMind : C.n400,
                                     icon: _tags.contains(t)
                                         ? LucideIcons.check
@@ -1197,7 +1197,10 @@ class _JournalAiSheetState extends State<_JournalAiSheet> {
                   child: Wrap(
                     spacing: S.x2,
                     runSpacing: S.x2,
-                    children: [for (final t in last.tags) Pill(t, C.domMind)],
+                    children: [
+                      for (final t in last.tags)
+                        Pill(journalTagText(c, t), C.domMind),
+                    ],
                   ),
                 ),
               if (_error != null)

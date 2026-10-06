@@ -39,6 +39,7 @@ import 'package:provider/provider.dart';
 
 import '../../ai/journal_ai.dart' show kJournalPresetTags;
 import '../../l10n/app_localizations.dart';
+import '../../l10n/display_text.dart';
 import '../../data/db.dart';
 import '../../data/journal_fields.dart' show formatMinuteOfDay;
 import '../../data/local_repository.dart';
@@ -547,7 +548,7 @@ class _RoughNightCardState extends State<RoughNightCard> {
               () => _picked.contains(t) ? _picked.remove(t) : _picked.add(t),
             ),
             child: Pill(
-              t,
+              journalTagText(c, t),
               _picked.contains(t) ? C.domMind : C.n400,
               icon: _picked.contains(t) ? LucideIcons.check : null,
             ),

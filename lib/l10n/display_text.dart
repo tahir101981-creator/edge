@@ -5,6 +5,33 @@ import 'app_localizations.dart';
 String uiText(BuildContext context, String text) =>
     localizedText(AppLocalizations.of(context), text);
 
+String journalTagText(BuildContext context, String tag) =>
+    localizedJournalTag(AppLocalizations.of(context), tag);
+
+/// Preset journal tags are stable storage keys. Translate them only at the
+/// presentation boundary so saved data, AI extraction and correlations keep
+/// using the canonical English vocabulary.
+String localizedJournalTag(AppLocalizations? l, String tag) {
+  if (l == null) return tag;
+  return switch (tag) {
+    'caffeine' => l.journalTagCaffeine,
+    'alcohol' => l.journalTagAlcohol,
+    'late meal' => l.journalTagLateMeal,
+    'stress' => l.journalTagStress,
+    'poor sleep' => l.journalTagPoorSleep,
+    'travel' => l.journalTagTravel,
+    'screens late' => l.journalTagScreensLate,
+    'meds' => l.journalTagMeds,
+    'sick' => l.journalTagSick,
+    'sauna' => l.journalTagSauna,
+    'cold plunge' => l.journalTagColdPlunge,
+    'social' => l.journalTagSocial,
+    'workout' => l.journalTagWorkout,
+    'rest day' => l.journalTagRestDay,
+    _ => tag,
+  };
+}
+
 String localizedText(AppLocalizations? l, String text) {
   if (l == null) return text;
   return switch (text) {
@@ -64,6 +91,8 @@ String localizedText(AppLocalizations? l, String text) {
     "Baevsky Stress Index → 0–100; resting autonomic tension (PRV)." =>
       l.secondPassfa9488e1ab,
     "no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours." =>
+      l.secondPass0fb03591f9,
+    "no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours" =>
       l.secondPass0fb03591f9,
     "Colmi ring" => l.secondPass9424b286ed,
     "Fossil/Skagen Hybrid Smartwatch" => l.secondPassc28d418c25,
