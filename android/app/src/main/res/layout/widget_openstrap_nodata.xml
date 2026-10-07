@@ -18,7 +18,7 @@
         android:id="@+id/nodata_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No recent data"
+        android:text="@string/widget_no_recent_title"
         android:textSize="14sp"
         android:textStyle="bold"
         android:maxLines="1" />
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="Open OpenStrap and sync your band."
+        android:text="@string/widget_no_recent_body"
         android:textSize="11sp"
         android:maxLines="2" />
 </LinearLayout>

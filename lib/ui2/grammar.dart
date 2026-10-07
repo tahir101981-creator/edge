@@ -29,6 +29,9 @@
 //     and the golden sweep measures every Pressable in every case rather than
 //     the five tabs of the shell.
 
+import '../l10n/display_text.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/presentation_text.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -235,6 +238,7 @@ class Surface extends StatelessWidget {
 
 /// Full-width section. Whitespace separates concepts, not borders.
 class Section extends StatelessWidget {
+  final bool wrapTitle;
   final String title;
   final String? action;
   final Widget child;
@@ -246,6 +250,7 @@ class Section extends StatelessWidget {
     super.key,
     this.action,
     this.onAction,
+    this.wrapTitle = false,
   });
 
   @override
@@ -270,8 +275,10 @@ class Section extends StatelessWidget {
                 child: Text(
                   title,
                   style: F.head.copyWith(color: p.ink),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  maxLines: wrapTitle ? null : 2,
+                  overflow: wrapTitle
+                      ? TextOverflow.visible
+                      : TextOverflow.ellipsis,
                 ),
               ),
               if (action != null)
@@ -365,7 +372,7 @@ class SignalCard extends StatelessWidget {
               ),
               if (unit.isNotEmpty) ...[
                 const SizedBox(width: S.x1),
-                Text(unit, style: F.cap.copyWith(color: p.ink3)),
+                Text(uiText(c, unit), style: F.cap.copyWith(color: p.ink3)),
               ],
             ],
           ),
@@ -525,7 +532,9 @@ class TrendCard extends StatelessWidget {
     // both be inventions, so neither is drawn and the label says nothing about
     // better or worse.
     final dir = j == null ? p.ink3 : p.on(j ? C.green : C.orange);
-    final judgement = j == null ? '' : (j ? 'an improvement' : 'worse than usual');
+    final judgement = j == null
+        ? ''
+        : uiText(c, j ? 'an improvement' : 'worse than usual');
     final change = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -564,7 +573,7 @@ class TrendCard extends StatelessWidget {
               runSpacing: S.x1,
               children: [
                 Text(value, style: F.n34.copyWith(color: p.ink)),
-                Text(unit, style: F.cap.copyWith(color: p.ink3)),
+                Text(uiText(c, unit), style: F.cap.copyWith(color: p.ink3)),
                 change,
               ],
             )
@@ -587,7 +596,7 @@ class TrendCard extends StatelessWidget {
                 // split the row 50/50 and a long reading ellipsised at half
                 // width with empty space beside it. A Spacer does the shoving
                 // and the unit goes back to its own size.
-                Text(unit, style: F.cap.copyWith(color: p.ink3)),
+                Text(uiText(c, unit), style: F.cap.copyWith(color: p.ink3)),
                 const Spacer(),
                 if (j != null) ...[
                   Icon(
@@ -722,8 +731,6 @@ class _Cta extends StatelessWidget {
         child: Text(
           label,
           style: F.cap.copyWith(color: color, fontWeight: FontWeight.w600),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
       ),
       if (arrow) ...[
@@ -953,11 +960,11 @@ class StatusCard extends StatelessWidget {
       told != null
           ? (gap == null ? told : '$told $gap')
           : gap ??
-              (why.isNotEmpty
-                  ? why
-                  : need != null
-                      ? 'Not enough history yet to know what normal looks like for you.'
-                      : 'Nothing recorded says why this is missing.'),
+                (why.isNotEmpty
+                    ? why
+                    : need != null
+                    ? 'Not enough history yet to know what normal looks like for you.'
+                    : 'Nothing recorded says why this is missing.'),
       fix: need ?? '',
       onFix: onFix,
     );
@@ -970,7 +977,9 @@ class StatusCard extends StatelessWidget {
       elevation: 0,
       color: p.card2,
       onTap: onFix,
-      semanticLabel: '$what. $why. $fix'.trim(),
+      semanticLabel:
+          '${uiText(c, what)}. ${presentationText(AppLocalizations.of(c), why)}. ${presentationText(AppLocalizations.of(c), fix)}'
+              .trim(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -980,7 +989,7 @@ class StatusCard extends StatelessWidget {
               const SizedBox(width: S.x2),
               Expanded(
                 child: Text(
-                  what,
+                  uiText(c, what),
                   style: F.body.copyWith(
                     color: p.ink2,
                     fontWeight: FontWeight.w600,
@@ -995,11 +1004,18 @@ class StatusCard extends StatelessWidget {
           // the call sites that matter.
           if (why.isNotEmpty) ...[
             const SizedBox(height: S.x2),
-            Text(why, style: F.cap.copyWith(color: p.ink3, height: 1.5)),
+            Text(
+              presentationText(AppLocalizations.of(c), why),
+              style: F.cap.copyWith(color: p.ink3, height: 1.5),
+            ),
           ],
           if (fix.isNotEmpty) ...[
             const SizedBox(height: S.x3),
-            _Cta(fix, p.on(C.blue), arrow: onFix != null),
+            _Cta(
+              presentationText(AppLocalizations.of(c), fix),
+              p.on(C.blue),
+              arrow: onFix != null,
+            ),
           ],
         ],
       ),
@@ -1048,7 +1064,7 @@ class DeepDiveCard extends StatelessWidget {
                   spacing: S.x1,
                   children: [
                     Text(value, style: F.n24.copyWith(color: p.ink)),
-                    Text(unit, style: F.cap.copyWith(color: p.ink3)),
+                    Text(uiText(c, unit), style: F.cap.copyWith(color: p.ink3)),
                   ],
                 ),
               ],
@@ -1080,7 +1096,7 @@ class DeepDiveCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: S.x1),
-                Text(unit, style: F.cap.copyWith(color: p.ink3)),
+                Text(uiText(c, unit), style: F.cap.copyWith(color: p.ink3)),
               ],
             ),
           if (preview != null) ...[const SizedBox(height: S.x3), preview!],
@@ -1133,12 +1149,15 @@ Trend? trendOf(List<double?> series) {
       l.fold<double>(0, (a, b) => a + b) / l.length;
   final recent = v.sublist(v.length - recentN);
   final base = v.sublist(
-      math.max(0, v.length - recentN - baseMax), v.length - recentN);
+    math.max(0, v.length - recentN - baseMax),
+    v.length - recentN,
+  );
   final mb = mean(base);
   final delta = mean(recent) - mb;
   final sd = math.sqrt(
-      base.map((x) => (x - mb) * (x - mb)).fold<double>(0, (a, b) => a + b) /
-          (base.length - 1));
+    base.map((x) => (x - mb) * (x - mb)).fold<double>(0, (a, b) => a + b) /
+        (base.length - 1),
+  );
   if (delta.abs() <= 0.5 * sd) return Trend.steady;
   return delta > 0 ? Trend.rising : Trend.falling;
 }
@@ -1156,11 +1175,11 @@ Color _trendHue(P p, Trend trend, Rising rising) {
 /// What the arrow says, in words, for the screen reader — including the case
 /// where there is no arrow, so an empty slot is not a silent hole.
 String _trendWord(Trend? t) => switch (t) {
-      Trend.rising => 'trending up',
-      Trend.falling => 'trending down',
-      Trend.steady => 'steady',
-      null => 'no trend yet, not enough days recorded',
-    };
+  Trend.rising => 'trending up',
+  Trend.falling => 'trending down',
+  Trend.steady => 'steady',
+  null => 'no trend yet, not enough days recorded',
+};
 
 /// A metric in a list: name → value → trend.
 class MetricRow extends StatelessWidget {
@@ -1229,7 +1248,7 @@ class MetricRow extends StatelessWidget {
         ),
         if (unit.isNotEmpty) ...[
           const SizedBox(width: 2),
-          Text(unit, style: F.over.copyWith(color: p.ink3)),
+          Text(uiText(c, unit), style: F.over.copyWith(color: p.ink3)),
         ],
       ],
     );
@@ -1269,9 +1288,10 @@ class MetricRow extends StatelessWidget {
       // trailing slot, so announcing the trend under it described a glyph that
       // is not on screen — a row reading 'ON TRACK' told a screen reader
       // 'trending up'.
-      semanticLabel: '$name, $value $unit ${status ?? _trendWord(trend)}'
-          .replaceAll(RegExp(r'\s+'), ' ')
-          .trim(),
+      semanticLabel:
+          '$name, $value $unit ${status ?? uiText(c, _trendWord(trend))}'
+              .replaceAll(RegExp(r'\s+'), ' ')
+              .trim(),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: S.x2),
         child: bigText(c)
@@ -1442,7 +1462,11 @@ class GoalTrajectory extends StatelessWidget {
     final p = P.of(c);
     final ink = p.on(color);
     return Surface(
-      semanticLabel: '$label, $current toward $target. $rate',
+      semanticLabel:
+          AppLocalizations.of(
+            c,
+          )?.supplementGoalSemantic(label, current, target, rate) ??
+          '$label, $current toward $target. $rate',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1457,7 +1481,11 @@ class GoalTrajectory extends StatelessWidget {
             runSpacing: S.x1,
             children: [
               Text(current, style: F.n34.copyWith(color: p.ink)),
-              Text('Goal $target', style: F.cap.copyWith(color: p.ink3)),
+              Text(
+                AppLocalizations.of(c)?.supplementGoalValue(target) ??
+                    'Goal $target',
+                style: F.cap.copyWith(color: p.ink3),
+              ),
             ],
           ),
           const SizedBox(height: S.x3),
@@ -1502,7 +1530,12 @@ class Observation extends StatelessWidget {
     final ink = p.on(C.orange);
     return Pressable(
       onTap: onTap,
-      semanticLabel: 'Health observation. $headline. $detail. $advice'.trim(),
+      semanticLabel:
+          (AppLocalizations.of(
+                    c,
+                  )?.supplementObservationSemantic(headline, detail, advice) ??
+                  'Health observation. $headline. $detail. $advice')
+              .trim(),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(S.x4),
@@ -1521,7 +1554,7 @@ class Observation extends StatelessWidget {
                 const SizedBox(width: S.x2),
                 Flexible(
                   child: Text(
-                    'HEALTH OBSERVATION',
+                    uiText(c, 'HEALTH OBSERVATION'),
                     style: F.over.copyWith(color: ink),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -1546,7 +1579,7 @@ class Observation extends StatelessWidget {
             ],
             if (onTap != null) ...[
               const SizedBox(height: S.x3),
-              _Cta('View data', ink),
+              _Cta(uiText(c, 'View data'), ink),
             ],
           ],
         ),
@@ -1567,15 +1600,22 @@ class Consistency extends StatelessWidget {
   /// and drew one segment per day, so 10 of 14 doses read as 10 of 14 days.
   final String unit;
 
-  const Consistency(this.have, this.of, this.label, this.color,
-      {super.key, this.unit = 'days'});
+  const Consistency(
+    this.have,
+    this.of,
+    this.label,
+    this.color, {
+    super.key,
+    this.unit = 'days',
+  });
 
   @override
   Widget build(BuildContext c) {
     final p = P.of(c);
     final n = of <= 0 ? 0 : of;
     return Semantics(
-      label: '$have of $n $unit. $label',
+      label:
+          '${presentationText(AppLocalizations.of(c), '$have of $n $unit')}. $label',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1584,7 +1624,10 @@ class Consistency extends StatelessWidget {
             spacing: S.x1,
             children: [
               Text('$have', style: F.n24.copyWith(color: p.ink)),
-              Text('of $n $unit', style: F.cap.copyWith(color: p.ink3)),
+              Text(
+                consistencyOf(AppLocalizations.of(c), n, unit),
+                style: F.cap.copyWith(color: p.ink3),
+              ),
             ],
           ),
           const SizedBox(height: S.x2),
@@ -1651,11 +1694,21 @@ class Typed {
 /// the point is that the form stops instead of saving a hole.
 void sayUnreadable(BuildContext c, List<String> fields) {
   if (fields.isEmpty) return;
-  ScaffoldMessenger.of(c).showSnackBar(SnackBar(
-    content: Text(fields.length == 1
-        ? '${fields.first} is not a number. Nothing was saved.'
-        : '${fields.join(', ')} are not numbers. Nothing was saved.'),
-  ));
+  ScaffoldMessenger.of(c).showSnackBar(
+    SnackBar(
+      content: Text(
+        fields.length == 1
+            ? AppLocalizations.of(
+                    c,
+                  )?.supplementUnreadableFields(fields.first) ??
+                  '${fields.first} is not a number. Nothing was saved.'
+            : AppLocalizations.of(
+                    c,
+                  )?.supplementUnreadableFields(fields.join(', ')) ??
+                  '${fields.join(', ')} are not numbers. Nothing was saved.',
+      ),
+    ),
+  );
 }
 
 /// The one destructive confirm. Names what goes and what stays, and there is
@@ -1688,12 +1741,18 @@ Future<bool> confirmRemove(
             const SizedBox(height: S.x2),
             Text(body, style: F.cap.copyWith(color: P.of(s).ink2, height: 1.5)),
             const SizedBox(height: S.x5),
-            BigButton(remove,
-                icon: LucideIcons.trash2,
-                color: C.red,
-                onTap: () => Navigator.of(s).pop(true)),
+            BigButton(
+              uiText(s, remove),
+              icon: LucideIcons.trash2,
+              color: C.red,
+              onTap: () => Navigator.of(s).pop(true),
+            ),
             const SizedBox(height: S.x3),
-            BigButton(keep, soft: true, onTap: () => Navigator.of(s).pop(false)),
+            BigButton(
+              uiText(s, keep),
+              soft: true,
+              onTap: () => Navigator.of(s).pop(false),
+            ),
           ],
         ),
       ),
@@ -1706,7 +1765,7 @@ Future<bool> confirmRemove(
 
 /// Contextual sub-navigation inside a domain. Never a bottom tab — the bottom
 /// bar has five destinations and will not grow a sixth.
-class SubTabs extends StatelessWidget {
+class SubTabs extends StatefulWidget {
   final List<String> items;
   final int index;
   final ValueChanged<int> onTap;
@@ -1728,8 +1787,43 @@ class SubTabs extends StatelessWidget {
   });
 
   @override
+  State<SubTabs> createState() => _SubTabsState();
+}
+
+class _SubTabsState extends State<SubTabs> {
+  final _keys = <int, GlobalKey>{};
+
+  void _reveal() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final selected = _keys[widget.index]?.currentContext;
+      if (selected != null) {
+        Scrollable.ensureVisible(selected, alignment: 0.4);
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reveal();
+  }
+
+  @override
+  void didUpdateWidget(SubTabs oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.index != widget.index || oldWidget.items != widget.items) {
+      _reveal();
+    }
+  }
+
+  @override
   Widget build(BuildContext c) {
     final p = P.of(c);
+    final items = widget.items;
+    final index = widget.index;
+    final disabled = widget.disabled;
+    final color = widget.color;
     return SizedBox(
       height: MediaQuery.textScalerOf(c).scale(S.tap),
       // The fifth tab is off the edge on every phone we ship to — at 360 pt
@@ -1737,50 +1831,64 @@ class SubTabs extends StatelessWidget {
       // set overflows even a 430 pt screen. ScrollHint draws nothing at all
       // while the row fits, and scales with how much is left to scroll.
       child: ScrollHint(
-        child: ListView.separated(
+        child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          itemCount: items.length,
-          separatorBuilder: (_, _) => const SizedBox(width: S.x2),
-          itemBuilder: (_, i) {
-            final off = disabled.contains(i);
-            final on = i == index && !off;
-            return Pressable(
-              onTap: off ? null : () => onTap(i),
-              // `Pressable` drops `Semantics(button: true)` when `onTap` is
-              // null, so without this a screen reader announced a disabled
-              // pill exactly like a working one.
-              semanticLabel: off ? '${items[i]}, unavailable' : null,
-              child: AnimatedContainer(
-                duration: motion(c, Motion.base),
-                constraints: const BoxConstraints(minWidth: S.tap),
-                padding: const EdgeInsets.symmetric(horizontal: S.x4),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  // THREE STATES, THREE LOOKS. A disabled pill used to compute
-                  // `on == false` and render exactly like a selectable-but-
-                  // unselected one — transparent, same ink — so the user
-                  // tapped it and nothing happened. An inert `card2` slot
-                  // reads as filled-but-dead against both the accent wash of
-                  // the active pill and the empty ground of a live one, and
-                  // `ink3` is solved for 4.5:1 ON `card2` (see theme.dart), so
-                  // this cue costs no contrast the way dimming would.
-                  color: off
-                      ? p.card2
-                      : on
-                          ? p.wash(color)
-                          : const Color(0x00000000),
-                  borderRadius: R.rPill,
+          padding: const EdgeInsets.only(right: S.x10),
+          child: Row(
+            children: [
+              for (var i = 0; i < items.length; i++) ...[
+                if (i > 0) const SizedBox(width: S.x2),
+                Builder(
+                  builder: (_) {
+                    final off = disabled.contains(i);
+                    final on = i == index && !off;
+                    return Pressable(
+                      key: _keys.putIfAbsent(i, () => GlobalKey()),
+                      onTap: off ? null : () => widget.onTap(i),
+                      // `Pressable` drops `Semantics(button: true)` when `onTap` is
+                      // null, so without this a screen reader announced a disabled
+                      // pill exactly like a working one.
+                      semanticLabel: off
+                          ? (AppLocalizations.of(
+                                  c,
+                                )?.supplementUnavailable(items[i]) ??
+                                '${items[i]}, unavailable')
+                          : null,
+                      child: AnimatedContainer(
+                        duration: motion(c, Motion.base),
+                        constraints: const BoxConstraints(minWidth: S.tap),
+                        padding: const EdgeInsets.symmetric(horizontal: S.x4),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          // THREE STATES, THREE LOOKS. A disabled pill used to compute
+                          // `on == false` and render exactly like a selectable-but-
+                          // unselected one — transparent, same ink — so the user
+                          // tapped it and nothing happened. An inert `card2` slot
+                          // reads as filled-but-dead against both the accent wash of
+                          // the active pill and the empty ground of a live one, and
+                          // `ink3` is solved for 4.5:1 ON `card2` (see theme.dart), so
+                          // this cue costs no contrast the way dimming would.
+                          color: off
+                              ? p.card2
+                              : on
+                              ? p.wash(color)
+                              : const Color(0x00000000),
+                          borderRadius: R.rPill,
+                        ),
+                        child: Text(
+                          items[i],
+                          style: F.cap.copyWith(
+                            color: on ? p.on(color) : p.ink3,
+                            fontWeight: on ? FontWeight.w600 : FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                child: Text(
-                  items[i],
-                  style: F.cap.copyWith(
-                    color: on ? p.on(color) : p.ink3,
-                    fontWeight: on ? FontWeight.w600 : FontWeight.w500,
-                  ),
-                ),
-              ),
-            );
-          },
+              ],
+            ],
+          ),
         ),
       ),
     );
@@ -1819,7 +1927,8 @@ class Pill extends StatelessWidget {
   final String text;
   final Color color;
   final IconData? icon;
-  const Pill(this.text, this.color, {super.key, this.icon});
+  final bool wrap;
+  const Pill(this.text, this.color, {super.key, this.icon, this.wrap = false});
 
   @override
   Widget build(BuildContext c) {
@@ -1839,8 +1948,8 @@ class Pill extends StatelessWidget {
             child: Text(
               text,
               style: F.cap.copyWith(color: ink, fontWeight: FontWeight.w600),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              maxLines: wrap ? null : 1,
+              overflow: wrap ? TextOverflow.visible : TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -2016,7 +2125,8 @@ class ChartFrame extends StatelessWidget {
   /// aloud is the same non-information as a picture, and a screen reader cannot
   /// skim. The shape and the extremes are what a sighted glance takes from it,
   /// so they are what this says.
-  String? _spoken() {
+  String? _spoken(BuildContext c) {
+    final l = AppLocalizations.of(c);
     // No plot, nothing to summarise. The [empty] child says why in the
     // caller's own words and is left in the tree to say it — a 'No data' here
     // would be a second, blunter announcement of the same absence.
@@ -2036,30 +2146,50 @@ class ChartFrame extends StatelessWidget {
     // No unit here: the sentence has already said "measured in $unit", and a
     // formatter like [axisHm] writes its own — which is how this read out
     // "Latest 7h 42m min".
-    final parts = ['Latest ${fmt(last)}'];
+    final parts = [
+      l?.supplementChartLatest(presentationText(l, fmt(last))) ??
+          'Latest ${fmt(last)}',
+    ];
     if (v.length > 1) {
-      if (hi > lo) parts.add('ranging ${fmt(lo)} to ${fmt(hi)}');
+      if (hi > lo) {
+        parts.add(
+          l?.supplementChartRange(
+                presentationText(l, fmt(lo)),
+                presentationText(l, fmt(hi)),
+              ) ??
+              'ranging ${fmt(lo)} to ${fmt(hi)}',
+        );
+      }
       final delta = last - v.first;
       // A move smaller than a twentieth of the range is not a direction.
       final noise = (hi - lo) / 20;
       parts.add(
         delta.abs() <= noise
-            ? 'roughly level across ${v.length} readings'
-            : '${delta > 0 ? 'up' : 'down'} ${fmt(delta.abs())} '
-                  'across ${v.length} readings',
+            ? l?.supplementChartSteady(v.length) ??
+                  'roughly level across ${v.length} readings'
+            : l?.supplementChartChange(
+                    uiText(c, delta > 0 ? 'up' : 'down'),
+                    presentationText(l, fmt(delta.abs())),
+                    v.length,
+                  ) ??
+                  '${delta > 0 ? 'up' : 'down'} ${fmt(delta.abs())} '
+                      'across ${v.length} readings',
       );
     }
     return parts.join(', ');
   }
 
-  Widget _header(P p, bool stacked) {
+  Widget _header(BuildContext c, P p, bool stacked) {
     final name = Text(
       title,
       style: F.cap.copyWith(color: p.ink, fontWeight: FontWeight.w600),
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
     );
-    final measure = Text(unit, style: F.over.copyWith(color: p.ink3));
+    final measure = Text(
+      uiText(c, unit),
+      style: F.over.copyWith(color: p.ink3),
+    );
     if (!stacked) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -2129,11 +2259,19 @@ class ChartFrame extends StatelessWidget {
       // left reachable.
       label: [
         title,
-        'measured in $unit',
-        ?_spoken(),
-        if (xLabels.length > 1) 'from ${xLabels.first} to ${xLabels.last}',
+        AppLocalizations.of(c)?.supplementMeasuredIn(uiText(c, unit)) ??
+            'measured in $unit',
+        ?_spoken(c),
+        if (xLabels.length > 1)
+          AppLocalizations.of(
+                c,
+              )?.supplementChartFromTo(xLabels.first, xLabels.last) ??
+              'from ${xLabels.first} to ${xLabels.last}',
         if (legend.isNotEmpty)
-          'Key: ${[for (final (l, _) in legend) l].join(', ')}',
+          AppLocalizations.of(c)?.supplementChartLegend(
+                [for (final (l, _) in legend) l].join(', '),
+              ) ??
+              'Key: ${[for (final (l, _) in legend) l].join(', ')}',
         ?footnote,
       ].join('. '),
       child: Column(
@@ -2143,7 +2281,7 @@ class ChartFrame extends StatelessWidget {
           // Title and unit share a line until the text scale makes that a
           // choice between truncating the title and dropping the unit — at
           // which point the unit moves under it. Neither is ever dropped.
-          ExcludeSemantics(child: _header(p, scaler.scale(1) > 1.3)),
+          ExcludeSemantics(child: _header(c, p, scaler.scale(1) > 1.3)),
           const SizedBox(height: S.x3),
 
           // ── plot, or the honest absence of one ──
@@ -2404,7 +2542,7 @@ class NavBar extends StatelessWidget {
         children: [
           Pressable(
             onTap: onBack ?? () => Navigator.maybePop(c),
-            semanticLabel: 'Back',
+            semanticLabel: AppLocalizations.of(c)?.supplementNavBack ?? 'Back',
             child: Icon(LucideIcons.chevronLeft, size: 24, color: p.ink),
           ),
           Expanded(

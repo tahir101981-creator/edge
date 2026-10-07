@@ -1,3 +1,4 @@
+import '../../l10n/presentation_text.dart';
 // READINESS — the one composite, taken apart.
 //
 // Two producers meet on this screen and the copy says so rather than blending
@@ -7,7 +8,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:openstrap_analytics/onehz.dart' show readinessCompositeMinBaseline;
+import 'package:openstrap_analytics/onehz.dart'
+    show readinessCompositeMinBaseline;
 
 import '../../compute/onehz_pipeline.dart'
     show readinessInputShortfallNote, readinessUnstableBaselineNote;
@@ -68,7 +70,10 @@ class ReadinessData {
     final v = envValue(gb) ?? const <String, dynamic>{};
     final bd = v['breakdown'];
 
-    final readiness = overnightMetric(today, daily is Map ? daily['readiness'] : null);
+    final readiness = overnightMetric(
+      today,
+      daily is Map ? daily['readiness'] : null,
+    );
 
     return ReadinessData(
       readiness: readiness,
@@ -97,7 +102,8 @@ class ReadinessData {
       absentDiag: readiness.value != null
           ? null
           : await LocalDb.readinessAbsentDiag(
-              (today['status'] as Map?)?['today_day']?.toString()),
+              (today['status'] as Map?)?['today_day']?.toString(),
+            ),
     );
   }
 }
@@ -166,79 +172,108 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
           // (PR #510): a z-cap withhold has no baseline shortfall to report
           // (every input already cleared its floor), so the first function
           // alone fell straight to the generic fallback for it.
-          Builder(builder: (c) {
-            final diagReason = readinessInputShortfallNote(d.absentDiag) ??
-                readinessUnstableBaselineNote(
-                    d.absentDiag?['note']?.toString());
-            // StatusCard.forMetric prefers a prose note already ON the
-            // metric (`told`, via whyFromNote) over `why:` — deliberately,
-            // for screen-authored text like the held-over "nothing synced
-            // yet" sentence [overnightMetric] attaches. When that wins, the
-            // diagnostic reason above never reaches the banner at all
-            // (PR #510 follow-up) — _absence below shows it in that one
-            // case so it is not lost from the screen entirely, without
-            // reintroducing the general "says it twice" duplication fixed
-            // earlier in this same PR. Mirrors forMetric's precedence
-            // exactly: a need_baseline note is rendered as the fix, not
-            // `told`, so `why:` still wins there; a `gap` replaces `why:`.
-            final note = d.readiness.note;
-            final bannerShowsDiag = d.heldOverNight == null &&
-                (needMessageFromNote(note) != null ||
-                    whyFromNote(note) == null);
-            return Column(children: [
-              StatusCard.forMetric(
-                      l?.readinessDetailNotScoredTitle ??
-                          'Readiness is not scored',
-                      d.readiness,
-                      why: diagReason ?? '',
-                      // Where the data stops, appended to whatever the
-                      // pipeline said. Not a substitute for the reason and
-                      // not a reading — "the last one was Saturday" is a
-                      // fact about coverage.
-                      gap: d.heldOverNight == null
-                          ? null
-                          : (l?.readinessDetailLastNightScored(
-                                  prettyDay(d.heldOverNight, l)) ??
-                              'The last night scored was '
-                                  '${prettyDay(d.heldOverNight, l)}.')) ??
-                  const SizedBox.shrink(),
-              if (d.absentDiag != null)
-                Section(
-                    l?.readinessDetailWhatWasMissing ?? 'What was missing',
-                    _absence(
-                      c,
-                      p,
-                      d.absentDiag!,
-                      fallbackReason:
-                          bannerShowsDiag ? null : diagReason,
-                    )),
-            ]);
-          }),
+          Builder(
+            builder: (c) {
+              final diagReason =
+                  readinessInputShortfallNote(d.absentDiag) ??
+                  readinessUnstableBaselineNote(
+                    d.absentDiag?['note']?.toString(),
+                  );
+              // StatusCard.forMetric prefers a prose note already ON the
+              // metric (`told`, via whyFromNote) over `why:` — deliberately,
+              // for screen-authored text like the held-over "nothing synced
+              // yet" sentence [overnightMetric] attaches. When that wins, the
+              // diagnostic reason above never reaches the banner at all
+              // (PR #510 follow-up) — _absence below shows it in that one
+              // case so it is not lost from the screen entirely, without
+              // reintroducing the general "says it twice" duplication fixed
+              // earlier in this same PR. Mirrors forMetric's precedence
+              // exactly: a need_baseline note is rendered as the fix, not
+              // `told`, so `why:` still wins there; a `gap` replaces `why:`.
+              final note = d.readiness.note;
+              final bannerShowsDiag =
+                  d.heldOverNight == null &&
+                  (needMessageFromNote(note) != null ||
+                      whyFromNote(note) == null);
+              return Column(
+                children: [
+                  StatusCard.forMetric(
+                        l?.readinessDetailNotScoredTitle ??
+                            'Readiness is not scored',
+                        d.readiness,
+                        why: diagReason ?? '',
+                        // Where the data stops, appended to whatever the
+                        // pipeline said. Not a substitute for the reason and
+                        // not a reading — "the last one was Saturday" is a
+                        // fact about coverage.
+                        gap: d.heldOverNight == null
+                            ? null
+                            : (l?.readinessDetailLastNightScored(
+                                    prettyDay(d.heldOverNight, l),
+                                  ) ??
+                                  'The last night scored was '
+                                      '${prettyDay(d.heldOverNight, l)}.'),
+                      ) ??
+                      const SizedBox.shrink(),
+                  if (d.absentDiag != null)
+                    Section(
+                      l?.readinessDetailWhatWasMissing ?? 'What was missing',
+                      _absence(
+                        c,
+                        p,
+                        d.absentDiag!,
+                        fallbackReason: bannerShowsDiag ? null : diagReason,
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
         ] else
           Surface(
-            child: Column(children: [
-              SizedBox(
-                width: 150,
-                height: 150,
-                child: Stack(alignment: Alignment.center, children: [
-                  CustomPaint(
-                    size: const Size(150, 150),
-                    painter: Ring(d.readiness.normalized(100), p.on(band.color),
-                        p.track,
-                        stroke: 14, t: animate(c, 1)),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomPaint(
+                        size: const Size(150, 150),
+                        painter: Ring(
+                          d.readiness.normalized(100),
+                          p.on(band.color),
+                          p.track,
+                          stroke: 14,
+                          t: animate(c, 1),
+                        ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${v.round()}',
+                            style: F.n48.copyWith(color: p.ink),
+                          ),
+                          Text(
+                            band.label,
+                            style: F.cap.copyWith(color: p.ink3),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  Column(mainAxisSize: MainAxisSize.min, children: [
-                    Text('${v.round()}', style: F.n48.copyWith(color: p.ink)),
-                    Text(band.label, style: F.cap.copyWith(color: p.ink3)),
-                  ]),
-                ]),
-              ),
-            ]),
+                ),
+              ],
+            ),
           ),
 
         if (d.breakdown.isNotEmpty) ...[
-          Section(l?.readinessDetailWhatWentIntoIt ?? 'What went into it',
-              _breakdown(c, p, d)),
+          Section(
+            l?.readinessDetailWhatWentIntoIt ?? 'What went into it',
+            _breakdown(c, p, d),
+          ),
           // Only when the headline above is absent: the footer's "parallel
           // view, not slices of the number above" caveat is true either way,
           // but it sits BELOW four rows of real-looking numbers and is easy
@@ -260,18 +295,22 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
           Surface(
             elevation: 0,
             color: p.card2,
-            child: Row(children: [
-              Expanded(
-                child: Text(
-                  l?.readinessDetailInputsFooter(
-                          d.inputsUsed, d.breakdown.length) ??
-                      '${d.inputsUsed}/${d.breakdown.length} inputs. Each one is '
-                          'ranked against your own history — a parallel view of the '
-                          'same inputs, not slices of the number above.',
-                  style: F.cap.copyWith(color: p.ink3, height: 1.5),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l?.readinessDetailInputsFooter(
+                          d.inputsUsed,
+                          d.breakdown.length,
+                        ) ??
+                        '${d.inputsUsed}/${d.breakdown.length} inputs. Each one is '
+                            'ranked against your own history — a parallel view of the '
+                            'same inputs, not slices of the number above.',
+                    style: F.cap.copyWith(color: p.ink3, height: 1.5),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ),
         ] else if (v != null)
           Section(
@@ -293,7 +332,9 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
               ? StatusCard(
                   l?.readinessDetailNoHistoryTitle ?? 'No readiness history',
                   l?.readinessDetailNoHistoryBody ?? '0 days scored.',
-                  fix: l?.readinessDetailWearOvernight ?? 'Wear the band overnight',
+                  fix:
+                      l?.readinessDetailWearOvernight ??
+                      'Wear the band overnight',
                   icon: LucideIcons.chartLine,
                 )
               : Surface(child: _history(c, d)),
@@ -317,8 +358,7 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
     final n = d.series.any((v) => v != null) ? _window(d).length : 0;
     return n == 0
         ? (l?.readinessDetailHistoryTitle ?? 'History')
-        : (l?.readinessDetailLastNDays(n) ??
-            'Last $n day${n == 1 ? '' : 's'}');
+        : (l?.readinessDetailLastNDays(n) ?? 'Last $n day${n == 1 ? '' : 's'}');
   }
 
   Widget _history(BuildContext c, ReadinessData d) {
@@ -344,8 +384,13 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
       series: win,
       child: CustomPaint(
         size: Size.infinite,
-        painter: LineChart(win, p.on(C.green), dots: false, t: animate(c, 1),
-            axis: axis),
+        painter: LineChart(
+          win,
+          p.on(C.green),
+          dots: false,
+          t: animate(c, 1),
+          axis: axis,
+        ),
       ),
     );
   }
@@ -383,39 +428,45 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
     }
 
     if (rows.isEmpty) return const SizedBox.shrink();
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Surface(
-        pad: const EdgeInsets.symmetric(horizontal: S.x4),
-        child: Column(
-          // Explicit, not the default `center`: each row's inner Column
-          // shrink-wraps to its own (narrow) text width, same as every row
-          // in `_breakdown` below it — the difference is that `_breakdown`'s
-          // rows are a `Row` (fills the full width by default regardless of
-          // the parent's alignment), so only this Column needed the
-          // alignment said out loud for the two sections to actually match.
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (var i = 0; i < rows.length; i++) ...[
-              if (i > 0) Divider(color: p.line, height: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: S.x3),
-                child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Surface(
+          pad: const EdgeInsets.symmetric(horizontal: S.x4),
+          child: Column(
+            // Explicit, not the default `center`: each row's inner Column
+            // shrink-wraps to its own (narrow) text width, same as every row
+            // in `_breakdown` below it — the difference is that `_breakdown`'s
+            // rows are a `Row` (fills the full width by default regardless of
+            // the parent's alignment), so only this Column needed the
+            // alignment said out loud for the two sections to actually match.
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < rows.length; i++) ...[
+                if (i > 0) Divider(color: p.line, height: 1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: S.x3),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(rows[i].$1, style: F.body.copyWith(color: p.ink)),
-                      Text(rows[i].$2,
-                          style: F.over.copyWith(color: p.ink3)),
-                    ]),
-              ),
+                      Text(rows[i].$2, style: F.over.copyWith(color: p.ink3)),
+                    ],
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
-      ),
-      if (fallbackReason != null) ...[
-        const SizedBox(height: S.x3),
-        Text(fallbackReason, style: F.cap.copyWith(color: p.ink3, height: 1.5)),
+        if (fallbackReason != null) ...[
+          const SizedBox(height: S.x3),
+          Text(
+            presentationText(l, fallbackReason),
+            style: F.cap.copyWith(color: p.ink3, height: 1.5),
+          ),
+        ],
       ],
-    ]);
+    );
   }
 
   Widget _breakdown(BuildContext c, P p, ReadinessData d) {
@@ -426,15 +477,20 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
     // skin temperature missing, HRV's 40% actually carried 45.5%.
     final wsum = rows
         .where((r) => r['used'] == true)
-        .fold<double>(0, (a, r) => a + ((r['weight'] as num?)?.toDouble() ?? 0));
+        .fold<double>(
+          0,
+          (a, r) => a + ((r['weight'] as num?)?.toDouble() ?? 0),
+        );
     return Surface(
       pad: const EdgeInsets.symmetric(horizontal: S.x4),
-      child: Column(children: [
-        for (var i = 0; i < rows.length; i++) ...[
-          if (i > 0) Divider(color: p.line, height: 1),
-          _row(c, p, rows[i], wsum),
+      child: Column(
+        children: [
+          for (var i = 0; i < rows.length; i++) ...[
+            if (i > 0) Divider(color: p.line, height: 1),
+            _row(c, p, rows[i], wsum),
+          ],
         ],
-      ]),
+      ),
     );
   }
 
@@ -455,7 +511,8 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
             '${(share * 100).round()}% weight',
       if (!used) l?.readinessDetailNotAvailable ?? 'not available',
       if (used && contribution == null)
-        l?.readinessDetailContributionNotReported ?? 'contribution not reported',
+        l?.readinessDetailContributionNotReported ??
+            'contribution not reported',
       // The temperature input is a raw sensor deviation, not a calibrated
       // temperature. It gets said, every time.
       if (key == 'temp')
@@ -468,26 +525,31 @@ class _ReadinessDetailState extends State<ReadinessDetail> {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: S.x3),
-      child: Row(children: [
-        Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(driverLabel(key), style: F.body.copyWith(color: p.ink)),
-            Text(parts.join(' · '),
-                style: F.over.copyWith(color: p.ink3)),
-          ]),
-        ),
-        // No contribution number means no number — never a bare em-dash. The
-        // sub-line above says which case it is.
-        if (used && contribution != null) ...[
-          const SizedBox(width: S.x3),
-          Text(
-            '${contribution >= 0 ? '+' : '−'}'
-            '${contribution.abs().toStringAsFixed(1)}',
-            style: F.n17.copyWith(
-                color: p.on(contribution >= 0 ? C.green : C.orange)),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(driverLabel(key), style: F.body.copyWith(color: p.ink)),
+                Text(parts.join(' · '), style: F.over.copyWith(color: p.ink3)),
+              ],
+            ),
           ),
+          // No contribution number means no number — never a bare em-dash. The
+          // sub-line above says which case it is.
+          if (used && contribution != null) ...[
+            const SizedBox(width: S.x3),
+            Text(
+              '${contribution >= 0 ? '+' : '−'}'
+              '${contribution.abs().toStringAsFixed(1)}',
+              style: F.n17.copyWith(
+                color: p.on(contribution >= 0 ? C.green : C.orange),
+              ),
+            ),
+          ],
         ],
-      ]),
+      ),
     );
   }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_reason_count">%1$s Есть %2$s, требуется %3$s.</string>
+    <plurals name="widget_need_nights">
+        <item quantity="one">Нужна ещё %d ночь</item>
+        <item quantity="few">Нужно ещё %d ночи</item>
+        <item quantity="many">Нужно ещё %d ночей</item>
+        <item quantity="other">Нужно ещё %d ночи</item>
+    </plurals>
+    <plurals name="widget_need_days">
+        <item quantity="one">Для открытия носите ещё %d день</item>
+        <item quantity="few">Для открытия носите ещё %d дня</item>
+        <item quantity="many">Для открытия носите ещё %d дней</item>
+        <item quantity="other">Для открытия носите ещё %d дня</item>
+    </plurals>
+</resources>

@@ -35,6 +35,8 @@ class OvernightWidgetProvider : HomeWidgetProvider() {
 
         val views = if (!w.fresh(widgetData)) {
             RemoteViews(context.packageName, R.layout.widget_openstrap_nodata).apply {
+                setTextViewText(R.id.nodata_title, uiString(context, R.string.widget_no_recent_title))
+                setTextViewText(R.id.nodata_body, uiString(context, R.string.widget_no_recent_body))
                 setTextColor(R.id.nodata_title, pal.ink)
                 setTextColor(R.id.nodata_body, pal.inkMuted)
             }
@@ -56,15 +58,17 @@ class OvernightWidgetProvider : HomeWidgetProvider() {
                         R.drawable.ic_widget_hrv,
                     ),
                 )
+                setTextViewText(R.id.cap_hrv, uiString(context, R.string.widget_hrv_label))
                 setTextColor(R.id.cap_hrv, pal.inkMuted)
+                setTextViewText(R.id.cap_rhr, uiString(context, R.string.widget_rhr_label))
                 setTextColor(R.id.cap_rhr, pal.inkMuted)
                 // The absence is a WORD, in the sentence colour. Never a dash,
                 // and never a zero — a zero RMSSD is a claim about a heart.
-                setTextViewText(R.id.val_hrv, if (hrv >= 0) "$hrv ms" else "Not measured")
+                setTextViewText(R.id.val_hrv, widgetText(context, if (hrv >= 0) "$hrv ms" else "Not measured"))
                 setTextColor(R.id.val_hrv, if (hrv >= 0) pal.good else pal.ink2)
-                setTextViewText(R.id.sub_hrv, if (base > 0) "base $base ms" else "")
+                setTextViewText(R.id.sub_hrv, widgetText(context, if (base > 0) "base $base ms" else ""))
                 setTextColor(R.id.sub_hrv, pal.inkMuted)
-                setTextViewText(R.id.val_rhr, if (rhr >= 0) "$rhr bpm" else "Not measured")
+                setTextViewText(R.id.val_rhr, widgetText(context, if (rhr >= 0) "$rhr bpm" else "Not measured"))
                 setTextColor(R.id.val_rhr, if (rhr >= 0) pal.ink else pal.ink2)
                 // Why, when there is a why — the held-over night's reason
                 // first, then the night's own, and nothing when neither said.
@@ -73,7 +77,7 @@ class OvernightWidgetProvider : HomeWidgetProvider() {
                     .ifEmpty { w.ring(widgetData, "sleep").why }
                 val foot = if (hrv < 0 && rhr < 0) why else ""
                 setViewVisibility(R.id.foot, if (foot.isEmpty()) View.GONE else View.VISIBLE)
-                setTextViewText(R.id.foot, foot)
+                setTextViewText(R.id.foot, widgetText(context, foot))
                 setTextColor(R.id.foot, pal.inkMuted)
             }
         }

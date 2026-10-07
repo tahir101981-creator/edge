@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tracking_title">Синхронизация OpenStrap</string>
+    <string name="tracking_description">Синхронизация браслета в фоне</string>
+    <string name="tracking_body">Поддерживается синхронизация браслета</string>
+    <string name="widget_no_recent_title">Нет свежих данных</string>
+    <string name="widget_no_recent_body">Откройте OpenStrap и синхронизируйте браслет.</string>
+</resources>

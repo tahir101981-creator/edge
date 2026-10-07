@@ -30,6 +30,7 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -121,7 +122,8 @@ class LiveHrCard extends StatelessWidget {
                 children: [
                   Text('$hr', style: F.n48.copyWith(color: p.ink)),
                   const SizedBox(width: S.x2),
-                  Text('bpm', style: F.body.copyWith(color: p.ink3)),
+                  Text(AppLocalizations.of(c)?.activityLiveBpmUnit ?? 'bpm',
+                      style: F.body.copyWith(color: p.ink3)),
                 ],
               ),
             ),

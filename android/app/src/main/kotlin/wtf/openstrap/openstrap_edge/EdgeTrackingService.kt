@@ -182,10 +182,10 @@ class EdgeTrackingService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val ch = NotificationChannel(
                 CHANNEL_ID,
-                "Edge Tracking",
+                uiString(this, R.string.tracking_title),
                 NotificationManager.IMPORTANCE_LOW,
             )
-            ch.description = "Keeps your strap syncing in the background"
+            ch.description = uiString(this, R.string.tracking_description)
             ch.setShowBadge(false)
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .createNotificationChannel(ch)
@@ -194,8 +194,8 @@ class EdgeTrackingService : Service() {
 
     private fun buildNotification(): Notification {
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Edge Tracking")
-            .setContentText("Keeping your strap in sync")
+            .setContentTitle(uiString(this, R.string.tracking_title))
+            .setContentText(uiString(this, R.string.tracking_body))
             .setSmallIcon(android.R.drawable.stat_sys_data_bluetooth)
             .setOngoing(true)
             .setSilent(true)

@@ -24,8 +24,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../data/day_label.dart';
 import '../../data/local_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../../l10n/date_text.dart';
 import '../../models/metric.dart' show whyFromNote;
-import '../screens/home_screen.dart' show repoOf, monthName;
+import '../screens/home_screen.dart' show repoOf;
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';
 import 'catalogue.dart' show zonesWhy;
@@ -102,8 +103,7 @@ class DayStrainData {
     DateTime? day;
     var grid = const <double?>[];
     if (pts.isNotEmpty) {
-      final first =
-          DateTime.fromMillisecondsSinceEpoch(pts.first.$1 * 1000);
+      final first = DateTime.fromMillisecondsSinceEpoch(pts.first.$1 * 1000);
       day = DateTime(first.year, first.month, first.day);
       final dayStart = day.millisecondsSinceEpoch ~/ 1000;
       final out = List<double?>.filled(1440, null);
@@ -130,7 +130,8 @@ class DayStrainData {
     }
 
     final z = s['zones'];
-    final zoneMin = z is Map &&
+    final zoneMin =
+        z is Map &&
             [for (var i = 1; i <= 5; i++) z['z$i']].every((v) => v is num)
         ? [for (var i = 1; i <= 5; i++) (z['z$i'] as num).toInt()]
         : null;
@@ -153,7 +154,6 @@ class DayStrainData {
     );
   }
 }
-
 
 class DayStrainDetail extends StatefulWidget {
   /// Preloaded, for goldens. Null means read the repo on open.
@@ -205,25 +205,22 @@ class _DayStrainDetailState extends State<DayStrainDetail> {
     final sub = day == null
         ? ''
         : dayLabelOf(day) == todayLabel()
-            ? (l?.dayStrainToday ?? 'TODAY')
-            : '${monthName(day.month, l)} ${day.day}'.toUpperCase();
+        ? (l?.dayStrainToday ?? 'TODAY')
+        : localizedDate(day, l?.localeName ?? 'en', pattern: 'd MMMM');
 
-    return detailScaffold(
-      c,
-      l?.dayStrainTitle ?? 'Day strain',
-      [
-        if (_loading && _d == null) ...[
-          const SizedBox(height: S.x8),
-          const Center(child: CircularProgressIndicator()),
-        ] else ...[
-          ..._trace(p, l, d),
-          ..._zones(p, l, d),
-          Section(l?.dayStrainInputsSection ?? 'What this is made of',
-              _inputs(p, l, d)),
-        ],
+    return detailScaffold(c, l?.dayStrainTitle ?? 'Day strain', [
+      if (_loading && _d == null) ...[
+        const SizedBox(height: S.x8),
+        const Center(child: CircularProgressIndicator()),
+      ] else ...[
+        ..._trace(p, l, d),
+        ..._zones(p, l, d),
+        Section(
+          l?.dayStrainInputsSection ?? 'What this is made of',
+          _inputs(p, l, d),
+        ),
       ],
-      sub: sub,
-    );
+    ], sub: sub);
   }
 
   // ── the curve, and only then the number ────────────────────────────────────
@@ -252,14 +249,14 @@ class _DayStrainDetailState extends State<DayStrainDetail> {
           s == null
               ? (l?.dayStrainNoTraceTitle ?? 'No strain trace for this day')
               : (l?.dayStrainNoMinuteTraceTitle ??
-                  'No minute-by-minute trace for this day'),
+                    'No minute-by-minute trace for this day'),
           s == null
               ? why ??
-                  (l?.dayStrainNoReasonBody ??
-                      'Nothing recorded says why this day produced no strain.')
+                    (l?.dayStrainNoReasonBody ??
+                        'Nothing recorded says why this day produced no strain.')
               : (l?.dayStrainScoredNoTraceBody(s.toStringAsFixed(1)) ??
-                  'The day strain is ${s.toStringAsFixed(1)}. The waking minutes '
-                      'it was built from are not stored for this day.'),
+                    'The day strain is ${s.toStringAsFixed(1)}. The waking minutes '
+                        'it was built from are not stored for this day.'),
           fix: (s == null && !saw)
               ? (l?.dayStrainWearBandFix ?? 'Wear the band through the day')
               : '',
@@ -271,38 +268,48 @@ class _DayStrainDetailState extends State<DayStrainDetail> {
     final drawn = d.curve.where((v) => v != null).length;
     return [
       Surface(
-        child: Column(children: [
-          ChartFrame(
-            title: l?.dayStrainChartTitle ?? 'STRAIN THROUGH THE DAY',
-            unit: '0–21',
-            height: 170,
-            yAxis: axis,
-            xLabels: const ['00:00', '12:00', '24:00'],
-            series: d.curve,
-            footnote: l?.dayStrainChartFootnote(drawn) ??
-                'Effort banked above your usual waking pace — it can ease '
-                    'later in the day if intensity drops back toward that '
-                    'pace, even though the STEEP parts already happened. '
-                    'Built from $drawn recorded waking minutes.',
-            child: CustomPaint(
-              size: Size.infinite,
-              painter: LineChart(d.curve, p.on(C.purple),
-                  axis: axis, t: animate(context, 1)),
+        child: Column(
+          children: [
+            ChartFrame(
+              title: l?.dayStrainChartTitle ?? 'STRAIN THROUGH THE DAY',
+              unit: '0–21',
+              height: 170,
+              yAxis: axis,
+              xLabels: const ['00:00', '12:00', '24:00'],
+              series: d.curve,
+              footnote:
+                  l?.dayStrainChartFootnote(drawn) ??
+                  'Effort banked above your usual waking pace — it can ease '
+                      'later in the day if intensity drops back toward that '
+                      'pace, even though the STEEP parts already happened. '
+                      'Built from $drawn recorded waking minutes.',
+              child: CustomPaint(
+                size: Size.infinite,
+                painter: LineChart(
+                  d.curve,
+                  p.on(C.purple),
+                  axis: axis,
+                  t: animate(context, 1),
+                ),
+              ),
             ),
-          ),
-          if (d.strain != null || d.peakHr != null || d.wornMin != null) ...[
-            const SizedBox(height: S.x4),
-            InlineMetrics([
-              if (d.strain != null)
-                (l?.dayStrainTitle ?? 'Day strain', d.strain!.toStringAsFixed(1),
-                    C.purple),
-              if (d.peakHr != null)
-                (l?.dayStrainPeakHr ?? 'Peak HR', '${d.peakHr} bpm', C.red),
-              if (d.wornMin != null)
-                (l?.dayStrainWorn ?? 'Worn', '${d.wornMin} min', C.teal),
-            ]),
+            if (d.strain != null || d.peakHr != null || d.wornMin != null) ...[
+              const SizedBox(height: S.x4),
+              InlineMetrics([
+                if (d.strain != null)
+                  (
+                    l?.dayStrainTitle ?? 'Day strain',
+                    d.strain!.toStringAsFixed(1),
+                    C.purple,
+                  ),
+                if (d.peakHr != null)
+                  (l?.dayStrainPeakHr ?? 'Peak HR', '${d.peakHr} bpm', C.red),
+                if (d.wornMin != null)
+                  (l?.dayStrainWorn ?? 'Worn', '${d.wornMin} min', C.teal),
+              ]),
+            ],
           ],
-        ]),
+        ),
       ),
       if (d.coveragePct != null && d.coveragePct! < _lowCoveragePct)
         Padding(
@@ -355,8 +362,9 @@ class _DayStrainDetailState extends State<DayStrainDetail> {
         // ceiling, the edges in bpm and the 28-day distribution are all one tap
         // behind it.
         action: l?.dayStrainHowSet ?? 'How these are set',
-        onAction: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const ZonesDetail())),
+        onAction: () => Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const ZonesDetail())),
       ),
     ];
   }

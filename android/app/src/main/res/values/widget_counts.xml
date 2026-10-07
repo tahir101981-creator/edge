@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_reason_count">%1$s There were %2$s, and it needs %3$s.</string>
+    <plurals name="widget_need_nights">
+        <item quantity="one">Need %d more night</item>
+        <item quantity="other">Need %d more nights</item>
+    </plurals>
+    <plurals name="widget_need_days">
+        <item quantity="one">Wear %d more day to unlock</item>
+        <item quantity="other">Wear %d more days to unlock</item>
+    </plurals>
+</resources>

@@ -124,15 +124,15 @@ class OpenStrapWidgetProvider : HomeWidgetProvider() {
                 slot.dial,
                 w.dialBitmap(context, dialDp, strokeDp, pal.track, tint, r.frac, slot.iconRes),
             )
-            views.setTextViewText(slot.cap, slot.label)
+            views.setTextViewText(slot.cap, widgetText(context, slot.label))
             views.setTextColor(slot.cap, pal.inkMuted)
             // The absence takes the SENTENCE colour rather than the numeral
             // one, because it is a sentence: "No sleep" in full-weight ink
             // would read as a score.
-            views.setTextViewText(slot.value, r.value)
+            views.setTextViewText(slot.value, widgetText(context, r.value))
             views.setTextColor(slot.value, if (r.measured) pal.ink else pal.ink2)
             if (!small) {
-                views.setTextViewText(slot.sub, r.sub)
+                views.setTextViewText(slot.sub, widgetText(context, r.sub))
                 views.setTextColor(slot.sub, pal.inkMuted)
             }
             if (gap == null && r.why.isNotEmpty()) gap = slot.label to r.why
@@ -146,7 +146,7 @@ class OpenStrapWidgetProvider : HomeWidgetProvider() {
                 views.setViewVisibility(R.id.gap_row, View.GONE)
             } else {
                 views.setViewVisibility(R.id.gap_row, View.VISIBLE)
-                views.setTextViewText(R.id.gap_row, "${g.first} · ${g.second}")
+                views.setTextViewText(R.id.gap_row, "${widgetText(context, g.first)} · ${widgetText(context, g.second)}")
                 views.setTextColor(R.id.gap_row, pal.inkMuted)
             }
         }
@@ -157,6 +157,8 @@ class OpenStrapWidgetProvider : HomeWidgetProvider() {
         val views = RemoteViews(context.packageName, R.layout.widget_openstrap_nodata)
         views.setInt(R.id.widget_root, "setBackgroundResource", pal.bgRes)
         views.setOnClickPendingIntent(R.id.widget_root, StrapWidgets.openAppIntent(context))
+        views.setTextViewText(R.id.nodata_title, uiString(context, R.string.widget_no_recent_title))
+        views.setTextViewText(R.id.nodata_body, uiString(context, R.string.widget_no_recent_body))
         views.setTextColor(R.id.nodata_title, pal.ink)
         views.setTextColor(R.id.nodata_body, pal.inkMuted)
         return views

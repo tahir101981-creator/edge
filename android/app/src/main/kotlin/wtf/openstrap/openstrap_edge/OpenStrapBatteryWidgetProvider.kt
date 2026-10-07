@@ -87,7 +87,7 @@ class OpenStrapBatteryWidgetProvider : HomeWidgetProvider() {
         )
         views.setTextViewText(R.id.val_batt, valueText)
         views.setTextColor(R.id.val_batt, if (stale) pal.inkMuted else pal.ink)
-        views.setTextViewText(R.id.name_batt, caption)
+        views.setTextViewText(R.id.name_batt, widgetText(context, caption))
         views.setTextColor(R.id.name_batt, pal.inkMuted)
         manager.updateAppWidget(id, views)
     }

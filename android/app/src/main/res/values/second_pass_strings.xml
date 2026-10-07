@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_second_reason_0">no sleep was scored for this day — resting HR is only ever measured over a sleep window, never over waking hours.</string>
+    <string name="widget_second_reason_1">Baevsky Stress Index → 0–100; resting autonomic tension (PRV).</string>
+    <string name="widget_second_reason_2">no readiness inputs present — \"—\" (never imputed).</string>
+    <string name="widget_off_wrist_span">Your band was off your wrist %1$s – %2$s.</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_openstrap_label">OpenStrap</string>
+    <string name="widget_openstrap_description">Восстановление, нагрузка и сон — краткий обзор.</string>
+    <string name="widget_battery_label">Заряд браслета</string>
+    <string name="widget_battery_description">Заряд браслета при последнем подключении.</string>
+    <string name="widget_sleep_label">СОН</string>
+    <string name="widget_sleep_picker_label">Прошлая ночь</string>
+    <string name="widget_sleep_description">Длительность сна в сравнении с определённой приложением потребностью.</string>
+    <string name="widget_overnight_label">Ночные показатели</string>
+    <string name="widget_overnight_description">ВСР прошлой ночи в сравнении с вашим базовым уровнем и пульс в покое.</string>
+    <string name="widget_hrv_label">ВСР</string>
+    <string name="widget_rhr_label">ПУЛЬС В ПОКОЕ</string>
+</resources>

@@ -207,11 +207,14 @@ List<DayStepSpan> mergeAdjacent(List<DayStepSpan> spans) {
   final out = <DayStepSpan>[];
   for (final s in spans) {
     final last = out.isEmpty ? null : out.last;
-    final crossed = last != null &&
-        spans.any((o) =>
-            o.fromBand != s.fromBand &&
-            o.startTs >= last.startTs &&
-            o.startTs < s.endTs);
+    final crossed =
+        last != null &&
+        spans.any(
+          (o) =>
+              o.fromBand != s.fromBand &&
+              o.startTs >= last.startTs &&
+              o.startTs < s.endTs,
+        );
     if (last != null &&
         last.fromBand == s.fromBand &&
         last.activity == s.activity &&
@@ -272,8 +275,11 @@ class _DayStepsDetailState extends State<DayStepsDetail> {
       return;
     }
     try {
-      final d = await DayStepsData.load(repo,
-          bandLabel: bandLabel(context), want: _day);
+      final d = await DayStepsData.load(
+        repo,
+        bandLabel: bandLabel(context),
+        want: _day,
+      );
       if (mounted && token == _loadToken) {
         setState(() => (_d = d, _loading = false));
       }
@@ -297,19 +303,23 @@ class _DayStepsDetailState extends State<DayStepsDetail> {
     final d = _d ?? const DayStepsData();
     // Same rule as Sleep: the stepper names the day, so the nav bar only does
     // when there is no stepper.
-    return detailScaffold(c, l?.dayStepsTitle ?? 'Steps',
-        sub: d.days.length < 2 ? dayNavLabel(d.day).toUpperCase() : '', [
-      ...dayNavRow(_day ?? d.day, d.days, _goDay),
-      if (_loading && _d == null) ...[
-        const SizedBox(height: S.x8),
-        const Center(child: CircularProgressIndicator()),
-      ] else if (d.spans.isEmpty)
-        _absent(c, d)
-      else ...[
-        _chart(c, p, d),
-        Section(l?.dayStepsThroughDay ?? 'Through the day', _rows(c, p, d)),
+    return detailScaffold(
+      c,
+      l?.dayStepsTitle ?? 'Steps',
+      sub: d.days.length < 2 ? dayNavLabel(d.day).toUpperCase() : '',
+      [
+        ...dayNavRow(_day ?? d.day, d.days, _goDay),
+        if (_loading && _d == null) ...[
+          const SizedBox(height: S.x8),
+          const Center(child: CircularProgressIndicator()),
+        ] else if (d.spans.isEmpty)
+          _absent(c, d)
+        else ...[
+          _chart(c, p, d),
+          Section(l?.dayStepsThroughDay ?? 'Through the day', _rows(c, p, d)),
+        ],
       ],
-    ]);
+    );
   }
 
   // ── nothing to place on a clock ────────────────────────────────────────────
@@ -324,7 +334,8 @@ class _DayStepsDetailState extends State<DayStepsDetail> {
     // that could only ever be today; now it can be any day on disk.
     final when = dayNavLabel(d.day) == 'Today'
         ? (l?.dayStepsToday ?? 'today')
-        : (l?.dayStepsOnDay(prettyDay(d.day, l)) ?? 'on ${prettyDay(d.day, l)}');
+        : (l?.dayStepsOnDay(prettyDay(d.day, l)) ??
+              'on ${prettyDay(d.day, l)}');
     return StatusCard(
       chip
           ? (l?.dayStepsNoTimesTitle(when) ?? 'No times behind the count $when')
@@ -394,9 +405,17 @@ class _DayStepsDetailState extends State<DayStepsDetail> {
           InlineMetrics(
             d.mixed
                 ? [
-                    (l?.dayStepsCounted ?? 'Counted', thousands(d.total), C.green),
+                    (
+                      l?.dayStepsCounted ?? 'Counted',
+                      thousands(d.total),
+                      C.green,
+                    ),
                     (d.bandLabel, thousands(d.strap), C.green),
-                    (l?.dayStepsYourPhone ?? 'Your phone', thousands(d.phone), C.teal),
+                    (
+                      l?.dayStepsYourPhone ?? 'Your phone',
+                      thousands(d.phone),
+                      C.teal,
+                    ),
                   ]
                 : [
                     (
@@ -458,11 +477,13 @@ class _DayStepsDetailState extends State<DayStepsDetail> {
               // says so, which is the one place it has to be said.
               thousands(s.steps),
               sub: [
-                s.fromBand ? d.bandLabel : (l?.dayStepsYourPhone ?? 'Your phone'),
+                s.fromBand
+                    ? d.bandLabel
+                    : (l?.dayStepsYourPhone ?? 'Your phone'),
                 // The session's own name, when the stretch sat inside one.
                 // Never invented for a stretch that did not: steps in an hour
                 // are steps, not a walk we watched.
-                ?activityByName(s.activity)?.name,
+                ?activityByName(s.activity)?.displayName(c),
               ].join(' · '),
             ),
         ],

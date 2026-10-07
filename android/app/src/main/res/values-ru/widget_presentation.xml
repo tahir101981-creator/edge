@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_presentation_0" formatted="false">Возраст не указан, а он нужен для расчёта.</string>
+    <string name="widget_presentation_1" formatted="false">Вес не указан, а он нужен для расчёта.</string>
+    <string name="widget_presentation_2" formatted="false">Рост не указан, а он нужен для расчёта.</string>
+    <string name="widget_presentation_3" formatted="false">Пол не указан, а он нужен для используемой формулы.</string>
+    <string name="widget_presentation_4" formatted="false">За этот день нет записи пульса во время бодрствования.</string>
+    <string name="widget_presentation_5" formatted="false">Для расчёта записано слишком мало отсчётов пульса.</string>
+    <string name="widget_presentation_6" formatted="false">Нет пульса в покое из рассчитанной ночи для сравнения.</string>
+    <string name="widget_presentation_7" formatted="false">Нет рассчитанной ночи для получения показателя.</string>
+    <string name="widget_presentation_8" formatted="false">Для расчёта слишком мало чистых межударных интервалов.</string>
+    <string name="widget_presentation_9" formatted="false">За ночь слишком мало получасовых отрезков чистых данных дыхания для сравнения.</string>
+    <string name="widget_presentation_10" formatted="false">Вместе с пульсом не записывалось движение.</string>
+    <string name="widget_presentation_11" formatted="false">Этот день импортирован из выгрузки только с ночными данными. Бодрствование не записано, и исходных данных для его расчёта нет.</string>
+    <string name="widget_presentation_12" formatted="false">За сегодня ещё нет данных активности — они пока не поступили в приложение.</string>
+    <string name="widget_presentation_13" formatted="false">Для этой ночи нет общей длительности сна.</string>
+    <string name="widget_presentation_14" formatted="false">Для этой ночи нет времени пробуждения.</string>
+    <string name="widget_presentation_15" formatted="false">Для этой ночи нет эффективности сна.</string>
+    <string name="widget_presentation_16" formatted="false">Браслет ещё не записал достаточно высокий устойчивый пульс при интенсивном усилии для измерения максимума.</string>
+    <string name="widget_presentation_17" formatted="false">Самый высокий устойчивый пульс пока значительно ниже ожидаемого по возрасту. Это рассматривается как немаксимальное усилие, а не ваш предел. Зоны остаются на возрастной оценке до записи более сильного усилия.</string>
+    <string name="widget_presentation_18" formatted="false">Пока недостаточно ночных значений пульса в покое для резерва.</string>
+    <string name="widget_presentation_19" formatted="false">Зоны заданы вручную: нет измеренной опорной точки резерва для графика распределения.</string>
+    <string name="widget_presentation_20" formatted="false">Записано слишком мало тренировок, чтобы отличить закономерность от шума.</string>
+    <string name="widget_presentation_21" formatted="false">В записях не указано, какой браслет их сделал. Показатель требует калибровки для каждого браслета, поэтому значение не угадывается и не показывается.</string>
+    <string name="widget_presentation_22" formatted="false">Прошлая ночь ещё рассчитывается.</string>
+    <string name="widget_presentation_23" formatted="false">Данные за прошлую ночь ещё не поступили в приложение.</string>
+    <string name="widget_presentation_24" formatted="false">Не записано достаточно длинной ночи для расчёта.</string>
+    <string name="widget_presentation_25" formatted="false">В записях нет объяснения отсутствия показателя.</string>
+    <string name="widget_presentation_26" formatted="false">Пока недостаточно истории для определения вашего обычного уровня.</string>
+    <string name="widget_presentation_27" formatted="false">Нет нагрузки</string>
+    <string name="widget_presentation_28" formatted="false">Нет сна</string>
+    <string name="widget_presentation_29" formatted="false">Нет готовности</string>
+    <string name="widget_presentation_30" formatted="false">Цели пока нет</string>
+    <string name="widget_presentation_31" formatted="false">Калибровка</string>
+    <string name="widget_presentation_32" formatted="false">дней</string>
+    <string name="widget_presentation_33" formatted="false">ночей</string>
+    <string name="widget_presentation_34" formatted="false">доз</string>
+    <string name="widget_presentation_35" formatted="false">Повторы</string>
+    <string name="widget_presentation_36" formatted="false">Раунды</string>
+    <string name="widget_presentation_37" formatted="false">Позы</string>
+    <string name="widget_presentation_38" formatted="false">Интенсивные минуты</string>
+    <string name="widget_presentation_39" formatted="false">Средний пульс</string>
+    <string name="widget_presentation_40" formatted="false">Максимальный пульс</string>
+    <string name="widget_presentation_41" formatted="false">Восстановление пульса</string>
+    <string name="widget_presentation_42" formatted="false">VO2max (оценка)</string>
+    <string name="widget_presentation_43" formatted="false">Ваша оценка</string>
+    <string name="widget_presentation_44" formatted="false">Посмотреть данные</string>
+    <string name="widget_presentation_45" formatted="false">оценка</string>
+    <string name="widget_presentation_46" formatted="false">ВОССТАНОВЛЕНИЕ</string>
+    <string name="widget_presentation_47" formatted="false">НАГРУЗКА</string>
+    <string name="widget_presentation_48" formatted="false">СОН</string>
+    <string name="widget_presentation_49" formatted="false">Не измерено</string>
+    <string name="widget_presentation_50" formatted="false">Ещё не подключён</string>
+    <string name="widget_presentation_51" formatted="false">Браслет</string>
+    <string name="widget_presentation_52" formatted="false">уд/мин</string>
+    <string name="widget_presentation_53" formatted="false">мс</string>
+    <string name="widget_presentation_54" formatted="false">база</string>
+    <string name="widget_presentation_55" formatted="false">эффективность</string>
+    <string name="widget_presentation_56" formatted="false">последние данные</string>
+    <string name="widget_presentation_57" formatted="false">Не рассчитано</string>
+    <string name="widget_presentation_58" formatted="false">Высокая</string>
+    <string name="widget_presentation_59" formatted="false">Хорошая</string>
+    <string name="widget_presentation_60" formatted="false">Умеренная</string>
+    <string name="widget_presentation_61" formatted="false">Низкая</string>
+</resources>
